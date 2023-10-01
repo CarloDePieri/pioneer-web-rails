@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -17,7 +17,9 @@
     "@reduxjs/toolkit": "^1.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.1"
+    "react-redux": "^8.0.1",
+    "redux-persist": "^6.0.0",
+    "redux-undo": "^1.1.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.2.0",
