@@ -24,13 +24,21 @@ interface DeckState {
 
 // GAME STATE
 export interface GameConfig {
-  forestGoals: boolean
+  forestMap: boolean
   jokerExpansion: boolean
   companyOwnerExpansion: boolean
+  advancedHandCardRule: boolean
+}
+
+export interface NewGame {
+  players: string[]
+  config: GameConfig
 }
 
 export interface GameState {
   status: "pre" | "started" | "done"
+  players: string[]
+  dealerId: number
   round: number
   config: GameConfig
   objectives: Objectives

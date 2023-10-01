@@ -1,7 +1,7 @@
 // OBJECTIVES
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
-import { deckCards, GameState, jokers, GameConfig } from "./gameModel";
+import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
+import { RootState } from "../../app/store"
+import { deckCards, GameState, jokers, NewGame } from "./gameModel"
 
 function shuffle<T>(array: T[]): T[] {
   const shuffledArray = [...array]
@@ -16,10 +16,13 @@ function shuffle<T>(array: T[]): T[] {
 const initialState: GameState = {
   status: "pre",
   round: 0,
+  players: [],
+  dealerId: -1,
   config: {
-    forestGoals: false,
+    forestMap: false,
     jokerExpansion: false,
     companyOwnerExpansion: false,
+    advancedHandCardRule: false,
   },
   objectives: {
     sheriff: undefined,
@@ -34,14 +37,32 @@ const initialState: GameState = {
   },
 }
 
+const getNextOp = (state: Draft<GameState> | GameState) => {
+  if (state.status === "pre") {
+    return "INIT"
+  } else if (state.status === "started") {
+    if (state.deck.deck.length > 0) {
+      return "DEAL"
+    } else if (state.round < 4) {
+      return "NEW_ROUND"
+    } else {
+      return "DONE"
+    }
+  } else {
+    return "RESET"
+  }
+}
+
 export const gameSlice = createSlice({
   name: "gameState",
   initialState,
   reducers: {
-    init: (state, action: PayloadAction<GameConfig>) => {
-      // Set the status and the game config
+    init: (state, action: PayloadAction<NewGame>) => {
+      // Set the status, the game config and the player order
       state.status = "started"
-      state.config = action.payload
+      state.config = action.payload.config
+      state.players = action.payload.players
+      state.dealerId = Math.floor(Math.random() * state.players.length)
 
       // choose: use one of the forest one? force at least one of them?
       // TODO pick the objectives at random here
@@ -71,13 +92,16 @@ export const gameSlice = createSlice({
     },
     reset: (state) => {
       state.status = initialState.status
+      state.round = 0
+      state.dealerId = -1
       state.config = initialState.config
       state.deck = initialState.deck
       state.objectives = initialState.objectives
+      // note: we keep the players
     },
-    draw: (state) => {
+    deal: (state) => {
       // Discard the current display if not empty
-      let deck = state.deck;
+      let deck = state.deck
       if (deck.display.length > 0) {
         deck.discard = deck.discard.concat(deck.display)
         deck.display = []
@@ -90,6 +114,8 @@ export const gameSlice = createSlice({
         }
       }
 
+      // update the turn player
+      state.dealerId = (state.dealerId + 1) % state.players.length
       // TODO check if two joker have been drawn
     },
     newRound: (state) => {
@@ -118,9 +144,23 @@ export const selectDiscard = (state: RootState) =>
   state.gameState.present.deck.discard
 export const selectObjectives = (state: RootState) =>
   state.gameState.present.objectives
+export const selectPlayers = (state: RootState) =>
+  state.gameState.present.players
+export const selectRound = (state: RootState) => state.gameState.present.round
+export const selectDealer = (state: RootState) =>
+  state.gameState.present.players[state.gameState.present.dealerId]
+export const selectNextOp = (state: RootState) =>
+  getNextOp(state.gameState.present)
+export const selectFutures = (state: RootState) => state.gameState.future
 
 // Actions
-export const { init, reset, draw, newRound } = gameSlice.actions
+// eslint-disable-next-line
+export const {
+  init,
+  reset,
+  deal,
+  newRound,
+} = gameSlice.actions
 
 // Reducer
 export default gameSlice.reducer

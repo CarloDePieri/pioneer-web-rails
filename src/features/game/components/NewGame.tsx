@@ -12,9 +12,13 @@ export function NewGame() {
         onClick={() =>
           dispatch(
             init({
-              forestGoals: false,
-              jokerExpansion: false,
-              companyOwnerExpansion: false,
+              players: ["Carlo", "Giulia", "Andrea", "Silvia"],
+              config: {
+                forestMap: false,
+                jokerExpansion: false,
+                companyOwnerExpansion: false,
+                advancedHandCardRule: false,
+              },
             }),
           )
         }
@@ -25,9 +29,13 @@ export function NewGame() {
         onClick={() =>
           dispatch(
             init({
-              forestGoals: false,
-              jokerExpansion: true,
-              companyOwnerExpansion: false,
+              players: ["Carlo", "Giulia"],
+              config: {
+                forestMap: false,
+                jokerExpansion: true,
+                companyOwnerExpansion: false,
+                advancedHandCardRule: false,
+              },
             }),
           )
         }

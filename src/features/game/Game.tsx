@@ -1,16 +1,16 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
-  draw,
-  newRound,
   reset,
+  selectDealer,
   selectDeck,
   selectDiscard,
   selectDisplay,
   selectObjectives,
+  selectRound,
   selectStatus,
 } from "./gameSlice"
 import { NewGame } from "./components/NewGame"
-import { ActionCreators } from "redux-undo"
+import { OperationBar } from "./components/OperationBar";
 
 export function Game() {
   const status = useAppSelector(selectStatus)
@@ -20,6 +20,8 @@ export function Game() {
   const deck = useAppSelector(selectDeck)
   const display = useAppSelector(selectDisplay)
   const discard = useAppSelector(selectDiscard)
+  const dealer = useAppSelector(selectDealer)
+  const round = useAppSelector(selectRound)
 
   if (status === "pre") {
     return <NewGame />
@@ -31,10 +33,10 @@ export function Game() {
           Objectives: {objectives.sheriff?.id} {objectives.ranch?.id}{" "}
           {objectives.train?.id}
         </p>
-        <button onClick={() => dispatch(draw())}>Draw</button>
-        <button onClick={() => dispatch(newRound())}>New Round</button>
-        <button onClick={() => dispatch(ActionCreators.undo())}>Undo</button>
-        <button onClick={() => dispatch(ActionCreators.redo())}>Redo</button>
+        <OperationBar />
+        <p>
+          Round: {round} Dealer: {dealer}
+        </p>
         <p>Display:</p>
         <ul>
           {display.map((card) => (
