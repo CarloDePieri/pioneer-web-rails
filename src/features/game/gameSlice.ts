@@ -114,7 +114,7 @@ export const gameSlice = createSlice({
         }
       }
 
-      // update the turn player
+      // update the dealer
       state.dealerId = (state.dealerId + 1) % state.players.length
       // TODO check if two joker have been drawn
     },
@@ -151,7 +151,9 @@ export const selectDealer = (state: RootState) =>
   state.gameState.present.players[state.gameState.present.dealerId]
 export const selectNextOp = (state: RootState) =>
   getNextOp(state.gameState.present)
-export const selectFutures = (state: RootState) => state.gameState.future
+export const countFutureStates = (state: RootState) =>
+  state.gameState.future.length
+export const countPastStates = (state: RootState) => state.gameState.past.length
 
 // Actions
 // eslint-disable-next-line

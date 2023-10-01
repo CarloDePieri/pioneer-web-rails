@@ -1,12 +1,12 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
+  countFutureStates, countPastStates,
   deal,
   newRound,
   selectDisplay,
-  selectFutures,
   selectNextOp,
-  selectRound,
-} from "../gameSlice"
+  selectRound
+} from "../gameSlice";
 import { ActionCreators } from "redux-undo"
 
 export function OperationBar() {
@@ -15,10 +15,12 @@ export function OperationBar() {
 
   const display = useAppSelector(selectDisplay)
   const round = useAppSelector(selectRound)
-  const future = useAppSelector(selectFutures)
+  const futureStates = useAppSelector(countFutureStates)
+  const pastStates = useAppSelector(countPastStates)
 
-  const isUndoDisabled = round === 1 && display.length === 0
-  const isRedoDisabled = future.length === 0
+  const isUndoDisabled =
+    (round === 1 && display.length === 0) || pastStates === 0
+  const isRedoDisabled = futureStates === 0
 
   const doNextOp = () => {
     if (next === "DEAL") {
@@ -38,13 +40,13 @@ export function OperationBar() {
         disabled={isUndoDisabled}
         onClick={() => dispatch(ActionCreators.undo())}
       >
-        Undo
+        Undo {pastStates > 0 ? "(" + pastStates + ")" : ""}
       </button>
       <button
         disabled={isRedoDisabled}
         onClick={() => dispatch(ActionCreators.redo())}
       >
-        Redo
+        Redo {futureStates > 0 ? "(" + futureStates + ")" : ""}
       </button>
     </div>
   )
