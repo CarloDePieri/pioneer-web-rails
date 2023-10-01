@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
+  pick,
   reset,
   selectDealer,
   selectDeck,
@@ -7,10 +8,11 @@ import {
   selectDisplay,
   selectObjectives,
   selectRound,
-  selectStatus,
-} from "./gameSlice"
+  selectStatus, selectTurn
+} from "./gameSlice";
 import { NewGame } from "./components/NewGame"
-import { OperationBar } from "./components/OperationBar";
+import { OperationBar } from "./components/OperationBar"
+import { Display } from "./components/Display";
 
 export function Game() {
   const status = useAppSelector(selectStatus)
@@ -18,10 +20,10 @@ export function Game() {
 
   const objectives = useAppSelector(selectObjectives)
   const deck = useAppSelector(selectDeck)
-  const display = useAppSelector(selectDisplay)
   const discard = useAppSelector(selectDiscard)
   const dealer = useAppSelector(selectDealer)
   const round = useAppSelector(selectRound)
+  const turn = useAppSelector(selectTurn)
 
   if (status === "pre") {
     return <NewGame />
@@ -35,14 +37,9 @@ export function Game() {
         </p>
         <OperationBar />
         <p>
-          Round: {round} Dealer: {dealer}
+          Round: {round} Turn: {turn} Dealer: {dealer}
         </p>
-        <p>Display:</p>
-        <ul>
-          {display.map((card) => (
-            <li key={card.id}>{card.id}</li>
-          ))}
-        </ul>
+        <Display />
         <p>Deck:</p>
         <ul>
           {deck.map((card) => (

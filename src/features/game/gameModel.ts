@@ -40,6 +40,7 @@ export interface GameState {
   players: string[]
   dealerId: number
   round: number
+  turn: number
   config: GameConfig
   objectives: Objectives
   deck: DeckState

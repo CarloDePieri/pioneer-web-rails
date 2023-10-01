@@ -1,12 +1,13 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
-  countFutureStates, countPastStates,
+  countFutureStates,
+  countPastStates,
   deal,
   newRound,
   selectDisplay,
   selectNextOp,
-  selectRound
-} from "../gameSlice";
+  selectRound,
+} from "../gameSlice"
 import { ActionCreators } from "redux-undo"
 
 export function OperationBar() {
@@ -33,9 +34,24 @@ export function OperationBar() {
     }
   }
 
+  const opButtonText = () => {
+    switch (next) {
+      case "PICK":
+        return "Picking a card..."
+      case "DEAL":
+        return "Deal"
+      case "NEW_ROUND":
+        return "Shuffle and Deal"
+      case "DONE":
+        return "We are done!"
+    }
+  }
+
   return (
     <div>
-      <button onClick={doNextOp}>{next}</button>
+      <button onClick={doNextOp} disabled={next === "PICK" || next === "DONE"}>
+        {opButtonText()}
+      </button>
       <button
         disabled={isUndoDisabled}
         onClick={() => dispatch(ActionCreators.undo())}

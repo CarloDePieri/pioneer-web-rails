@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../app/hooks"
 
-import { init } from "../gameSlice"
+import { deal, init } from "../gameSlice"
 
 export function NewGame() {
   const dispatch = useAppDispatch()
@@ -9,7 +9,7 @@ export function NewGame() {
     <div>
       <p>A new game?</p>
       <button
-        onClick={() =>
+        onClick={() => {
           dispatch(
             init({
               players: ["Carlo", "Giulia", "Andrea", "Silvia"],
@@ -21,12 +21,13 @@ export function NewGame() {
               },
             }),
           )
-        }
+          dispatch(deal())
+        }}
       >
         New Game
       </button>
       <button
-        onClick={() =>
+        onClick={() => {
           dispatch(
             init({
               players: ["Carlo", "Giulia"],
@@ -38,7 +39,8 @@ export function NewGame() {
               },
             }),
           )
-        }
+          dispatch(deal())
+        }}
       >
         New Game with Jokers
       </button>

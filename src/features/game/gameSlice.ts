@@ -16,6 +16,7 @@ function shuffle<T>(array: T[]): T[] {
 const initialState: GameState = {
   status: "pre",
   round: 0,
+  turn: 0,
   players: [],
   dealerId: -1,
   config: {
@@ -41,7 +42,12 @@ const getNextOp = (state: Draft<GameState> | GameState) => {
   if (state.status === "pre") {
     return "INIT"
   } else if (state.status === "started") {
-    if (state.deck.deck.length > 0) {
+    if (
+      state.deck.selectedCard === undefined &&
+      state.deck.display.length > 0
+    ) {
+      return "PICK"
+    } else if (state.turn < 5) {
       return "DEAL"
     } else if (state.round < 4) {
       return "NEW_ROUND"
@@ -93,6 +99,7 @@ export const gameSlice = createSlice({
     reset: (state) => {
       state.status = initialState.status
       state.round = 0
+      state.turn = 0
       state.dealerId = -1
       state.config = initialState.config
       state.deck = initialState.deck
@@ -106,6 +113,8 @@ export const gameSlice = createSlice({
         deck.discard = deck.discard.concat(deck.display)
         deck.display = []
       }
+      // Reset the selected card
+      deck.selectedCard = undefined
       // Draw three cards
       while (deck.display.length < 3 && deck.deck.length > 0) {
         let card = deck.deck.pop()
@@ -116,6 +125,8 @@ export const gameSlice = createSlice({
 
       // update the dealer
       state.dealerId = (state.dealerId + 1) % state.players.length
+      // update the turn
+      state.turn++
       // TODO check if two joker have been drawn
     },
     newRound: (state) => {
@@ -130,6 +141,16 @@ export const gameSlice = createSlice({
       state.deck.discard = []
       state.deck.selectedCard = undefined
       state.round++
+      state.turn = 0
+    },
+    pick: (state, action: PayloadAction<string>) => {
+      let pickedCardId = action.payload
+      state.deck.selectedCard = state.deck.display.filter(
+        (card) => card.id === pickedCardId,
+      )[0]
+    },
+    unpick: (state) => {
+      state.deck.selectedCard = undefined
     },
   },
 })
@@ -147,6 +168,7 @@ export const selectObjectives = (state: RootState) =>
 export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
 export const selectRound = (state: RootState) => state.gameState.present.round
+export const selectTurn = (state: RootState) => state.gameState.present.turn
 export const selectDealer = (state: RootState) =>
   state.gameState.present.players[state.gameState.present.dealerId]
 export const selectNextOp = (state: RootState) =>
@@ -154,6 +176,8 @@ export const selectNextOp = (state: RootState) =>
 export const countFutureStates = (state: RootState) =>
   state.gameState.future.length
 export const countPastStates = (state: RootState) => state.gameState.past.length
+export const selectPickedCard = (state: RootState) =>
+  state.gameState.present.deck.selectedCard
 
 // Actions
 // eslint-disable-next-line
@@ -162,6 +186,8 @@ export const {
   reset,
   deal,
   newRound,
+  pick,
+  unpick
 } = gameSlice.actions
 
 // Reducer
