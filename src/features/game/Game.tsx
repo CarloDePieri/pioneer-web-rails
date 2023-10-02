@@ -6,19 +6,20 @@ import {
   selectDeck,
   selectDiscard,
   selectDisplay,
-  selectObjectives,
+  selectGoals,
   selectRound,
-  selectStatus, selectTurn
-} from "./gameSlice";
+  selectStatus,
+  selectTurn,
+} from "./gameSlice"
 import { NewGame } from "./components/NewGame"
 import { OperationBar } from "./components/OperationBar"
-import { Display } from "./components/Display";
+import { Display } from "./components/Display"
 
 export function Game() {
   const status = useAppSelector(selectStatus)
   const dispatch = useAppDispatch()
 
-  const objectives = useAppSelector(selectObjectives)
+  const goals = useAppSelector(selectGoals)
   const deck = useAppSelector(selectDeck)
   const discard = useAppSelector(selectDiscard)
   const dealer = useAppSelector(selectDealer)
@@ -32,8 +33,7 @@ export function Game() {
       <div>
         <button onClick={() => dispatch(reset())}>Reset Game</button>
         <p>
-          Objectives: {objectives.sheriff?.id} {objectives.ranch?.id}{" "}
-          {objectives.train?.id}
+          Goals: {goals.sheriff?.id} {goals.ranch?.id} {goals.train?.id}
         </p>
         <OperationBar />
         <p>

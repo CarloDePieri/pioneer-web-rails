@@ -1,7 +1,8 @@
-// OBJECTIVES
+// GOALS
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-import { deckCards, GameState, jokers, NewGame } from "./gameModel"
+import { GameState, Goal, NewGame } from "./gameModel"
+import { cardsDeck, goalDeck, jokers } from "./gameDecks"
 
 function shuffle<T>(array: T[]): T[] {
   const shuffledArray = [...array]
@@ -10,6 +11,14 @@ function shuffle<T>(array: T[]): T[] {
     ;[shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]
   }
   return shuffledArray
+}
+
+function randomIndex<T>(array: T[]): number {
+  return Math.floor(Math.random() * array.length)
+}
+
+function pickRandom<T>(array: T[]): T {
+  return array[randomIndex(array)]
 }
 
 // Initial game state
@@ -25,7 +34,7 @@ const initialState: GameState = {
     companyOwnerExpansion: false,
     advancedHandCardRule: false,
   },
-  objectives: {
+  goals: {
     sheriff: undefined,
     train: undefined,
     ranch: undefined,
@@ -59,6 +68,26 @@ const getNextOp = (state: Draft<GameState> | GameState) => {
   }
 }
 
+const pickGoals = (state: Draft<GameState>): Goal[] => {
+  let sheriffGoal
+  let ranchGoal
+  let trainGoal
+  if (state.config.forestMap) {
+    sheriffGoal = pickRandom(
+      goalDeck.desert.sheriff
+        .filter((goal) => !["1A", "1B", "1C", "1E"].includes(goal.id))
+        .concat(goalDeck.forest.sheriff),
+    )
+    ranchGoal = pickRandom(goalDeck.desert.ranch.concat(goalDeck.forest.ranch))
+    trainGoal = pickRandom(goalDeck.desert.train.concat(goalDeck.forest.train))
+  } else {
+    sheriffGoal = pickRandom(goalDeck.desert.sheriff)
+    ranchGoal = pickRandom(goalDeck.desert.ranch)
+    trainGoal = pickRandom(goalDeck.desert.train)
+  }
+  return [sheriffGoal, ranchGoal, trainGoal]
+}
+
 export const gameSlice = createSlice({
   name: "gameState",
   initialState,
@@ -68,29 +97,20 @@ export const gameSlice = createSlice({
       state.status = "started"
       state.config = action.payload.config
       state.players = action.payload.players
-      state.dealerId = Math.floor(Math.random() * state.players.length)
+      state.dealerId = randomIndex(state.players)
 
-      // choose: use one of the forest one? force at least one of them?
-      // TODO pick the objectives at random here
-      state.objectives.sheriff = {
-        id: "1A",
-        img: "1a.png",
-      }
-      state.objectives.ranch = {
-        id: "1G",
-        img: "1g.png",
-      }
-      state.objectives.train = {
-        id: "1L",
-        img: "1l.png",
-      }
+      // Pick the correct goals
+      const [sheriffGoal, ranchGoal, trainGoal] = pickGoals(state)
+      state.goals.sheriff = sheriffGoal
+      state.goals.ranch = ranchGoal
+      state.goals.train = trainGoal
 
       // Populate and shuffle the deck
       if (state.config.jokerExpansion) {
         // Using Joker Cards mini expansion
-        state.deck.deck = shuffle(deckCards.concat(jokers))
+        state.deck.deck = shuffle(cardsDeck.concat(jokers))
       } else {
-        state.deck.deck = shuffle(deckCards)
+        state.deck.deck = shuffle(cardsDeck)
       }
 
       // Set the round
@@ -103,7 +123,7 @@ export const gameSlice = createSlice({
       state.dealerId = -1
       state.config = initialState.config
       state.deck = initialState.deck
-      state.objectives = initialState.objectives
+      state.goals = initialState.goals
       // note: we keep the players
     },
     deal: (state) => {
@@ -133,9 +153,9 @@ export const gameSlice = createSlice({
       // Populate and shuffle the deck
       if (state.config.jokerExpansion) {
         // Using Joker Cards mini expansion
-        state.deck.deck = shuffle(deckCards.concat(jokers))
+        state.deck.deck = shuffle(cardsDeck.concat(jokers))
       } else {
-        state.deck.deck = shuffle(deckCards)
+        state.deck.deck = shuffle(cardsDeck)
       }
       state.deck.display = []
       state.deck.discard = []
@@ -163,8 +183,7 @@ export const selectDisplay = (state: RootState) =>
   state.gameState.present.deck.display
 export const selectDiscard = (state: RootState) =>
   state.gameState.present.deck.discard
-export const selectObjectives = (state: RootState) =>
-  state.gameState.present.objectives
+export const selectGoals = (state: RootState) => state.gameState.present.goals
 export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
 export const selectRound = (state: RootState) => state.gameState.present.round
