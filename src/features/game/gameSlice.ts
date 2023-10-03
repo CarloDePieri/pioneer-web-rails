@@ -165,8 +165,6 @@ export const selectDiscard = (state: RootState) =>
   state.gameState.present.deck.discard
 export const selectPickedCard = (state: RootState) =>
   state.gameState.present.deck.selectedCard
-export const selectCompanyCard = (state: RootState) =>
-  state.gameState.present.companyOwners.companyCard
 
 // shorthand to interact with the present state
 let gameFlowP = (state: RootState) => {
@@ -184,6 +182,9 @@ export const selectNextOp = (state: RootState) => gameFlowP(state).getNextOp()
 
 export const selectGoals = (state: RootState) =>
   goals(state.gameState.present).getActive()
+
+export const selectCompanyCard = (state: RootState) =>
+  company(state.gameState.present).getCompanyCard()
 
 // Actions
 // eslint-disable-next-line

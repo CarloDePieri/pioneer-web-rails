@@ -16,13 +16,16 @@ export interface CompanyOwners {
 export const company = (state: Draft<GameState>) => {
   let company = state.companyOwners
   return {
-    draw: () => {
+    getCompanyCard() {
+      return company.companyCard
+    },
+    draw() {
       let card = company.companyDeck.pop()
       if (card) {
         company.companyCard = card
       }
     },
-    init: () => {
+    init() {
       let deck
       if (!state.config.forestMap) {
         // C1 company card does not work on desert maps!
