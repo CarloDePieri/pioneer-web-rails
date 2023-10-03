@@ -1,5 +1,5 @@
-import { CompanyCard, CompanyOwners } from "./company/gameCompany";
-import { GameFlow } from "./gameFlows"
+import { CompanyOwners } from "./company/gameCompany"
+import { GameFlow } from "./flow/gameFlows"
 import { Goals } from "./goals/gameGoals"
 
 // MAIN DECK
@@ -29,11 +29,7 @@ export interface NewGame {
 }
 
 export interface GameState {
-  status: "pre" | "started" | "done"
   players: string[]
-  dealerId: number
-  round: number
-  turn: number
   config: GameConfig
   goals: Goals
   deck: DeckState

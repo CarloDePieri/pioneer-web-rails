@@ -1,19 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-import { company, companyDeck } from "./company/gameCompany";
+import { company } from "./company/gameCompany"
 import { GameState, NewGame } from "./gameModel"
 import { cardsDeck, jokers } from "./gameDecks"
-import { gameFlowHelper, standardGameFlow } from "./gameFlows"
-import { pickRandom, randomIndex, shuffle } from "./helpers"
+import { gameFlow } from "./flow/gameFlows"
+import { pickRandom, shuffle } from "./helpers"
 import { goals } from "./goals/gameGoals"
 
 // Initial game state
 const initialState: GameState = {
-  status: "pre",
-  round: 0,
-  turn: 0,
   players: [],
-  dealerId: -1,
   config: {
     forestMap: false,
     jokerExpansion: false,
@@ -36,6 +32,10 @@ const initialState: GameState = {
     companyDeck: [],
   },
   gameFlow: {
+    status: "pre",
+    round: 0,
+    turn: 0,
+    dealerId: -1,
     future: [],
     past: [],
   },
@@ -47,10 +47,11 @@ export const gameSlice = createSlice({
   reducers: {
     init: (state, action: PayloadAction<NewGame>) => {
       // Set the status, the game config and the player order
-      state.status = "started"
       state.config = action.payload.config
       state.players = action.payload.players
-      state.dealerId = randomIndex(state.players)
+
+      // set up the game flow
+      gameFlow(state).actions.init()
 
       // Pick the correct goals
       goals(state).init()
@@ -67,9 +68,6 @@ export const gameSlice = createSlice({
       if (state.config.companyOwnersExpansion) {
         company(state).init()
       }
-
-      // Set up the game flow
-      state.gameFlow.future = standardGameFlow
     },
     reset: (state) => {
       // reset everything but the players
@@ -113,12 +111,8 @@ export const gameSlice = createSlice({
         }
       }
 
-      // update the dealer
-      state.dealerId = (state.dealerId + 1) % state.players.length
-      // update the turn
-      state.turn++
-      // advance the game flow
-      gameFlowHelper(state.gameFlow).advance()
+      // advance the game flow with a deal action
+      gameFlow(state).actions.deal()
     },
     newRound: (state) => {
       // Shuffle the display and the discard pile with the deck
@@ -129,17 +123,13 @@ export const gameSlice = createSlice({
       state.deck.discard = []
       state.deck.selectedCard = undefined
 
-      // Set up round and turn numbers
-      state.round++
-      state.turn = 0
-
       // Draw a company owner card if using the expansion
       if (state.config.companyOwnersExpansion) {
         company(state).draw()
       }
 
-      // advance the game flow
-      gameFlowHelper(state.gameFlow).advance()
+      // advance the game flow with a newRound action
+      gameFlow(state).actions.newRound()
     },
     pick: (state, action: PayloadAction<string>) => {
       let pickedCardId = action.payload
@@ -148,41 +138,50 @@ export const gameSlice = createSlice({
       )[0]
 
       // advance the game flow
-      gameFlowHelper(state.gameFlow).advance()
+      gameFlow(state).actions.pick()
     },
     unpick: (state) => {
       state.deck.selectedCard = undefined
 
       // reset the game flow
-      gameFlowHelper(state.gameFlow).undo()
+      gameFlow(state).actions.unpick()
     },
   },
 })
 
 // Selectors
-export const selectStatus = (state: RootState) => state.gameState.present.status
+export const selectPlayers = (state: RootState) =>
+  state.gameState.present.players
+export const selectFutureStatesNumber = (state: RootState) =>
+  state.gameState.future.length
+export const selectPastStatesNumber = (state: RootState) =>
+  state.gameState.past.length
+
 export const selectDeck = (state: RootState) =>
   state.gameState.present.deck.deck // TODO this could probably be removed
 export const selectDisplay = (state: RootState) =>
   state.gameState.present.deck.display
 export const selectDiscard = (state: RootState) =>
   state.gameState.present.deck.discard
-export const selectPlayers = (state: RootState) =>
-  state.gameState.present.players
-export const selectRound = (state: RootState) => state.gameState.present.round
-export const selectTurn = (state: RootState) => state.gameState.present.turn
-export const selectDealer = (state: RootState) =>
-  state.gameState.present.players[state.gameState.present.dealerId]
-export const countFutureStates = (state: RootState) =>
-  state.gameState.future.length
-export const countPastStates = (state: RootState) => state.gameState.past.length
 export const selectPickedCard = (state: RootState) =>
   state.gameState.present.deck.selectedCard
 export const selectCompanyCard = (state: RootState) =>
   state.gameState.present.companyOwners.companyCard
 
-export const selectNextOp = (state: RootState) =>
-  gameFlowHelper(state.gameState.present.gameFlow).next()
+// shorthand to interact with the present state
+let gameFlowP = (state: RootState) => {
+  return gameFlow(state.gameState.present)
+}
+export const selectDealer = (state: RootState) =>
+  gameFlowP(state).getDealerName()
+export const selectRound = (state: RootState) =>
+  gameFlowP(state).getCurrentRound()
+export const selectTurn = (state: RootState) =>
+  gameFlowP(state).getCurrentTurn()
+export const selectGameStatus = (state: RootState) =>
+  gameFlowP(state).getGameStatus()
+export const selectNextOp = (state: RootState) => gameFlowP(state).getNextOp()
+
 export const selectGoals = (state: RootState) =>
   goals(state.gameState.present).getActive()
 

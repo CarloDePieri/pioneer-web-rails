@@ -6,16 +6,16 @@ import {
   selectDeck,
   selectDiscard,
   selectRound,
-  selectStatus,
+  selectGameStatus,
   selectTurn,
 } from "./gameSlice"
 import { NewGame } from "./components/NewGame"
-import { OperationBar } from "./components/OperationBar"
+import { OperationBar } from "./flow/OperationBar"
 import { Display } from "./components/Display"
 import { Goals } from "./goals/Goals"
 
 export function Game() {
-  const status = useAppSelector(selectStatus)
+  const status = useAppSelector(selectGameStatus)
   const dispatch = useAppDispatch()
 
   const deck = useAppSelector(selectDeck)
