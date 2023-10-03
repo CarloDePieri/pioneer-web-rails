@@ -1,5 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
-import { GameState } from "../gameModel"
+
+import { GameState } from "../gameSlice";
 import { pickRandom, repeat, shuffle } from "../helpers"
 
 export interface Card {
@@ -8,15 +9,22 @@ export interface Card {
   img: string
 }
 
-export interface DeckState {
+export interface Table {
   deck: Card[]
   display: Card[]
   selectedCard: Card | undefined
   discard: Card[]
 }
 
+export const initialTable: Table = {
+  deck: [],
+  display: [],
+  selectedCard: undefined,
+  discard: [],
+}
+
 export function deck(state: Draft<GameState>) {
-  let table = state.deck
+  let table = state.table
 
   function moveCard(
     source: Draft<Card>[],

@@ -1,5 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
-import { GameState } from "../gameModel"
+
+import { GameState } from "../gameSlice";
 import { pickRandom } from "../helpers"
 
 export interface Goal {
@@ -12,6 +13,12 @@ export interface Goals {
   sheriff: Goal | undefined
   train: Goal | undefined
   ranch: Goal | undefined
+}
+
+export const initialGoals: Goals = {
+  sheriff: undefined,
+  train: undefined,
+  ranch: undefined,
 }
 
 export const goals = (state: Draft<GameState>) => {

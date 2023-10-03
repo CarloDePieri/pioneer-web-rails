@@ -1,5 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
-import { GameState } from "../gameModel"
+
+import { GameState } from "../gameSlice";
 import { randomIndex } from "../helpers"
 
 export type GameStatus = "pre" | "playing" | "end_game"
@@ -12,6 +13,15 @@ export interface GameFlow {
   turn: number
   future: GameFlowState[]
   past: GameFlowState[]
+}
+
+export const initialGameFlow: GameFlow = {
+  status: "pre",
+  round: 0,
+  turn: 0,
+  dealerId: -1,
+  future: [],
+  past: [],
 }
 
 // Helper library to manipulate consistently the game flow

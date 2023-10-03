@@ -1,12 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { RootState } from "../../app/store"
-import { GameState, NewGame } from "./gameModel"
 
-import { gameFlow } from "./flow/gameFlows"
-import { deck } from "./deck/gameDeck"
-import { goals } from "./goals/gameGoals"
-import { company } from "./company/gameCompany"
+import { GameConfig, NewGame } from "./gameModel"
+
+import {
+  company,
+  CompanyOwners,
+  initialCompanyOwners,
+} from "./company/gameCompany"
+import { deck, initialTable, Table } from "./deck/gameDeck"
+import { GameFlow, gameFlow, initialGameFlow } from "./flow/gameFlows"
+import { Goals, goals, initialGoals } from "./goals/gameGoals"
+
+export interface GameState {
+  players: string[]
+  config: GameConfig
+  goals: Goals
+  table: Table
+  companyOwners: CompanyOwners
+  gameFlow: GameFlow
+}
 
 // Initial game state
 const initialState: GameState = {
@@ -17,29 +31,10 @@ const initialState: GameState = {
     companyOwnersExpansion: false,
     advancedHandCardRule: false,
   },
-  goals: {
-    sheriff: undefined,
-    train: undefined,
-    ranch: undefined,
-  },
-  deck: {
-    deck: [],
-    display: [],
-    selectedCard: undefined,
-    discard: [],
-  },
-  companyOwners: {
-    companyCard: undefined,
-    companyDeck: [],
-  },
-  gameFlow: {
-    status: "pre",
-    round: 0,
-    turn: 0,
-    dealerId: -1,
-    future: [],
-    past: [],
-  },
+  gameFlow: initialGameFlow,
+  table: initialTable,
+  goals: initialGoals,
+  companyOwners: initialCompanyOwners,
 }
 
 export const gameSlice = createSlice({

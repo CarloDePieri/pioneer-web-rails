@@ -1,5 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
-import { GameState } from "../gameModel"
+
+import { GameState } from "../gameSlice"
 import { shuffle } from "../helpers"
 
 export interface CompanyCard {
@@ -11,6 +12,11 @@ export interface CompanyCard {
 export interface CompanyOwners {
   companyCard: CompanyCard | undefined
   companyDeck: CompanyCard[]
+}
+
+export const initialCompanyOwners: CompanyOwners = {
+  companyCard: undefined,
+  companyDeck: [],
 }
 
 export const company = (state: Draft<GameState>) => {
