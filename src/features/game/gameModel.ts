@@ -1,11 +1,6 @@
+import { CompanyCard, CompanyOwners } from "./company/gameCompany";
 import { GameFlow } from "./gameFlows"
 import { Goals } from "./goals/gameGoals"
-
-export interface CompanyCard {
-  id: string
-  img: string
-  description: string
-}
 
 // MAIN DECK
 export interface Card {
@@ -24,7 +19,7 @@ interface DeckState {
 export interface GameConfig {
   forestMap: boolean
   jokerExpansion: boolean
-  companyOwnerExpansion: boolean
+  companyOwnersExpansion: boolean
   advancedHandCardRule: boolean
 }
 
@@ -42,7 +37,6 @@ export interface GameState {
   config: GameConfig
   goals: Goals
   deck: DeckState
-  companyCard: CompanyCard | undefined
-  companyDeck: CompanyCard[]
+  companyOwners: CompanyOwners
   gameFlow: GameFlow
 }

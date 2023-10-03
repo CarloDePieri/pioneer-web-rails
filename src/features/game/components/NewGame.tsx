@@ -16,7 +16,7 @@ export function NewGame() {
               config: {
                 forestMap: false,
                 jokerExpansion: false,
-                companyOwnerExpansion: false,
+                companyOwnersExpansion: false,
                 advancedHandCardRule: false,
               },
             }),
@@ -35,7 +35,7 @@ export function NewGame() {
               config: {
                 forestMap: false,
                 jokerExpansion: true,
-                companyOwnerExpansion: false,
+                companyOwnersExpansion: false,
                 advancedHandCardRule: false,
               },
             }),
@@ -54,7 +54,7 @@ export function NewGame() {
               config: {
                 forestMap: false,
                 jokerExpansion: false,
-                companyOwnerExpansion: true,
+                companyOwnersExpansion: true,
                 advancedHandCardRule: false,
               },
             }),

@@ -49,7 +49,7 @@
       "prettier"
     ],
     "rules": {
-      "prettier/prettier": "error",
+      "prettier/prettier": "warn",
       "react/jsx-no-target-blank": "off"
     }
   },

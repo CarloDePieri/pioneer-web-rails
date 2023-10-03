@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
+import { company, companyDeck } from "./company/gameCompany";
 import { GameState, NewGame } from "./gameModel"
-import { cardsDeck, companyDeck, jokers } from "./gameDecks"
+import { cardsDeck, jokers } from "./gameDecks"
 import { gameFlowHelper, standardGameFlow } from "./gameFlows"
 import { pickRandom, randomIndex, shuffle } from "./helpers"
 import { goals } from "./goals/gameGoals"
@@ -16,7 +17,7 @@ const initialState: GameState = {
   config: {
     forestMap: false,
     jokerExpansion: false,
-    companyOwnerExpansion: false,
+    companyOwnersExpansion: false,
     advancedHandCardRule: false,
   },
   goals: {
@@ -30,8 +31,10 @@ const initialState: GameState = {
     selectedCard: undefined,
     discard: [],
   },
-  companyCard: undefined,
-  companyDeck: [],
+  companyOwners: {
+    companyCard: undefined,
+    companyDeck: [],
+  },
   gameFlow: {
     future: [],
     past: [],
@@ -60,15 +63,9 @@ export const gameSlice = createSlice({
         state.deck.deck = cardsDeck
       }
 
-      // Prepare the company owners deck, if needed
-      if (state.config.companyOwnerExpansion) {
-        let cDeck
-        if (!state.config.forestMap) {
-          cDeck = companyDeck.filter((card) => card.id !== "C1")
-        } else {
-          cDeck = companyDeck
-        }
-        state.companyDeck = shuffle(cDeck).slice(0, 4)
+      // Prepare the company owners deck, if using the expansion
+      if (state.config.companyOwnersExpansion) {
+        company(state).init()
       }
 
       // Set up the game flow
@@ -136,12 +133,9 @@ export const gameSlice = createSlice({
       state.round++
       state.turn = 0
 
-      // Draw a company owner card if needed
-      if (state.config.companyOwnerExpansion) {
-        let card = state.companyDeck.pop()
-        if (card) {
-          state.companyCard = card
-        }
+      // Draw a company owner card if using the expansion
+      if (state.config.companyOwnersExpansion) {
+        company(state).draw()
       }
 
       // advance the game flow
@@ -185,7 +179,7 @@ export const countPastStates = (state: RootState) => state.gameState.past.length
 export const selectPickedCard = (state: RootState) =>
   state.gameState.present.deck.selectedCard
 export const selectCompanyCard = (state: RootState) =>
-  state.gameState.present.companyCard
+  state.gameState.present.companyOwners.companyCard
 
 export const selectNextOp = (state: RootState) =>
   gameFlowHelper(state.gameState.present.gameFlow).next()

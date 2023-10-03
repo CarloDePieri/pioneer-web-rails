@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { CompanyCard } from "./company/CompanyCard"
 import {
   reset,
   selectDealer,
   selectDeck,
   selectDiscard,
-  selectGoals,
   selectRound,
   selectStatus,
   selectTurn,
@@ -12,7 +12,6 @@ import {
 import { NewGame } from "./components/NewGame"
 import { OperationBar } from "./components/OperationBar"
 import { Display } from "./components/Display"
-import { CompanyCard } from "./components/CompanyCard";
 import { Goals } from "./goals/Goals"
 
 export function Game() {
