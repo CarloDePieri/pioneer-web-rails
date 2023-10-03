@@ -10,6 +10,12 @@ export interface Goals {
   ranch: Goal | undefined
 }
 
+export interface CompanyCard {
+  id: string
+  img: string
+  description: string
+}
+
 // MAIN DECK
 export interface Card {
   id: string
@@ -45,5 +51,6 @@ export interface GameState {
   config: GameConfig
   goals: Goals
   deck: DeckState
+  companyCard: CompanyCard | undefined
+  companyDeck: CompanyCard[]
 }
-

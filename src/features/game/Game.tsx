@@ -1,11 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import {
-  pick,
   reset,
   selectDealer,
   selectDeck,
   selectDiscard,
-  selectDisplay,
   selectGoals,
   selectRound,
   selectStatus,
@@ -14,6 +12,7 @@ import {
 import { NewGame } from "./components/NewGame"
 import { OperationBar } from "./components/OperationBar"
 import { Display } from "./components/Display"
+import { CompanyCard } from "./components/CompanyCard";
 
 export function Game() {
   const status = useAppSelector(selectStatus)
@@ -35,6 +34,7 @@ export function Game() {
         <p>
           Goals: {goals.sheriff?.id} {goals.ranch?.id} {goals.train?.id}
         </p>
+        <CompanyCard />
         <OperationBar />
         <p>
           Round: {round} Turn: {turn} Dealer: {dealer}

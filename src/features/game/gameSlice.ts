@@ -2,7 +2,7 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 import { GameState, Goal, NewGame } from "./gameModel"
-import { cardsDeck, goalDeck, jokers } from "./gameDecks"
+import { cardsDeck, companyDeck, goalDeck, jokers } from "./gameDecks"
 
 function shuffle<T>(array: T[]): T[] {
   const shuffledArray = [...array]
@@ -45,6 +45,8 @@ const initialState: GameState = {
     selectedCard: undefined,
     discard: [],
   },
+  companyCard: undefined,
+  companyDeck: [],
 }
 
 const getNextOp = (state: Draft<GameState> | GameState) => {
@@ -61,7 +63,7 @@ const getNextOp = (state: Draft<GameState> | GameState) => {
     } else if (state.round < 4) {
       return "NEW_ROUND"
     } else {
-      return "DONE"
+      return "END_GAME"
     }
   } else {
     return "RESET"
@@ -105,16 +107,24 @@ export const gameSlice = createSlice({
       state.goals.ranch = ranchGoal
       state.goals.train = trainGoal
 
-      // Populate and shuffle the deck
+      // Populate the deck
       if (state.config.jokerExpansion) {
         // Using Joker Cards mini expansion
-        state.deck.deck = shuffle(cardsDeck.concat(jokers))
+        state.deck.deck = cardsDeck.concat(jokers)
       } else {
-        state.deck.deck = shuffle(cardsDeck)
+        state.deck.deck = cardsDeck
       }
 
-      // Set the round
-      state.round = 1
+      // Prepare the company owners deck, if needed
+      if (state.config.companyOwnerExpansion) {
+        let cDeck
+        if (!state.config.forestMap) {
+          cDeck = companyDeck.filter((card) => card.id !== "C1")
+        } else {
+          cDeck = companyDeck
+        }
+        state.companyDeck = shuffle(cDeck).slice(0, 4)
+      }
     },
     reset: (state) => {
       state.status = initialState.status
@@ -142,26 +152,52 @@ export const gameSlice = createSlice({
           deck.display = deck.display.concat(card)
         }
       }
+      // Check if two joker have been drawn at the same time
+      if (state.config.jokerExpansion) {
+        if (
+          state.deck.display.filter(
+            (card) => card.id === jokers[0].id || card.id === jokers[1].id,
+          ).length === 2
+        ) {
+          // discard a joker from the display
+          let joker = pickRandom(jokers)
+          state.deck.display = state.deck.display.filter(
+            (card) => card.id !== joker.id,
+          )
+          state.deck.discard.push(joker)
+          // draw another card from the deck
+          let card = deck.deck.pop()
+          if (card) {
+            state.deck.display.push(card)
+          }
+        }
+      }
 
       // update the dealer
       state.dealerId = (state.dealerId + 1) % state.players.length
       // update the turn
       state.turn++
-      // TODO check if two joker have been drawn
     },
     newRound: (state) => {
-      // Populate and shuffle the deck
-      if (state.config.jokerExpansion) {
-        // Using Joker Cards mini expansion
-        state.deck.deck = shuffle(cardsDeck.concat(jokers))
-      } else {
-        state.deck.deck = shuffle(cardsDeck)
-      }
+      // Shuffle the display and the discard pile with the deck
+      state.deck.deck = shuffle(
+        state.deck.deck.concat(state.deck.display).concat(state.deck.discard),
+      )
       state.deck.display = []
       state.deck.discard = []
       state.deck.selectedCard = undefined
+
+      // Set up round and turn numbers
       state.round++
       state.turn = 0
+
+      // Draw a company owner card if needed
+      if (state.config.companyOwnerExpansion) {
+        let card = state.companyDeck.pop()
+        if (card) {
+          state.companyCard = card
+        }
+      }
     },
     pick: (state, action: PayloadAction<string>) => {
       let pickedCardId = action.payload
@@ -197,6 +233,8 @@ export const countFutureStates = (state: RootState) =>
 export const countPastStates = (state: RootState) => state.gameState.past.length
 export const selectPickedCard = (state: RootState) =>
   state.gameState.present.deck.selectedCard
+export const selectCompanyCard = (state: RootState) =>
+  state.gameState.present.companyCard
 
 // Actions
 // eslint-disable-next-line

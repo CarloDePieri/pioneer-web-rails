@@ -42,14 +42,17 @@ export function OperationBar() {
         return "Deal"
       case "NEW_ROUND":
         return "Shuffle and Deal"
-      case "DONE":
+      case "END_GAME":
         return "We are done!"
     }
   }
 
   return (
     <div>
-      <button onClick={doNextOp} disabled={next === "PICK" || next === "DONE"}>
+      <button
+        onClick={doNextOp}
+        disabled={next === "PICK" || next === "END_GAME"}
+      >
         {opButtonText()}
       </button>
       <button

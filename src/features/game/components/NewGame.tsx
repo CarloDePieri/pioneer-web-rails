@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../app/hooks"
 
-import { deal, init } from "../gameSlice"
+import { deal, init, newRound } from "../gameSlice";
 
 export function NewGame() {
   const dispatch = useAppDispatch()
@@ -21,6 +21,7 @@ export function NewGame() {
               },
             }),
           )
+          dispatch(newRound())
           dispatch(deal())
         }}
       >
@@ -39,10 +40,30 @@ export function NewGame() {
               },
             }),
           )
+          dispatch(newRound())
           dispatch(deal())
         }}
       >
         New Game with Jokers
+      </button>
+      <button
+        onClick={() => {
+          dispatch(
+            init({
+              players: ["Carlo", "Giulia"],
+              config: {
+                forestMap: false,
+                jokerExpansion: false,
+                companyOwnerExpansion: true,
+                advancedHandCardRule: false,
+              },
+            }),
+          )
+          dispatch(newRound())
+          dispatch(deal())
+        }}
+      >
+        New Game with Company Owners
       </button>
     </div>
   )
