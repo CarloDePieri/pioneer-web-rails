@@ -13,12 +13,12 @@ import { NewGame } from "./components/NewGame"
 import { OperationBar } from "./components/OperationBar"
 import { Display } from "./components/Display"
 import { CompanyCard } from "./components/CompanyCard";
+import { Goals } from "./goals/Goals"
 
 export function Game() {
   const status = useAppSelector(selectStatus)
   const dispatch = useAppDispatch()
 
-  const goals = useAppSelector(selectGoals)
   const deck = useAppSelector(selectDeck)
   const discard = useAppSelector(selectDiscard)
   const dealer = useAppSelector(selectDealer)
@@ -31,9 +31,7 @@ export function Game() {
     return (
       <div>
         <button onClick={() => dispatch(reset())}>Reset Game</button>
-        <p>
-          Goals: {goals.sheriff?.id} {goals.ranch?.id} {goals.train?.id}
-        </p>
+        <Goals />
         <CompanyCard />
         <OperationBar />
         <p>

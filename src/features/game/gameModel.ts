@@ -1,16 +1,5 @@
-import { GameFlow, GameFlowState } from "./gameFlows"
-
-export interface Goal {
-  id: string
-  img: string
-  description: string
-}
-
-export interface Goals {
-  sheriff: Goal | undefined
-  train: Goal | undefined
-  ranch: Goal | undefined
-}
+import { GameFlow } from "./gameFlows"
+import { Goals } from "./goals/gameGoals"
 
 export interface CompanyCard {
   id: string

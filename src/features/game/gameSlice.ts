@@ -1,10 +1,11 @@
 // GOALS
-import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
-import { GameState, Goal, NewGame } from "./gameModel"
-import { cardsDeck, companyDeck, goalDeck, jokers } from "./gameDecks"
+import { GameState, NewGame } from "./gameModel"
+import { cardsDeck, companyDeck, jokers } from "./gameDecks"
 import { gameFlowHelper, standardGameFlow } from "./gameFlows"
 import { pickRandom, randomIndex, shuffle } from "./helpers"
+import { goals } from "./goals/gameGoals"
 
 // Initial game state
 const initialState: GameState = {
@@ -38,26 +39,6 @@ const initialState: GameState = {
   },
 }
 
-const pickGoals = (state: Draft<GameState>): Goal[] => {
-  let sheriffGoal
-  let ranchGoal
-  let trainGoal
-  if (state.config.forestMap) {
-    sheriffGoal = pickRandom(
-      goalDeck.desert.sheriff
-        .filter((goal) => !["1A", "1B", "1C", "1E"].includes(goal.id))
-        .concat(goalDeck.forest.sheriff),
-    )
-    ranchGoal = pickRandom(goalDeck.desert.ranch.concat(goalDeck.forest.ranch))
-    trainGoal = pickRandom(goalDeck.desert.train.concat(goalDeck.forest.train))
-  } else {
-    sheriffGoal = pickRandom(goalDeck.desert.sheriff)
-    ranchGoal = pickRandom(goalDeck.desert.ranch)
-    trainGoal = pickRandom(goalDeck.desert.train)
-  }
-  return [sheriffGoal, ranchGoal, trainGoal]
-}
-
 export const gameSlice = createSlice({
   name: "gameState",
   initialState,
@@ -70,10 +51,7 @@ export const gameSlice = createSlice({
       state.dealerId = randomIndex(state.players)
 
       // Pick the correct goals
-      const [sheriffGoal, ranchGoal, trainGoal] = pickGoals(state)
-      state.goals.sheriff = sheriffGoal
-      state.goals.ranch = ranchGoal
-      state.goals.train = trainGoal
+      goals(state).pick()
 
       // Populate the deck
       if (state.config.jokerExpansion) {
@@ -202,15 +180,12 @@ export const selectDisplay = (state: RootState) =>
   state.gameState.present.deck.display
 export const selectDiscard = (state: RootState) =>
   state.gameState.present.deck.discard
-export const selectGoals = (state: RootState) => state.gameState.present.goals
 export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
 export const selectRound = (state: RootState) => state.gameState.present.round
 export const selectTurn = (state: RootState) => state.gameState.present.turn
 export const selectDealer = (state: RootState) =>
   state.gameState.present.players[state.gameState.present.dealerId]
-export const selectNextOp = (state: RootState) =>
-  gameFlowHelper(state.gameState.present.gameFlow).next()
 export const countFutureStates = (state: RootState) =>
   state.gameState.future.length
 export const countPastStates = (state: RootState) => state.gameState.past.length
@@ -218,6 +193,11 @@ export const selectPickedCard = (state: RootState) =>
   state.gameState.present.deck.selectedCard
 export const selectCompanyCard = (state: RootState) =>
   state.gameState.present.companyCard
+
+export const selectNextOp = (state: RootState) =>
+  gameFlowHelper(state.gameState.present.gameFlow).next()
+export const selectGoals = (state: RootState) =>
+  goals(state.gameState.present).getActive()
 
 // Actions
 // eslint-disable-next-line
