@@ -1,6 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
 
-import { GameState } from "../gameSlice";
+import { GameState } from "../gameSlice"
 import { pickRandom } from "../helpers"
 
 export interface Goal {

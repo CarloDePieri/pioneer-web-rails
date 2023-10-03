@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../app/hooks"
 
-import { deal, init, newRound } from "../gameSlice";
+import { deal, init, newRound } from "../gameSlice"
 
 export function NewGame() {
   const dispatch = useAppDispatch()

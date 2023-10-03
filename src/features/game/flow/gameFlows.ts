@@ -1,6 +1,6 @@
 import { Draft } from "@reduxjs/toolkit"
 
-import { GameState } from "../gameSlice";
+import { GameState } from "../gameSlice"
 import { randomIndex } from "../helpers"
 
 export type GameStatus = "pre" | "playing" | "end_game"

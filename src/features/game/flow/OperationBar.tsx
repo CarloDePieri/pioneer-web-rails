@@ -45,7 +45,6 @@ export function OperationBar() {
       ["PICK", "Picking a card..."],
       ["DEAL", "Deal"],
       ["NEW_ROUND", "Shuffle and Deal"],
-      // TODO TOFIX this is not working
       ["END_GAME", "We are done!"],
     ]).get(next)
     return text ?? ""

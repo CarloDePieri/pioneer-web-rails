@@ -1,4 +1,3 @@
-// GAME STATE
 export interface GameConfig {
   forestMap: boolean
   jokerExpansion: boolean
@@ -6,8 +5,14 @@ export interface GameConfig {
   advancedHandCardRule: boolean
 }
 
+export const initialGameConfig: GameConfig = {
+  forestMap: false,
+  jokerExpansion: false,
+  companyOwnersExpansion: false,
+  advancedHandCardRule: false,
+}
+
 export interface NewGame {
   players: string[]
   config: GameConfig
 }
-

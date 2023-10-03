@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { RootState } from "../../app/store"
 
-import { GameConfig, NewGame } from "./gameModel"
-
 import {
   company,
   CompanyOwners,
@@ -12,6 +10,7 @@ import {
 import { deck, initialTable, Table } from "./deck/gameDeck"
 import { GameFlow, gameFlow, initialGameFlow } from "./flow/gameFlows"
 import { Goals, goals, initialGoals } from "./goals/gameGoals"
+import { GameConfig, initialGameConfig, NewGame } from "./newGame/gameStart";
 
 export interface GameState {
   players: string[]
@@ -25,12 +24,7 @@ export interface GameState {
 // Initial game state
 const initialState: GameState = {
   players: [],
-  config: {
-    forestMap: false,
-    jokerExpansion: false,
-    companyOwnersExpansion: false,
-    advancedHandCardRule: false,
-  },
+  config: initialGameConfig,
   gameFlow: initialGameFlow,
   table: initialTable,
   goals: initialGoals,

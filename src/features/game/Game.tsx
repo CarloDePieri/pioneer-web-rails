@@ -9,7 +9,7 @@ import {
   selectGameStatus,
   selectTurn,
 } from "./gameSlice"
-import { NewGame } from "./components/NewGame"
+import { NewGame } from "./newGame/NewGame"
 import { OperationBar } from "./flow/OperationBar"
 import { Display } from "./deck/Display"
 import { Goals } from "./goals/Goals"
