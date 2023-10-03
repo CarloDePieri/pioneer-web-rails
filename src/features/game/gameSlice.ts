@@ -1,4 +1,3 @@
-// GOALS
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 import { GameState, NewGame } from "./gameModel"
@@ -51,7 +50,7 @@ export const gameSlice = createSlice({
       state.dealerId = randomIndex(state.players)
 
       // Pick the correct goals
-      goals(state).pick()
+      goals(state).init()
 
       // Populate the deck
       if (state.config.jokerExpansion) {
@@ -76,15 +75,9 @@ export const gameSlice = createSlice({
       state.gameFlow.future = standardGameFlow
     },
     reset: (state) => {
-      state.status = initialState.status
-      state.round = 0
-      state.turn = 0
-      state.dealerId = -1
-      state.config = initialState.config
-      state.deck = initialState.deck
-      state.goals = initialState.goals
-      state.gameFlow = initialState.gameFlow
-      // note: we keep the players
+      // reset everything but the players
+      let players = state.players
+      return { ...initialState, players }
     },
     deal: (state) => {
       // Discard the current display if not empty

@@ -19,7 +19,7 @@ export const goals = (state: Draft<GameState>) => {
     getActive: () => {
       return state.goals
     },
-    pick: () => {
+    init: () => {
       let sheriffGoal
       let ranchGoal
       let trainGoal
