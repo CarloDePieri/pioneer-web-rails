@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
 import { RootState } from "../../app/store"
-import { company } from "./company/gameCompany"
 import { GameState, NewGame } from "./gameModel"
-import { cardsDeck, jokers } from "./gameDecks"
+
 import { gameFlow } from "./flow/gameFlows"
-import { pickRandom, shuffle } from "./helpers"
+import { deck } from "./deck/gameDeck"
 import { goals } from "./goals/gameGoals"
+import { company } from "./company/gameCompany"
 
 // Initial game state
 const initialState: GameState = {
@@ -57,12 +58,7 @@ export const gameSlice = createSlice({
       goals(state).init()
 
       // Populate the deck
-      if (state.config.jokerExpansion) {
-        // Using Joker Cards mini expansion
-        state.deck.deck = cardsDeck.concat(jokers)
-      } else {
-        state.deck.deck = cardsDeck
-      }
+      deck(state).actions.init()
 
       // Prepare the company owners deck, if using the expansion
       if (state.config.companyOwnersExpansion) {
@@ -75,55 +71,17 @@ export const gameSlice = createSlice({
       return { ...initialState, players }
     },
     deal: (state) => {
-      // Discard the current display if not empty
-      let deck = state.deck
-      if (deck.display.length > 0) {
-        deck.discard = deck.discard.concat(deck.display)
-        deck.display = []
-      }
-      // Reset the selected card
-      deck.selectedCard = undefined
-      // Draw three cards
-      while (deck.display.length < 3 && deck.deck.length > 0) {
-        let card = deck.deck.pop()
-        if (card) {
-          deck.display = deck.display.concat(card)
-        }
-      }
-      // Check if two joker have been drawn at the same time
-      if (state.config.jokerExpansion) {
-        if (
-          state.deck.display.filter(
-            (card) => card.id === jokers[0].id || card.id === jokers[1].id,
-          ).length === 2
-        ) {
-          // discard a joker from the display
-          let joker = pickRandom(jokers)
-          state.deck.display = state.deck.display.filter(
-            (card) => card.id !== joker.id,
-          )
-          state.deck.discard.push(joker)
-          // draw another card from the deck
-          let card = deck.deck.pop()
-          if (card) {
-            state.deck.display.push(card)
-          }
-        }
-      }
+      // deal the card in the display
+      deck(state).actions.deal()
 
       // advance the game flow with a deal action
       gameFlow(state).actions.deal()
     },
     newRound: (state) => {
-      // Shuffle the display and the discard pile with the deck
-      state.deck.deck = shuffle(
-        state.deck.deck.concat(state.deck.display).concat(state.deck.discard),
-      )
-      state.deck.display = []
-      state.deck.discard = []
-      state.deck.selectedCard = undefined
+      // set up the deck
+      deck(state).actions.newRound()
 
-      // Draw a company owner card if using the expansion
+      // draw a company owner card if using the expansion
       if (state.config.companyOwnersExpansion) {
         company(state).draw()
       }
@@ -132,16 +90,15 @@ export const gameSlice = createSlice({
       gameFlow(state).actions.newRound()
     },
     pick: (state, action: PayloadAction<string>) => {
-      let pickedCardId = action.payload
-      state.deck.selectedCard = state.deck.display.filter(
-        (card) => card.id === pickedCardId,
-      )[0]
+      // pick the card
+      deck(state).actions.pick(action.payload)
 
       // advance the game flow
       gameFlow(state).actions.pick()
     },
     unpick: (state) => {
-      state.deck.selectedCard = undefined
+      // unpick the card
+      deck(state).actions.unpick()
 
       // reset the game flow
       gameFlow(state).actions.unpick()
@@ -157,16 +114,17 @@ export const selectFutureStatesNumber = (state: RootState) =>
 export const selectPastStatesNumber = (state: RootState) =>
   state.gameState.past.length
 
-export const selectDeck = (state: RootState) =>
-  state.gameState.present.deck.deck // TODO this could probably be removed
-export const selectDisplay = (state: RootState) =>
-  state.gameState.present.deck.display
-export const selectDiscard = (state: RootState) =>
-  state.gameState.present.deck.discard
+// shorthand to interact with the present state of the deck
+let deckP = (state: RootState) => {
+  return deck(state.gameState.present)
+}
+export const selectDeck = (state: RootState) => deckP(state).getDeck()
+export const selectDisplay = (state: RootState) => deckP(state).getDisplay()
+export const selectDiscard = (state: RootState) => deckP(state).getDiscard()
 export const selectPickedCard = (state: RootState) =>
-  state.gameState.present.deck.selectedCard
+  deckP(state).getSelectedCard()
 
-// shorthand to interact with the present state
+// shorthand to interact with the present state of the gameflow
 let gameFlowP = (state: RootState) => {
   return gameFlow(state.gameState.present)
 }

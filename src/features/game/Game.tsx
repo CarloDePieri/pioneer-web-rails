@@ -11,7 +11,7 @@ import {
 } from "./gameSlice"
 import { NewGame } from "./components/NewGame"
 import { OperationBar } from "./flow/OperationBar"
-import { Display } from "./components/Display"
+import { Display } from "./deck/Display"
 import { Goals } from "./goals/Goals"
 
 export function Game() {
@@ -40,13 +40,13 @@ export function Game() {
         <p>Deck:</p>
         <ul>
           {deck.map((card) => (
-            <li key={card.id}>{card.id}</li>
+            <li key={card.id}>{card.symbol}</li>
           ))}
         </ul>
         <p>Discard:</p>
         <ul>
           {discard.map((card) => (
-            <li key={card.id}>{card.id}</li>
+            <li key={card.id}>{card.symbol}</li>
           ))}
         </ul>
       </div>

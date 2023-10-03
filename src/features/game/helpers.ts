@@ -14,3 +14,7 @@ export function randomIndex<T>(array: T[]): number {
 export function pickRandom<T>(array: T[]): T {
   return array[randomIndex(array)]
 }
+
+export function repeat(n: number, f: () => any) {
+  Array(n).fill(undefined).forEach(f)
+}

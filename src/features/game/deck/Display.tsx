@@ -25,7 +25,7 @@ export function Display() {
             onClick={() => togglePick(card.id)}
             style={{ color: getColor(card.id) }}
           >
-            {card.id}
+            {card.symbol}
           </li>
         ))}
       </ul>
