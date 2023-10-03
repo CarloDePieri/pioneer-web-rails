@@ -16,10 +16,10 @@ export interface Goals {
 
 export const goals = (state: Draft<GameState>) => {
   return {
-    getActive: () => {
+    getActive() {
       return state.goals
     },
-    init: () => {
+    init() {
       let sheriffGoal
       let ranchGoal
       let trainGoal
