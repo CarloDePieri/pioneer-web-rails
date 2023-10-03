@@ -9,8 +9,9 @@ import {
 } from "./company/gameCompany"
 import { deck, initialTable, Table } from "./deck/gameDeck"
 import { GameFlow, gameFlow, initialGameFlow } from "./flow/gameFlows"
+import { undoHelper } from "./flow/gameUndo"
 import { Goals, goals, initialGoals } from "./goals/gameGoals"
-import { GameConfig, initialGameConfig, NewGame } from "./newGame/gameStart";
+import { GameConfig, initialGameConfig, NewGame } from "./newGame/gameStart"
 
 export interface GameState {
   players: string[]
@@ -98,10 +99,13 @@ export const gameSlice = createSlice({
 // Selectors
 export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
+
 export const selectFutureStatesNumber = (state: RootState) =>
-  state.gameState.future.length
+  undoHelper(state).countRedo
 export const selectPastStatesNumber = (state: RootState) =>
-  state.gameState.past.length
+  undoHelper(state).countUndo
+export const selectCanUndo = (state: RootState) => undoHelper(state).canUndo()
+export const selectCanRedo = (state: RootState) => undoHelper(state).canRedo()
 
 // shorthand to interact with the present state of the deck
 let deckP = (state: RootState) => {
@@ -113,7 +117,7 @@ export const selectDiscard = (state: RootState) => deckP(state).getDiscard()
 export const selectPickedCard = (state: RootState) =>
   deckP(state).getSelectedCard()
 
-// shorthand to interact with the present state of the gameflow
+// shorthand to interact with the present state of the game flow
 let gameFlowP = (state: RootState) => {
   return gameFlow(state.gameState.present)
 }

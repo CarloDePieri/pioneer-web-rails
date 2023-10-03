@@ -5,9 +5,9 @@ import {
   selectPastStatesNumber,
   deal,
   newRound,
-  selectDisplay,
   selectNextOp,
-  selectRound,
+  selectCanUndo,
+  selectCanRedo,
 } from "../gameSlice"
 import { ActionCreators } from "redux-undo"
 
@@ -15,14 +15,11 @@ export function OperationBar() {
   const dispatch = useAppDispatch()
   const next = useAppSelector(selectNextOp)
 
-  const display = useAppSelector(selectDisplay)
-  const round = useAppSelector(selectRound)
   const futureStates = useAppSelector(selectFutureStatesNumber)
   const pastStates = useAppSelector(selectPastStatesNumber)
 
-  const isUndoDisabled =
-    (round === 1 && display.length === 0) || pastStates === 0
-  const isRedoDisabled = futureStates === 0
+  const isUndoDisabled = !useAppSelector(selectCanUndo)
+  const isRedoDisabled = !useAppSelector(selectCanRedo)
 
   const nextButtonOp = () => {
     switch (next) {
