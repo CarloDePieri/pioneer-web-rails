@@ -3,23 +3,8 @@ import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 import { GameState, Goal, NewGame } from "./gameModel"
 import { cardsDeck, companyDeck, goalDeck, jokers } from "./gameDecks"
-
-function shuffle<T>(array: T[]): T[] {
-  const shuffledArray = [...array]
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j: number = Math.floor(Math.random() * (i + 1))
-    ;[shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]
-  }
-  return shuffledArray
-}
-
-function randomIndex<T>(array: T[]): number {
-  return Math.floor(Math.random() * array.length)
-}
-
-function pickRandom<T>(array: T[]): T {
-  return array[randomIndex(array)]
-}
+import { gameFlowHelper, standardGameFlow } from "./gameFlows"
+import { pickRandom, randomIndex, shuffle } from "./helpers"
 
 // Initial game state
 const initialState: GameState = {
@@ -47,27 +32,10 @@ const initialState: GameState = {
   },
   companyCard: undefined,
   companyDeck: [],
-}
-
-const getNextOp = (state: Draft<GameState> | GameState) => {
-  if (state.status === "pre") {
-    return "INIT"
-  } else if (state.status === "started") {
-    if (
-      state.deck.selectedCard === undefined &&
-      state.deck.display.length > 0
-    ) {
-      return "PICK"
-    } else if (state.turn < 5) {
-      return "DEAL"
-    } else if (state.round < 4) {
-      return "NEW_ROUND"
-    } else {
-      return "END_GAME"
-    }
-  } else {
-    return "RESET"
-  }
+  gameFlow: {
+    future: [],
+    past: [],
+  },
 }
 
 const pickGoals = (state: Draft<GameState>): Goal[] => {
@@ -125,6 +93,9 @@ export const gameSlice = createSlice({
         }
         state.companyDeck = shuffle(cDeck).slice(0, 4)
       }
+
+      // Set up the game flow
+      state.gameFlow.future = standardGameFlow
     },
     reset: (state) => {
       state.status = initialState.status
@@ -134,6 +105,7 @@ export const gameSlice = createSlice({
       state.config = initialState.config
       state.deck = initialState.deck
       state.goals = initialState.goals
+      state.gameFlow = initialState.gameFlow
       // note: we keep the players
     },
     deal: (state) => {
@@ -177,6 +149,8 @@ export const gameSlice = createSlice({
       state.dealerId = (state.dealerId + 1) % state.players.length
       // update the turn
       state.turn++
+      // advance the game flow
+      gameFlowHelper(state.gameFlow).advance()
     },
     newRound: (state) => {
       // Shuffle the display and the discard pile with the deck
@@ -198,15 +172,24 @@ export const gameSlice = createSlice({
           state.companyCard = card
         }
       }
+
+      // advance the game flow
+      gameFlowHelper(state.gameFlow).advance()
     },
     pick: (state, action: PayloadAction<string>) => {
       let pickedCardId = action.payload
       state.deck.selectedCard = state.deck.display.filter(
         (card) => card.id === pickedCardId,
       )[0]
+
+      // advance the game flow
+      gameFlowHelper(state.gameFlow).advance()
     },
     unpick: (state) => {
       state.deck.selectedCard = undefined
+
+      // reset the game flow
+      gameFlowHelper(state.gameFlow).undo()
     },
   },
 })
@@ -227,7 +210,7 @@ export const selectTurn = (state: RootState) => state.gameState.present.turn
 export const selectDealer = (state: RootState) =>
   state.gameState.present.players[state.gameState.present.dealerId]
 export const selectNextOp = (state: RootState) =>
-  getNextOp(state.gameState.present)
+  gameFlowHelper(state.gameState.present.gameFlow).next()
 export const countFutureStates = (state: RootState) =>
   state.gameState.future.length
 export const countPastStates = (state: RootState) => state.gameState.past.length

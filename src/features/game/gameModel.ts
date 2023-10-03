@@ -1,3 +1,5 @@
+import { GameFlow, GameFlowState } from "./gameFlows"
+
 export interface Goal {
   id: string
   img: string
@@ -53,4 +55,5 @@ export interface GameState {
   deck: DeckState
   companyCard: CompanyCard | undefined
   companyDeck: CompanyCard[]
+  gameFlow: GameFlow
 }
