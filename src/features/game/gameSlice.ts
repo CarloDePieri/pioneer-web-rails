@@ -5,12 +5,18 @@ import { RootState } from "../../app/store"
 import {
   company,
   CompanyOwners,
+  companySelector,
   initialCompanyOwners,
 } from "./company/gameCompany"
 import { deck, deckSelector, initialTable, Table } from "./deck/gameDeck"
-import { GameFlow, gameFlow, initialGameFlow } from "./flow/gameFlows"
-import { undoHelper } from "./flow/gameUndo"
-import { Goals, goals, initialGoals } from "./goals/gameGoals"
+import {
+  GameFlow,
+  gameFlow,
+  gameFlowSelector,
+  initialGameFlow,
+} from "./flow/gameFlows"
+import { undoHelper, undoHelperSelector } from "./flow/gameUndo";
+import { Goals, goals, goalsSelector, initialGoals } from "./goals/gameGoals";
 import { GameConfig, initialGameConfig, NewGame } from "./newGame/gameStart"
 
 export interface GameState {
@@ -42,7 +48,7 @@ export const gameSlice = createSlice({
       state.players = action.payload.players
 
       // set up the game flow
-      gameFlow(state).actions.init()
+      gameFlow(state).init()
 
       // Pick the correct goals
       goals(state).init()
@@ -65,18 +71,18 @@ export const gameSlice = createSlice({
       deck(state).deal()
 
       // advance the game flow with a deal action
-      gameFlow(state).actions.deal()
+      gameFlow(state).deal()
     },
     dealSecrets: (state) => {
       // deal the secret cards
       deck(state).dealSecrets()
       // advance the game flow with a dealSecrets action
-      gameFlow(state).actions.dealSecrets()
+      gameFlow(state).dealSecrets()
     },
     showSecrets: (state) => {
       deck(state).showSecrets()
       // advance the game flow with a showSecrets action
-      gameFlow(state).actions.showSecrets()
+      gameFlow(state).showSecrets()
     },
     newRound: (state) => {
       // set up the deck
@@ -88,21 +94,23 @@ export const gameSlice = createSlice({
       }
 
       // advance the game flow with a newRound action
-      gameFlow(state).actions.newRound()
+      gameFlow(state).newRound()
     },
     pick: (state, action: PayloadAction<string>) => {
+      if (state.table.selectedCard === undefined) {
+        // advance the game flow only if there was no card selected
+        gameFlow(state).pick()
+      }
+
       // pick the card
       deck(state).pick(action.payload)
-
-      // advance the game flow
-      gameFlow(state).actions.pick()
     },
     unpick: (state) => {
       // unpick the card
       deck(state).unpick()
 
       // reset the game flow
-      gameFlow(state).actions.unpick()
+      gameFlow(state).unpick()
     },
   },
 })
@@ -113,12 +121,10 @@ export const selectPlayers = (state: RootState) =>
 export const selectAdvancedHandCardRule = (state: RootState) =>
   state.gameState.present.config.advancedHandCardRule
 
-export const selectFutureStatesNumber = (state: RootState) =>
-  undoHelper(state).countRedo
-export const selectPastStatesNumber = (state: RootState) =>
-  undoHelper(state).countUndo
-export const selectCanUndo = (state: RootState) => undoHelper(state).canUndo()
-export const selectCanRedo = (state: RootState) => undoHelper(state).canRedo()
+export const selectFutureStatesNumber = undoHelperSelector.countRedo
+export const selectPastStatesNumber = undoHelperSelector.countUndo
+export const selectCanUndo = undoHelperSelector.canUndo
+export const selectCanRedo = undoHelperSelector.canRedo
 
 // deck
 export const selectDeck = deckSelector.deck
@@ -128,24 +134,15 @@ export const selectPickedCard = deckSelector.selectedCard
 export const selectSecretCards = deckSelector.secretCards
 
 // shorthand to interact with the present state of the game flow
-let gameFlowP = (state: RootState) => {
-  return gameFlow(state.gameState.present)
-}
-export const selectDealer = (state: RootState) =>
-  gameFlowP(state).getDealerName()
-export const selectRound = (state: RootState) =>
-  gameFlowP(state).getCurrentRound()
-export const selectTurn = (state: RootState) =>
-  gameFlowP(state).getCurrentTurn()
-export const selectGameStatus = (state: RootState) =>
-  gameFlowP(state).getGameStatus()
-export const selectNextOp = (state: RootState) => gameFlowP(state).getNextOp()
+export const selectDealer = gameFlowSelector.dealerName
+export const selectRound = gameFlowSelector.currentRound
+export const selectTurn = gameFlowSelector.currentTurn
+export const selectGameStatus = gameFlowSelector.gameStatus
+export const selectNextOp = gameFlowSelector.nextOp
 
-export const selectGoals = (state: RootState) =>
-  goals(state.gameState.present).getActive()
+export const selectGoals = goalsSelector.activeGoals
 
-export const selectCompanyCard = (state: RootState) =>
-  company(state.gameState.present).getCompanyCard()
+export const selectCompanyCard = companySelector.roundCard
 
 // Actions
 // eslint-disable-next-line

@@ -1,4 +1,5 @@
 import { Draft } from "@reduxjs/toolkit"
+import { RootState } from "../../../app/store"
 
 import { GameState } from "../gameSlice"
 import { shuffle } from "../helpers"
@@ -17,6 +18,11 @@ export interface CompanyOwners {
 export const initialCompanyOwners: CompanyOwners = {
   companyCard: undefined,
   companyDeck: [],
+}
+
+export const companySelector = {
+  roundCard: (state: RootState) =>
+    company(state.gameState.present).getCompanyCard(),
 }
 
 export const company = (state: Draft<GameState>) => {

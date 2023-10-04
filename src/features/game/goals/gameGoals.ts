@@ -1,4 +1,5 @@
 import { Draft } from "@reduxjs/toolkit"
+import { RootState } from "../../../app/store";
 
 import { GameState } from "../gameSlice"
 import { pickRandom } from "../helpers"
@@ -21,11 +22,12 @@ export const initialGoals: Goals = {
   ranch: undefined,
 }
 
+export const goalsSelector = {
+  activeGoals: (state: RootState) => state.gameState.present.goals,
+}
+
 export const goals = (state: Draft<GameState>) => {
   return {
-    getActive() {
-      return state.goals
-    },
     init() {
       let sheriffGoal
       let ranchGoal

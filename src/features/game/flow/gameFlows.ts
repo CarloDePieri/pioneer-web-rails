@@ -1,4 +1,5 @@
 import { Draft } from "@reduxjs/toolkit"
+import { RootState } from "../../../app/store"
 
 import { GameState } from "../gameSlice"
 import { randomIndex } from "../helpers"
@@ -30,6 +31,18 @@ export const initialGameFlow: GameFlow = {
   past: [],
 }
 
+export const gameFlowSelector = {
+  dealerName: (state: RootState) =>
+    state.gameState.present.players[state.gameState.present.gameFlow.dealerId],
+  currentRound: (state: RootState) => state.gameState.present.gameFlow.round,
+  currentTurn: (state: RootState) => state.gameState.present.gameFlow.turn,
+  gameStatus: (state: RootState) => state.gameState.present.gameFlow.status,
+  nextOp: (state: RootState) =>
+    state.gameState.present.gameFlow.future[
+      state.gameState.present.gameFlow.future.length - 1
+    ],
+}
+
 // Helper library to manipulate consistently the game flow
 export function gameFlow(state: Draft<GameState>) {
   let flow = state.gameFlow
@@ -49,64 +62,47 @@ export function gameFlow(state: Draft<GameState>) {
   }
 
   return {
-    getDealerName(): string {
-      return players[flow.dealerId]
+    init(): void {
+      // set the game as started
+      flow.status = "playing"
+      // set a random first dealer
+      flow.dealerId = randomIndex(players)
+      // set the game flow depending on the game mode
+      if (!state.config.advancedHandCardRule) {
+        flow.future = standardGameFlow
+      } else {
+        flow.future = advancedGameFlow
+      }
     },
-    getCurrentRound(): number {
-      return flow.round
+    newRound(): void {
+      // reset the turn number
+      flow.turn = 0
+      // update the round number
+      flow.round++
+      // advance the game flow
+      goForward()
     },
-    getCurrentTurn(): number {
-      return flow.turn
+    deal(): void {
+      // update the turn number
+      flow.turn++
+      // pick the next dealer
+      flow.dealerId = (flow.dealerId + 1) % players.length
+      // advance the game flow
+      goForward()
     },
-    getGameStatus(): GameStatus {
-      return flow.status
+    dealSecrets() {
+      goForward()
     },
-    getNextOp(): GameFlowState {
-      return flow.future[flow.future.length - 1]
+    showSecrets() {
+      // update the turn number
+      flow.turn++
+      goForward()
     },
-    actions: {
-      init(): void {
-        // set the game as started
-        flow.status = "playing"
-        // set a random first dealer
-        flow.dealerId = randomIndex(players)
-        // set the game flow depending on the game mode
-        if (!state.config.advancedHandCardRule) {
-          flow.future = standardGameFlow
-        } else {
-          flow.future = advancedGameFlow
-        }
-      },
-      newRound(): void {
-        // reset the turn number
-        flow.turn = 0
-        // update the round number
-        flow.round++
-        // advance the game flow
-        goForward()
-      },
-      deal(): void {
-        // update the turn number
-        flow.turn++
-        // pick the next dealer
-        flow.dealerId = (flow.dealerId + 1) % players.length
-        // advance the game flow
-        goForward()
-      },
-      dealSecrets() {
-        goForward()
-      },
-      showSecrets() {
-        // update the turn number
-        flow.turn++
-        goForward()
-      },
-      pick(): void {
-        goForward()
-      },
-      unpick(): void {
-        goBack()
-      },
+    pick(): void {
+      goForward()
+    },
+    unpick(): void {
+      goBack()
     },
   }
 }
