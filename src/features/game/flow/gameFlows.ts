@@ -4,7 +4,13 @@ import { GameState } from "../gameSlice"
 import { randomIndex } from "../helpers"
 
 export type GameStatus = "pre" | "playing" | "end_game"
-export type GameFlowState = "NEW_ROUND" | "DEAL" | "PICK" | "END_GAME"
+export type GameFlowState =
+  | "NEW_ROUND"
+  | "DEAL_SECRETS"
+  | "DEAL"
+  | "SHOW_SECRETS"
+  | "PICK"
+  | "END_GAME"
 
 export interface GameFlow {
   status: GameStatus
@@ -65,7 +71,11 @@ export function gameFlow(state: Draft<GameState>) {
         // set a random first dealer
         flow.dealerId = randomIndex(players)
         // set the game flow depending on the game mode
-        flow.future = standardGameFlow
+        if (!state.config.advancedHandCardRule) {
+          flow.future = standardGameFlow
+        } else {
+          flow.future = advancedGameFlow
+        }
       },
       newRound(): void {
         // reset the turn number
@@ -81,6 +91,14 @@ export function gameFlow(state: Draft<GameState>) {
         // pick the next dealer
         flow.dealerId = (flow.dealerId + 1) % players.length
         // advance the game flow
+        goForward()
+      },
+      dealSecrets() {
+        goForward()
+      },
+      showSecrets() {
+        // update the turn number
+        flow.turn++
         goForward()
       },
       pick(): void {
@@ -102,3 +120,16 @@ let game: GameFlowState[] = Array(4)
   .flat()
   .concat(Array<GameFlowState>("END_GAME"))
 export const standardGameFlow = game.toReversed()
+
+// Advanced hand game flow: at the start of the round deal the secret final round card
+let aRound = Array<GameFlowState>("NEW_ROUND", "DEAL_SECRETS").concat(
+  Array(4)
+    .fill(Array<GameFlowState>("DEAL", "PICK"))
+    .flat()
+    .concat(Array<GameFlowState>("SHOW_SECRETS")),
+)
+let aGame: GameFlowState[] = Array(4)
+  .fill(aRound)
+  .flat()
+  .concat(Array<GameFlowState>("END_GAME"))
+export const advancedGameFlow = aGame.toReversed()

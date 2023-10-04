@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { AdvancedCard } from "./advanced/AdvancedCard";
 import { CompanyCard } from "./company/CompanyCard"
 import {
   reset,
@@ -32,6 +33,7 @@ export function Game() {
         <button onClick={() => dispatch(reset())}>Reset Game</button>
         <Goals />
         <CompanyCard />
+        <AdvancedCard />
         <OperationBar />
         <p>
           Round: {round} Turn: {turn} Dealer: {dealer}

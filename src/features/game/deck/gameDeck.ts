@@ -1,4 +1,5 @@
-import { Draft } from "@reduxjs/toolkit"
+import { createSelector, Draft } from "@reduxjs/toolkit"
+import { RootState } from "../../../app/store"
 
 import { GameState } from "../gameSlice"
 import { pickRandom, repeat, shuffle } from "../helpers"
@@ -14,6 +15,7 @@ export interface Table {
   display: Card[]
   selectedCard: Card | undefined
   discard: Card[]
+  secretRoundCards: Card[]
 }
 
 export const initialTable: Table = {
@@ -21,35 +23,59 @@ export const initialTable: Table = {
   display: [],
   selectedCard: undefined,
   discard: [],
+  secretRoundCards: [],
+}
+
+export const deckSelector = {
+  deck: (state: RootState) => state.gameState.present.table.deck,
+  discard: (state: RootState) => state.gameState.present.table.discard,
+  display: (state: RootState) => state.gameState.present.table.display,
+  selectedCard: (state: RootState) =>
+    state.gameState.present.table.selectedCard,
+  secretCards: createSelector(
+    [
+      (state: RootState) => state.gameState.present.players,
+      (state: RootState) => state.gameState.present.table.secretRoundCards,
+    ],
+    (players: string[], secretRoundCards: Card[]) => {
+      return new Map<string, Card>(
+        secretRoundCards.map((card, index) => [players[index], card]),
+      )
+    },
+  ),
 }
 
 export function deck(state: Draft<GameState>) {
   let table = state.table
 
-  function moveCard(
-    source: Draft<Card>[],
-    destination: Draft<Card>[],
-  ): Draft<Card> | undefined {
-    let card = source.pop()
-    if (card) {
-      destination.push(card)
+  function drawFromDeck(): Draft<Card> {
+    let deck = state.table.deck
+    if (deck.length === 0) {
+      // reshuffle the discard pile into the deck
+      state.table.deck = shuffle(state.table.discard)
     }
+    // draw - since this function is handled by Immer this should be safe from race conditions
+    return deck.pop() as Draft<Card>
+  }
+  function fromDeckToDisplay(): Draft<Card> {
+    let card = drawFromDeck()
+    state.table.display.push(card)
     return card
   }
-  function drawCard(): Draft<Card> | undefined {
-    return moveCard(table.deck, table.display)
+  function fromDisplayToDiscard(): Draft<Card> | undefined {
+    let card = state.table.display.pop()
+    if (card) state.table.discard.push(card)
+    return card
   }
-  function discardCard(): Draft<Card> | undefined {
-    return moveCard(table.display, table.discard)
+  function fromDeckToSecrets(): Draft<Card> {
+    let card = drawFromDeck()
+    state.table.secretRoundCards.push(card)
+    return card
   }
-  function isJoker(card: Draft<Card> | undefined): boolean {
-    if (card) {
-      return card.id === jokers[0].id || card.id === jokers[1].id
-    } else {
-      return false
-    }
+  function isJoker(card: Draft<Card>): boolean {
+    return card.id === jokers[0].id || card.id === jokers[1].id
   }
-  function discardJoker() {
+  function discardRandomJoker() {
     let randomJoker = pickRandom(jokers)
     table.display = table.display.filter((card) => card.id !== randomJoker.id)
     table.discard.push(randomJoker)
@@ -57,73 +83,68 @@ export function deck(state: Draft<GameState>) {
   function resetPickedCard() {
     table.selectedCard = undefined
   }
+  function clearDisplay() {
+    // discard the current display, if present
+    repeat(3, fromDisplayToDiscard)
+  }
 
   return {
-    getDeck() {
-      return table.deck
+    init() {
+      if (state.config.jokerExpansion) {
+        // Using Joker Cards mini expansion
+        table.deck = cardsDeck.concat(jokers)
+      } else {
+        table.deck = cardsDeck
+      }
     },
-    getDiscard() {
-      return table.discard
+    newRound() {
+      // recreate the deck and shuffle it
+      table.deck = shuffle(
+        table.deck.concat(table.display).concat(table.discard),
+      )
+      // reset the rest of the deck state
+      table.display = []
+      table.discard = []
+      resetPickedCard()
     },
-    getDisplay() {
-      return table.display
-    },
-    getSelectedCard() {
-      return table.selectedCard
-    },
-    actions: {
-      init() {
-        if (state.config.jokerExpansion) {
-          // Using Joker Cards mini expansion
-          table.deck = cardsDeck.concat(jokers)
-        } else {
-          table.deck = cardsDeck
-        }
-      },
-      newRound() {
-        // recreate the deck and shuffle it
-        table.deck = shuffle(
-          table.deck.concat(table.display).concat(table.discard),
-        )
-        // reset the rest of the deck state
-        table.display = []
-        table.discard = []
-        resetPickedCard()
-      },
-      deal() {
-        // discard the current display, if present
-        repeat(3, discardCard)
+    deal() {
+      // discard all cards in the display area
+      clearDisplay()
 
-        // reset the selected card
-        resetPickedCard()
+      // reset the selected card
+      resetPickedCard()
 
-        // draw 3 cards
-        if (state.config.jokerExpansion) {
-          // check that only one joker at a time is in the display
-          let drawnJokers = 0
-          while (table.display.length < 3) {
-            // draw the card, keeping track of the jokers
-            if (isJoker(drawCard())) drawnJokers++
-            if (drawnJokers === 2) {
-              // if too many have been drawn, discard a joker...
-              discardJoker()
-              drawnJokers--
-              // ... and draw again
-              drawCard()
-            }
+      // draw 3 cards
+      if (state.config.jokerExpansion) {
+        // check that only one joker at a time is in the display
+        let drawnJokers = 0
+        while (table.display.length < 3) {
+          // draw the card, keeping track of the jokers
+          if (isJoker(fromDeckToDisplay())) drawnJokers++
+          if (drawnJokers === 2) {
+            // if too many have been drawn, discard a joker...
+            discardRandomJoker()
+            drawnJokers--
+            // ... and draw again
+            fromDeckToDisplay()
           }
-        } else {
-          repeat(3, drawCard)
         }
-      },
-      pick(cardId: string) {
-        table.selectedCard = table.display.filter(
-          (card) => card.id === cardId,
-        )[0]
-      },
-      unpick() {
-        resetPickedCard()
-      },
+      } else {
+        repeat(3, fromDeckToDisplay)
+      }
+    },
+    dealSecrets() {
+      state.table.secretRoundCards = []
+      state.players.forEach(fromDeckToSecrets)
+    },
+    showSecrets() {
+      clearDisplay()
+    },
+    pick(cardId: string) {
+      table.selectedCard = table.display.filter((card) => card.id === cardId)[0]
+    },
+    unpick() {
+      resetPickedCard()
     },
   }
 }

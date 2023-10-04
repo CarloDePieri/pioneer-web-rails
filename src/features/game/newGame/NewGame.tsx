@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../app/hooks"
 
-import { deal, init, newRound } from "../gameSlice"
+import { deal, dealSecrets, init, newRound } from "../gameSlice";
 
 export function NewGame() {
   const dispatch = useAppDispatch()
@@ -55,12 +55,13 @@ export function NewGame() {
                 forestMap: false,
                 jokerExpansion: false,
                 companyOwnersExpansion: true,
-                advancedHandCardRule: false,
+                advancedHandCardRule: true,
               },
             }),
           )
           dispatch(newRound())
-          dispatch(deal())
+          // dispatch(deal())
+          dispatch(dealSecrets())
         }}
       >
         New Game with Company Owners

@@ -8,12 +8,16 @@ import {
   selectNextOp,
   selectCanUndo,
   selectCanRedo,
+  selectAdvancedHandCardRule,
+  dealSecrets,
+  showSecrets,
 } from "../gameSlice"
 import { ActionCreators } from "redux-undo"
 
 export function OperationBar() {
   const dispatch = useAppDispatch()
   const next = useAppSelector(selectNextOp)
+  const advanced = useAppSelector(selectAdvancedHandCardRule)
 
   const futureStates = useAppSelector(selectFutureStatesNumber)
   const pastStates = useAppSelector(selectPastStatesNumber)
@@ -29,8 +33,16 @@ export function OperationBar() {
       case "NEW_ROUND":
         // Begin a new round
         dispatch(newRound())
-        // Shuffle the first batch
-        dispatch(deal())
+        if (!advanced) {
+          // Deal the first three cards
+          dispatch(deal())
+        } else {
+          // Deal the secret cards
+          dispatch(dealSecrets())
+        }
+        break
+      case "SHOW_SECRETS":
+        dispatch(showSecrets())
         break
       default:
         break
@@ -42,6 +54,7 @@ export function OperationBar() {
       ["PICK", "Picking a card..."],
       ["DEAL", "Deal"],
       ["NEW_ROUND", "Shuffle and Deal"],
+      ["SHOW_SECRETS", "Show secret cards"],
       ["END_GAME", "We are done!"],
     ]).get(next)
     return text ?? ""

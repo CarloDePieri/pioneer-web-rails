@@ -7,7 +7,7 @@ import {
   CompanyOwners,
   initialCompanyOwners,
 } from "./company/gameCompany"
-import { deck, initialTable, Table } from "./deck/gameDeck"
+import { deck, deckSelector, initialTable, Table } from "./deck/gameDeck"
 import { GameFlow, gameFlow, initialGameFlow } from "./flow/gameFlows"
 import { undoHelper } from "./flow/gameUndo"
 import { Goals, goals, initialGoals } from "./goals/gameGoals"
@@ -48,7 +48,7 @@ export const gameSlice = createSlice({
       goals(state).init()
 
       // Populate the deck
-      deck(state).actions.init()
+      deck(state).init()
 
       // Prepare the company owners deck, if using the expansion
       if (state.config.companyOwnersExpansion) {
@@ -62,14 +62,25 @@ export const gameSlice = createSlice({
     },
     deal: (state) => {
       // deal the card in the display
-      deck(state).actions.deal()
+      deck(state).deal()
 
       // advance the game flow with a deal action
       gameFlow(state).actions.deal()
     },
+    dealSecrets: (state) => {
+      // deal the secret cards
+      deck(state).dealSecrets()
+      // advance the game flow with a dealSecrets action
+      gameFlow(state).actions.dealSecrets()
+    },
+    showSecrets: (state) => {
+      deck(state).showSecrets()
+      // advance the game flow with a showSecrets action
+      gameFlow(state).actions.showSecrets()
+    },
     newRound: (state) => {
       // set up the deck
-      deck(state).actions.newRound()
+      deck(state).newRound()
 
       // draw a company owner card if using the expansion
       if (state.config.companyOwnersExpansion) {
@@ -81,14 +92,14 @@ export const gameSlice = createSlice({
     },
     pick: (state, action: PayloadAction<string>) => {
       // pick the card
-      deck(state).actions.pick(action.payload)
+      deck(state).pick(action.payload)
 
       // advance the game flow
       gameFlow(state).actions.pick()
     },
     unpick: (state) => {
       // unpick the card
-      deck(state).actions.unpick()
+      deck(state).unpick()
 
       // reset the game flow
       gameFlow(state).actions.unpick()
@@ -99,6 +110,8 @@ export const gameSlice = createSlice({
 // Selectors
 export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
+export const selectAdvancedHandCardRule = (state: RootState) =>
+  state.gameState.present.config.advancedHandCardRule
 
 export const selectFutureStatesNumber = (state: RootState) =>
   undoHelper(state).countRedo
@@ -107,15 +120,12 @@ export const selectPastStatesNumber = (state: RootState) =>
 export const selectCanUndo = (state: RootState) => undoHelper(state).canUndo()
 export const selectCanRedo = (state: RootState) => undoHelper(state).canRedo()
 
-// shorthand to interact with the present state of the deck
-let deckP = (state: RootState) => {
-  return deck(state.gameState.present)
-}
-export const selectDeck = (state: RootState) => deckP(state).getDeck()
-export const selectDisplay = (state: RootState) => deckP(state).getDisplay()
-export const selectDiscard = (state: RootState) => deckP(state).getDiscard()
-export const selectPickedCard = (state: RootState) =>
-  deckP(state).getSelectedCard()
+// deck
+export const selectDeck = deckSelector.deck
+export const selectDisplay = deckSelector.display
+export const selectDiscard = deckSelector.discard
+export const selectPickedCard = deckSelector.selectedCard
+export const selectSecretCards = deckSelector.secretCards
 
 // shorthand to interact with the present state of the game flow
 let gameFlowP = (state: RootState) => {
@@ -143,9 +153,11 @@ export const {
   init,
   reset,
   deal,
+  dealSecrets,
+  showSecrets,
   newRound,
   pick,
-  unpick
+  unpick,
 } = gameSlice.actions
 
 // Reducer
