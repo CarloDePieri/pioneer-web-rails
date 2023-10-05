@@ -1,6 +1,7 @@
 import * as React from "react"
 
-import { AppBar, Box, Toolbar } from "@mui/material"
+import { AppBar, Box, Toolbar, Typography } from "@mui/material"
+import { NewGameButton } from "../game/newGame/NewGameButton"
 
 import { ToggleThemeButton } from "../theme/ToggleThemeButton"
 
@@ -9,7 +10,10 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Box sx={{ flexGrow: 1 }}>Pioneer Rails</Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="button">Pioneer Rails</Typography>
+          </Box>
+          <NewGameButton />
           <ToggleThemeButton />
         </Toolbar>
       </AppBar>

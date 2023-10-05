@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard";
 import { CompanyCard } from "./company/CompanyCard"
 import {
-  reset,
   selectDealer,
   selectDeck,
   selectDiscard,
@@ -30,7 +29,6 @@ export function Game() {
   } else {
     return (
       <div>
-        <button onClick={() => dispatch(reset())}>Reset Game</button>
         <Goals />
         <CompanyCard />
         <AdvancedCard />

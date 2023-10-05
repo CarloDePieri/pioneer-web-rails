@@ -61,7 +61,7 @@ export const gameSlice = createSlice({
         company(state).init()
       }
     },
-    reset: (state) => {
+    newGame: (state) => {
       // reset everything but the players
       let players = state.players
       return { ...initialState, players }
@@ -148,7 +148,7 @@ export const selectCompanyCard = companySelector.roundCard
 // eslint-disable-next-line
 export const {
   init,
-  reset,
+  newGame,
   deal,
   dealSecrets,
   showSecrets,
