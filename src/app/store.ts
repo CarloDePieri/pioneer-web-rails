@@ -1,5 +1,11 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit"
 import gameStateReducer from "../features/game/gameSlice"
+import themeReducer from "../features/theme/themeSlice"
 import undoable from "redux-undo"
 
 import storage from "redux-persist/lib/storage"
@@ -20,15 +26,18 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(
   persistConfig,
-  undoable(gameStateReducer, {
-    limit: 10, // set a limit for the size of the history
+  combineReducers({
+    gameState: undoable(gameStateReducer, {
+      limit: 10, // set a limit for the size of the history
+    }),
+    interface: combineReducers({
+      theme: themeReducer,
+    }),
   }),
 )
 
 export const store = configureStore({
-  reducer: {
-    gameState: persistedReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
