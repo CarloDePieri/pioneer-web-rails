@@ -1,5 +1,6 @@
 import { createSelector, Draft } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
+import { images } from "../../../res/images"
 
 import { GameState } from "../gameSlice"
 import { pickRandom, repeat, shuffle } from "../helpers"
@@ -159,29 +160,29 @@ export function deck(state: Draft<GameState>) {
 }
 
 export const cardsDeck: Card[] = [
-  { id: "AS", symbol: "🂡", img: "aceSpades.png" },
-  { id: "KS", symbol: "🂮", img: "kingSpades.png" },
-  { id: "QS", symbol: "🂭", img: "queenSpades.png" },
-  { id: "JS", symbol: "🂫", img: "jackSpades.png" },
-  { id: "10S", symbol: "🂪", img: "tenSpades.png" },
-  { id: "AH", symbol: "🂱", img: "aceHearts.png" },
-  { id: "KH", symbol: "🂾", img: "kingHearts.png" },
-  { id: "QH", symbol: "🂽", img: "queenHearts.png" },
-  { id: "JH", symbol: "🂻", img: "jackHearts.png" },
-  { id: "10H", symbol: "🂺", img: "tenHearts.png" },
-  { id: "AD", symbol: "🃁", img: "aceDiamonds.png" },
-  { id: "KD", symbol: "🃎", img: "kingDiamonds.png" },
-  { id: "QD", symbol: "🃍", img: "queenDiamonds.png" },
-  { id: "JD", symbol: "🃋", img: "jackDiamonds.png" },
-  { id: "10D", symbol: "🃊", img: "tenDiamonds.png" },
-  { id: "AC", symbol: "🃑", img: "aceClubs.png" },
-  { id: "KC", symbol: "🃞", img: "kingClubs.png" },
-  { id: "QC", symbol: "🃝", img: "queenClubs.png" },
-  { id: "JC", symbol: "🃛", img: "jackClubs.png" },
-  { id: "10C", symbol: "🃚", img: "tenClubs.png" },
+  { id: "AS", symbol: "🂡", img: images.deck.spades.ace },
+  { id: "KS", symbol: "🂮", img: images.deck.spades.king },
+  { id: "QS", symbol: "🂭", img: images.deck.spades.queen },
+  { id: "JS", symbol: "🂫", img: images.deck.spades.jack },
+  { id: "10S", symbol: "🂪", img: images.deck.spades.ten },
+  { id: "AH", symbol: "🂱", img: images.deck.hearts.ace },
+  { id: "KH", symbol: "🂾", img: images.deck.hearts.king },
+  { id: "QH", symbol: "🂽", img: images.deck.hearts.queen },
+  { id: "JH", symbol: "🂻", img: images.deck.hearts.jack },
+  { id: "10H", symbol: "🂺", img: images.deck.hearts.ten },
+  { id: "AD", symbol: "🃁", img: images.deck.diamonds.ace },
+  { id: "KD", symbol: "🃎", img: images.deck.diamonds.king },
+  { id: "QD", symbol: "🃍", img: images.deck.diamonds.queen },
+  { id: "JD", symbol: "🃋", img: images.deck.diamonds.jack },
+  { id: "10D", symbol: "🃊", img: images.deck.diamonds.ten },
+  { id: "AC", symbol: "🃑", img: images.deck.clubs.ace },
+  { id: "KC", symbol: "🃞", img: images.deck.clubs.king },
+  { id: "QC", symbol: "🃝", img: images.deck.clubs.queen },
+  { id: "JC", symbol: "🃛", img: images.deck.clubs.jack },
+  { id: "10C", symbol: "🃚", img: images.deck.clubs.ten },
 ]
 
 export const jokers: Card[] = [
-  { id: "J1", symbol: "🃏", img: "jokerClubsSpades.png" },
-  { id: "J2", symbol: "🂿", img: "jokerDiamondsHearts.png" },
+  { id: "J1", symbol: "🃏", img: images.jokers.black },
+  { id: "J2", symbol: "🂿", img: images.jokers.red },
 ]
