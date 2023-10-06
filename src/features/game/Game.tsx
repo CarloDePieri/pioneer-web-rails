@@ -39,7 +39,14 @@ export function Game() {
         <p>Deck:</p>
         <ul>
           {deck.map((card) => (
-            <li key={card.id}>{card.symbol}</li>
+            <li key={card.id}>
+              {card.symbol}
+              {/*<img*/}
+              {/*  src={card.img}*/}
+              {/*  alt=""*/}
+              {/*  style={{ width: "300px", border: "solid 1px black" }}*/}
+              {/*/>*/}
+            </li>
           ))}
         </ul>
         <p>Discard:</p>

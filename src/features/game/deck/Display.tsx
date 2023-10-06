@@ -1,5 +1,9 @@
+import { Stack } from "@mui/material"
+import React from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { images } from "../../../res/images"
 import { pick, selectDisplay, selectPickedCard, unpick } from "../gameSlice"
+import { PlayingCard } from "./PlayingCard"
 
 export function Display() {
   const dispatch = useAppDispatch()
@@ -18,17 +22,17 @@ export function Display() {
   return (
     <div>
       <p>Display:</p>
-      <ul>
+
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={4}
+        justifyContent="center"
+        sx={{ minWidth: 0 }}
+      >
         {display.map((card) => (
-          <li
-            key={card.id}
-            onClick={() => togglePick(card.id)}
-            style={{ color: getColor(card.id) }}
-          >
-            {card.symbol}
-          </li>
+          <PlayingCard key={card.id} card={card} />
         ))}
-      </ul>
+      </Stack>
     </div>
   )
 }
