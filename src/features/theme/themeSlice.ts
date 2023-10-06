@@ -4,11 +4,13 @@ import { RootState } from "../../app/store"
 
 export function getTheme(darkTheme: boolean) {
   const dark = createTheme({
+    spacing: 2,
     palette: {
       mode: "dark",
     },
   })
   const light = createTheme({
+    spacing: 2,
     palette: {
       mode: "light",
     },

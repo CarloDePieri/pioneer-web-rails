@@ -17,9 +17,9 @@ export function AdvancedCard() {
       return (
         <div>
           {Array.from(secrets.entries()).map(([name, card]) => (
-            <p key={card.id}>
+            <p key={card?.id}>
               {" "}
-              {name}: {card.symbol}
+              {name}: {card?.symbol}
             </p>
           ))}
         </div>

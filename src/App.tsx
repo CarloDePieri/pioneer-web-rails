@@ -1,3 +1,4 @@
+import { Box, Grid } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import * as React from "react"
@@ -13,9 +14,14 @@ function App() {
       <ThemeProvider theme={getTheme(useAppSelector(selectTheme))}>
         <CssBaseline />
         <Header />
-        <div className="App">
-          <Game />
-        </div>
+
+        <Grid container spacing={2}>
+          <Grid item xs={1} />
+          <Grid item xs={10}>
+            <Game />
+          </Grid>
+          <Grid item xs={1} />
+        </Grid>
       </ThemeProvider>
     </div>
   )

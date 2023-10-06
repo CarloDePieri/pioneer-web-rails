@@ -3,6 +3,7 @@ import { RootState } from "../../../app/store"
 
 import { GameState } from "../gameSlice"
 import { pickRandom, repeat, shuffle } from "../helpers"
+import { Player } from "../newGame/gameStart"
 
 export interface Card {
   id: string
@@ -10,12 +11,17 @@ export interface Card {
   img: string
 }
 
+export interface SecretCard {
+  playerId: string
+  card: Card
+}
+
 export interface Table {
   deck: Card[]
   display: Card[]
   selectedCard: Card | undefined
   discard: Card[]
-  secretRoundCards: Card[]
+  secretRoundCards: SecretCard[]
 }
 
 export const initialTable: Table = {
@@ -37,9 +43,13 @@ export const deckSelector = {
       (state: RootState) => state.gameState.present.players,
       (state: RootState) => state.gameState.present.table.secretRoundCards,
     ],
-    (players: string[], secretRoundCards: Card[]) => {
-      return new Map<string, Card>(
-        secretRoundCards.map((card, index) => [players[index], card]),
+    (players: Player[], secretRoundCards: SecretCard[]) => {
+      return new Map<string, Card | undefined>(
+        players.map((player) => [
+          player.name,
+          secretRoundCards.filter((card) => card.playerId === player.id)[0]
+            ?.card,
+        ]),
       )
     },
   ),
@@ -65,11 +75,6 @@ export function deck(state: Draft<GameState>) {
   function fromDisplayToDiscard(): Draft<Card> | undefined {
     let card = state.table.display.pop()
     if (card) state.table.discard.push(card)
-    return card
-  }
-  function fromDeckToSecrets(): Draft<Card> {
-    let card = drawFromDeck()
-    state.table.secretRoundCards.push(card)
     return card
   }
   function isJoker(card: Draft<Card>): boolean {
@@ -134,8 +139,12 @@ export function deck(state: Draft<GameState>) {
       }
     },
     dealSecrets() {
-      state.table.secretRoundCards = []
-      state.players.forEach(fromDeckToSecrets)
+      state.table.secretRoundCards = state.players.map((player): SecretCard => {
+        return {
+          playerId: player.id,
+          card: drawFromDeck(),
+        }
+      })
     },
     showSecrets() {
       clearDisplay()

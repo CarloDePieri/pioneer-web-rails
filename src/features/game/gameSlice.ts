@@ -15,12 +15,18 @@ import {
   gameFlowSelector,
   initialGameFlow,
 } from "./flow/gameFlows"
-import { undoHelper, undoHelperSelector } from "./flow/gameUndo";
-import { Goals, goals, goalsSelector, initialGoals } from "./goals/gameGoals";
-import { GameConfig, initialGameConfig, NewGame } from "./newGame/gameStart"
+import { undoHelperSelector } from "./flow/gameUndo"
+import { Goals, goals, goalsSelector, initialGoals } from "./goals/gameGoals"
+import {
+  GameConfig,
+  configSelector,
+  initialGameConfig,
+  Player,
+  toggleConfig,
+} from "./newGame/gameStart"
 
 export interface GameState {
-  players: string[]
+  players: Player[]
   config: GameConfig
   goals: Goals
   table: Table
@@ -42,11 +48,7 @@ export const gameSlice = createSlice({
   name: "gameState",
   initialState,
   reducers: {
-    init: (state, action: PayloadAction<NewGame>) => {
-      // Set the status, the game config and the player order
-      state.config = action.payload.config
-      state.players = action.payload.players
-
+    init: (state) => {
       // set up the game flow
       gameFlow(state).init()
 
@@ -62,9 +64,10 @@ export const gameSlice = createSlice({
       }
     },
     newGame: (state) => {
-      // reset everything but the players
+      // reset, but keep the current config and players names
       let players = state.players
-      return { ...initialState, players }
+      let config = state.config
+      return { ...initialState, config, players }
     },
     deal: (state) => {
       // deal the card in the display
@@ -112,6 +115,21 @@ export const gameSlice = createSlice({
       // reset the game flow
       gameFlow(state).unpick()
     },
+    updatePlayers: (state, action: PayloadAction<Player[]>) => {
+      state.players = action.payload
+    },
+    toggleConfigForest: (state) => {
+      toggleConfig(state).forestMap()
+    },
+    toggleConfigJokers: (state) => {
+      toggleConfig(state).jokers()
+    },
+    toggleConfigCompany: (state) => {
+      toggleConfig(state).company()
+    },
+    toggleConfigAdvanced: (state) => {
+      toggleConfig(state).advanced()
+    },
   },
 })
 
@@ -120,6 +138,12 @@ export const selectPlayers = (state: RootState) =>
   state.gameState.present.players
 export const selectAdvancedHandCardRule = (state: RootState) =>
   state.gameState.present.config.advancedHandCardRule
+
+// game config
+export const selectConfigForest = configSelector.forest
+export const selectConfigJokers = configSelector.jokers
+export const selectConfigCompany = configSelector.company
+export const selectConfigAdvanced = configSelector.advanced
 
 export const selectFutureStatesNumber = undoHelperSelector.countRedo
 export const selectPastStatesNumber = undoHelperSelector.countUndo
@@ -145,7 +169,6 @@ export const selectGoals = goalsSelector.activeGoals
 export const selectCompanyCard = companySelector.roundCard
 
 // Actions
-// eslint-disable-next-line
 export const {
   init,
   newGame,
@@ -155,6 +178,11 @@ export const {
   newRound,
   pick,
   unpick,
+  updatePlayers,
+  toggleConfigForest,
+  toggleConfigJokers,
+  toggleConfigCompany,
+  toggleConfigAdvanced,
 } = gameSlice.actions
 
 // Reducer

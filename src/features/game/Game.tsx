@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { AdvancedCard } from "./advanced/AdvancedCard";
+import { useAppSelector } from "../../app/hooks"
+import { AdvancedCard } from "./advanced/AdvancedCard"
 import { CompanyCard } from "./company/CompanyCard"
 import {
   selectDealer,
@@ -16,7 +16,6 @@ import { Goals } from "./goals/Goals"
 
 export function Game() {
   const status = useAppSelector(selectGameStatus)
-  const dispatch = useAppDispatch()
 
   const deck = useAppSelector(selectDeck)
   const discard = useAppSelector(selectDiscard)
@@ -34,7 +33,7 @@ export function Game() {
         <AdvancedCard />
         <OperationBar />
         <p>
-          Round: {round} Turn: {turn} Dealer: {dealer}
+          Round: {round} Turn: {turn} Dealer: {dealer.name}
         </p>
         <Display />
         <p>Deck:</p>
