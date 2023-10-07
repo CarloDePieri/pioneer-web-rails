@@ -21,8 +21,6 @@ export function Display() {
 
   return (
     <div>
-      <p>Display:</p>
-
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={4}

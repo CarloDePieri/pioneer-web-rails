@@ -2,6 +2,7 @@ import { Grid } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard"
 import { CompanyCard } from "./company/CompanyCard"
+import { FlowButtons } from "./flow/FlowButtons"
 import {
   selectDealer,
   selectDeck,
@@ -16,6 +17,7 @@ import { Display } from "./deck/Display"
 import { Goals } from "./goals/Goals"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { useTheme } from "@mui/material/styles"
+import React from "react"
 
 export function Game() {
   const status = useAppSelector(selectGameStatus)
@@ -34,14 +36,19 @@ export function Game() {
   } else {
     if (largeScreen) {
       return (
-        <Grid container spacing={2} mb={64}>
+        <Grid container spacing={2} mb={8} height={"100%"}>
           <Grid item xs={2}>
             <Goals />
           </Grid>
           <Grid item xs={8}>
+            <p>
+              Round: {round} Turn: {turn} Dealer: {dealer.name}
+            </p>
             <Display />
           </Grid>
-          <Grid item xs={2} />
+          <Grid item xs={2}>
+            <FlowButtons />
+          </Grid>
         </Grid>
       )
     }
