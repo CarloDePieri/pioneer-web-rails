@@ -7,6 +7,7 @@ import UndoIcon from "@mui/icons-material/Undo"
 import RedoIcon from "@mui/icons-material/Redo"
 import { ActionCreators } from "redux-undo"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { openGoalsGallery } from "../../gallery/gallerySlice"
 import {
   deal,
   dealSecrets,
@@ -51,6 +52,9 @@ export function FlowButtons() {
       case "SHOW_SECRETS":
         dispatch(showSecrets())
         break
+      case "END_GAME":
+        dispatch(openGoalsGallery())
+        break
       default:
         break
     }
@@ -81,7 +85,7 @@ export function FlowButtons() {
         variant="extended"
         sx={{ width: "10vw", height: "10vw" }}
         onClick={nextButtonOp}
-        disabled={next === "PICK" || next === "END_GAME"}
+        disabled={next === "PICK"}
       >
         {nextButtonText()}
       </Fab>

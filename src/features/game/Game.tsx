@@ -4,6 +4,7 @@ import { AdvancedCard } from "./advanced/AdvancedCard"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
 import { Gallery } from "../gallery/Gallery"
+import { FlowTextBar } from "./flow/FlowTextBar"
 import {
   selectDealer,
   selectDeck,
@@ -45,9 +46,7 @@ export function Game() {
               <Goals />
             </Grid>
             <Grid item xs={8}>
-              <p>
-                Round: {round} Turn: {turn} Dealer: {dealer.name}
-              </p>
+              <FlowTextBar />
               <Display />
             </Grid>
             <Grid item xs={2}>
