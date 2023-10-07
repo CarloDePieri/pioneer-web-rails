@@ -1,43 +1,72 @@
-const licensed = import.meta.env.VITE_LICENSED_IMAGES
+import { licensedCards } from "./images/licensedImages"
+import { publicDomainCards } from "./images/publicDomainImages"
 
-function getCard(path: string) {
-  if (licensed) return "src/res/images/licensed/" + path + ".png"
-  else return "src/res/images/publicDomain/" + path + ".svg"
-}
+export const licensed: boolean = import.meta.env.VITE_LICENSED_IMAGES === "true"
 
-export const images = {
+export type CardImageType = {
   deck: {
     spades: {
-      ace: getCard("deck/spades_ace"),
-      king: getCard("deck/spades_king"),
-      queen: getCard("deck/spades_queen"),
-      jack: getCard("deck/spades_jack"),
-      ten: getCard("deck/spades_ten"),
-    },
+      ace: string
+      king: string
+      queen: string
+      jack: string
+      ten: string
+    }
     hearts: {
-      ace: getCard("deck/hearts_ace"),
-      king: getCard("deck/hearts_king"),
-      queen: getCard("deck/hearts_queen"),
-      jack: getCard("deck/hearts_jack"),
-      ten: getCard("deck/hearts_ten"),
-    },
+      ace: string
+      king: string
+      queen: string
+      jack: string
+      ten: string
+    }
     diamonds: {
-      ace: getCard("deck/diamonds_ace"),
-      king: getCard("deck/diamonds_king"),
-      queen: getCard("deck/diamonds_queen"),
-      jack: getCard("deck/diamonds_jack"),
-      ten: getCard("deck/diamonds_ten"),
-    },
+      ace: string
+      king: string
+      queen: string
+      jack: string
+      ten: string
+    }
     clubs: {
-      ace: getCard("deck/clubs_ace"),
-      king: getCard("deck/clubs_king"),
-      queen: getCard("deck/clubs_queen"),
-      jack: getCard("deck/clubs_jack"),
-      ten: getCard("deck/clubs_ten"),
-    },
-  },
+      ace: string
+      king: string
+      queen: string
+      jack: string
+      ten: string
+    }
+  }
   jokers: {
-    black: getCard("jokers/joker_black"),
-    red: getCard("jokers/joker_red"),
-  },
+    black: string
+    red: string
+  }
+  goals?: {
+    goal1A: string
+    goal1B: string
+    goal1C: string
+    goal1D: string
+    goal1E: string
+    goal1F: string
+    goal1G: string
+    goal1H: string
+    goal1I: string
+    goal1J: string
+    goal1K: string
+    goal1L: string
+    goal1M: string
+    goal1N: string
+    goal1O: string
+    goal2A: string
+    goal2B: string
+    goal2C: string
+    goal2D: string
+    goal2E: string
+    goal2F: string
+  }
+}
+
+const cardsImages: CardImageType = licensed
+  ? licensedCards()
+  : publicDomainCards()
+
+export const images = {
+  ...cardsImages,
 }
