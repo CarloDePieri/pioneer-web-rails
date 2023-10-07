@@ -43,7 +43,7 @@ export const company = (state: Draft<GameState>) => {
       let deck
       if (!state.config.forestMap) {
         // C1 company card does not work on desert maps!
-        deck = companyDeck.filter((card) => card.id !== "C1")
+        deck = companyDeck.filter((card) => card.id !== "companyC1")
       } else {
         deck = companyDeck
       }
@@ -54,52 +54,52 @@ export const company = (state: Draft<GameState>) => {
 
 export const companyDeck: CompanyCard[] = [
   {
-    id: "C1",
+    id: "companyC1",
     img: images.company?.companyC1,
     description: strings.company.companyC1,
   },
   {
-    id: "C2",
+    id: "companyC2",
     img: images.company?.companyC2,
     description: strings.company.companyC2,
   },
   {
-    id: "C3",
+    id: "companyC3",
     img: images.company?.companyC3,
     description: strings.company.companyC3,
   },
   {
-    id: "C4",
+    id: "companyC4",
     img: images.company?.companyC4,
     description: strings.company.companyC4,
   },
   {
-    id: "C5",
+    id: "companyC5",
     img: images.company?.companyC5,
     description: strings.company.companyC5,
   },
   {
-    id: "C6",
+    id: "companyC6",
     img: images.company?.companyC6,
     description: strings.company.companyC6,
   },
   {
-    id: "C7",
+    id: "companyC7",
     img: images.company?.companyC7,
     description: strings.company.companyC7,
   },
   {
-    id: "C8",
+    id: "companyC8",
     img: images.company?.companyC8,
     description: strings.company.companyC8,
   },
   {
-    id: "C9",
+    id: "companyC9",
     img: images.company?.companyC9,
     description: strings.company.companyC9,
   },
   {
-    id: "C10",
+    id: "companyC10",
     img: images.company?.companyC10,
     description: strings.company.companyC10,
   },

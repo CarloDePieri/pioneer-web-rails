@@ -2,6 +2,8 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn"
 import { Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import { PropsWithChildren } from "react"
+import { useAppDispatch } from "../../../app/hooks"
+import { openCompanyGallery } from "../../gallery/gallerySlice"
 import { CompanyCard as GameCompanyCard } from "./gameCompany"
 
 interface Props extends PropsWithChildren<any> {
@@ -9,6 +11,7 @@ interface Props extends PropsWithChildren<any> {
 }
 
 export function CompanyCard({ card }: Props) {
+  const dispatch = useAppDispatch()
   if (card.img) {
     return (
       <Card
@@ -24,7 +27,9 @@ export function CompanyCard({ card }: Props) {
           component="img"
           image={card.img}
           alt={card.description}
-          onClick={() => {}}
+          onClick={() => {
+            dispatch(openCompanyGallery())
+          }}
         />
       </Card>
     )
@@ -43,6 +48,9 @@ export function CompanyCard({ card }: Props) {
             sm: "9vw",
           },
           textAlign: "center",
+        }}
+        onClick={() => {
+          dispatch(openCompanyGallery())
         }}
       >
         <Stack

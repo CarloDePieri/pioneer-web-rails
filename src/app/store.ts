@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit"
 import gameStateReducer from "../features/game/gameSlice"
 import themeReducer from "../features/theme/themeSlice"
+import galleryReducer from "../features/gallery/gallerySlice"
 import undoable from "redux-undo"
 
 import storage from "redux-persist/lib/storage"
@@ -32,6 +33,7 @@ const persistedReducer = persistReducer(
     }),
     interface: combineReducers({
       theme: themeReducer,
+      gallery: galleryReducer,
     }),
   }),
 )

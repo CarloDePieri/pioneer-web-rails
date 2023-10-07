@@ -4,8 +4,9 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
-import { useAppSelector } from "../../../app/hooks"
-import { selectCompanyCard, selectConfigCompany } from "../gameSlice"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { openGoalsGallery } from "../../gallery/gallerySlice"
+import { selectConfigCompany } from "../gameSlice"
 import { Goal } from "./gameGoals"
 
 interface Props extends PropsWithChildren<any> {
@@ -13,6 +14,7 @@ interface Props extends PropsWithChildren<any> {
 }
 
 export function GoalCard({ goal }: Props) {
+  const dispatch = useAppDispatch()
   let company = useAppSelector(selectConfigCompany)
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
@@ -49,7 +51,9 @@ export function GoalCard({ goal }: Props) {
           component="img"
           image={goal.img}
           alt={goal.description}
-          onClick={() => {}}
+          onClick={() => {
+            dispatch(openGoalsGallery())
+          }}
         />
       </Card>
     )
@@ -67,6 +71,9 @@ export function GoalCard({ goal }: Props) {
             sm: "9vw",
           },
           textAlign: "center",
+        }}
+        onClick={() => {
+          dispatch(openGoalsGallery())
         }}
       >
         <Stack

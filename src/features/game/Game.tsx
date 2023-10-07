@@ -3,6 +3,7 @@ import { useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
+import { Gallery } from "../gallery/Gallery"
 import {
   selectDealer,
   selectDeck,
@@ -37,6 +38,7 @@ export function Game() {
     if (largeScreen) {
       return (
         <React.Fragment>
+          <Gallery />
           <Grid container spacing={2} mt={4} mb={8} height={"100%"}>
             <Grid item xs={2}>
               <CompanyCardHolder />
