@@ -19,7 +19,13 @@ export function GoalCard({ goal }: Props) {
 
   const goalCardSize = () => {
     if (company) {
-      return {}
+      if (largeScreen) {
+        return {
+          width: "7vw",
+        }
+      } else {
+        return {}
+      }
     } else {
       if (largeScreen) {
         return {

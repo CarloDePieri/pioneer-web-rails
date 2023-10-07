@@ -1,12 +1,63 @@
-import { useAppSelector } from "../../../app/hooks"
-import { selectCompanyCard } from "../gameSlice"
+import ZoomInIcon from "@mui/icons-material/ZoomIn"
+import { Card, Stack, Typography } from "@mui/material"
+import CardMedia from "@mui/material/CardMedia"
+import { PropsWithChildren } from "react"
+import { CompanyCard as GameCompanyCard } from "./gameCompany"
 
-export function CompanyCard() {
-  let companyCard = useAppSelector(selectCompanyCard)
+interface Props extends PropsWithChildren<any> {
+  card: GameCompanyCard
+}
 
-  return (
-    <div>
-      <p>Company Card: {companyCard ? companyCard.id : ""}</p>
-    </div>
-  )
+export function CompanyCard({ card }: Props) {
+  if (card.img) {
+    return (
+      <Card
+        elevation={5}
+        sx={{
+          width: {
+            xs: "12vw",
+            sm: "12vw",
+          },
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={card.img}
+          alt={card.description}
+          onClick={() => {}}
+        />
+      </Card>
+    )
+  } else {
+    // ratio: 1.276
+    return (
+      <Card
+        elevation={5}
+        sx={{
+          width: {
+            xs: "12vw",
+            sm: "12vw",
+          },
+          height: {
+            xs: "20vw",
+            sm: "9vw",
+          },
+          textAlign: "center",
+        }}
+      >
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          sx={{ height: "100%" }}
+        >
+          <Typography variant={"h6"} fontWeight={"bold"} gutterBottom>
+            {card.id.replace("goal", "")}
+          </Typography>
+          <ZoomInIcon />
+        </Stack>
+      </Card>
+    )
+  }
 }

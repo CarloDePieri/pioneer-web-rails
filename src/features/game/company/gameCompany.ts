@@ -1,12 +1,14 @@
 import { Draft } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
+import { images } from "../../../res/images"
+import { strings } from "../../../res/strings"
 
 import { GameState } from "../gameSlice"
 import { shuffle } from "../helpers"
 
 export interface CompanyCard {
   id: string
-  img: string
+  img: string | undefined
   description: string
 }
 
@@ -53,61 +55,52 @@ export const company = (state: Draft<GameState>) => {
 export const companyDeck: CompanyCard[] = [
   {
     id: "C1",
-    img: "companyC1.png",
-    description:
-      "This round, Banks are completed with 2 tracks instead of 3 (Desert maps only).",
+    img: images.company?.companyC1,
+    description: strings.company.companyC1,
   },
   {
     id: "C2",
-    img: "companyC2.png",
-    description:
-      "This round, when you draw track(s) around a Fort, draw an additional track.",
+    img: images.company?.companyC2,
+    description: strings.company.companyC2,
   },
   {
     id: "C3",
-    img: "companyC3.png",
-    description: "This round, Saloons are completed with 1 track instead of 2.",
+    img: images.company?.companyC3,
+    description: strings.company.companyC3,
   },
   {
     id: "C4",
-    img: "companyC4.png",
-    description:
-      "This round, Poker hands score double (If you already have this bonus through an active Saloon, your Poker hand scores triple).",
+    img: images.company?.companyC4,
+    description: strings.company.companyC4,
   },
   {
     id: "C5",
-    img: "companyC5.png",
-    description:
-      "This round, you may sacrifice 1 of your 3 tracks to extend from any Station.",
+    img: images.company?.companyC5,
+    description: strings.company.companyC5,
   },
   {
     id: "C6",
-    img: "companyC6.png",
-    description:
-      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Switch.",
+    img: images.company?.companyC6,
+    description: strings.company.companyC6,
   },
   {
     id: "C7",
-    img: "companyC7.png",
-    description:
-      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Bridge.",
+    img: images.company?.companyC7,
+    description: strings.company.companyC7,
   },
   {
     id: "C8",
-    img: "companyC8.png",
-    description:
-      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Tunnel.",
+    img: images.company?.companyC8,
+    description: strings.company.companyC8,
   },
   {
     id: "C9",
-    img: "companyC9.png",
-    description:
-      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Shortcut.",
+    img: images.company?.companyC9,
+    description: strings.company.companyC9,
   },
   {
     id: "C10",
-    img: "companyC10.png",
-    description:
-      "This round, any Goals you complete score an additional 5 points.",
+    img: images.company?.companyC10,
+    description: strings.company.companyC10,
   },
 ]

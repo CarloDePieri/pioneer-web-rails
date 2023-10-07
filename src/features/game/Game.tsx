@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard"
-import { CompanyCard } from "./company/CompanyCard"
+import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
 import {
   selectDealer,
@@ -36,26 +36,29 @@ export function Game() {
   } else {
     if (largeScreen) {
       return (
-        <Grid container spacing={2} mb={8} height={"100%"}>
-          <Grid item xs={2} mt={8}>
-            <Goals />
+        <React.Fragment>
+          <Grid container spacing={2} mt={4} mb={8} height={"100%"}>
+            <Grid item xs={2}>
+              <CompanyCardHolder />
+              <Goals />
+            </Grid>
+            <Grid item xs={8}>
+              <p>
+                Round: {round} Turn: {turn} Dealer: {dealer.name}
+              </p>
+              <Display />
+            </Grid>
+            <Grid item xs={2}>
+              <FlowButtons />
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <p>
-              Round: {round} Turn: {turn} Dealer: {dealer.name}
-            </p>
-            <Display />
-          </Grid>
-          <Grid item xs={2}>
-            <FlowButtons />
-          </Grid>
-        </Grid>
+        </React.Fragment>
       )
     }
     return (
       <div>
         <Goals />
-        <CompanyCard />
+        {/*<CompanyCardHolder />*/}
         <AdvancedCard />
         <OperationBar />
         <p>

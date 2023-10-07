@@ -61,5 +61,17 @@ export function licensedCards(): CardImageType {
       goal2E: url("goals/goal2E"),
       goal2F: url("goals/goal2F"),
     },
+    company: {
+      companyC1: url("company/companyC1"),
+      companyC2: url("company/companyC2"),
+      companyC3: url("company/companyC3"),
+      companyC4: url("company/companyC4"),
+      companyC5: url("company/companyC5"),
+      companyC6: url("company/companyC6"),
+      companyC7: url("company/companyC7"),
+      companyC8: url("company/companyC8"),
+      companyC9: url("company/companyC9"),
+      companyC10: url("company/companyC10"),
+    },
   }
 }

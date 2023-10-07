@@ -1,3 +1,4 @@
+import { CompanyCard } from "../../features/game/company/gameCompany"
 import { LocalizedStrings } from "../strings"
 
 export const localizedStrings: LocalizedStrings = {
@@ -25,4 +26,27 @@ export const localizedStrings: LocalizedStrings = {
     goal2E: "Connect to 3 Towns by Mountains.",
     goal2F: "Connect to 3 Towns by the River.",
   },
+  company: {
+    companyC1:
+      "This round, Banks are completed with 2 tracks instead of 3 (Desert maps only).",
+    companyC2:
+      "This round, when you draw track(s) around a Fort, draw an additional track.",
+    companyC3: "This round, Saloons are completed with 1 track instead of 2.",
+    companyC4:
+      "This round, Poker hands score double (If you already have this bonus through an active Saloon, your Poker hand scores triple).",
+    companyC5:
+      "This round, you may sacrifice 1 of your 3 tracks to extend from any Station.",
+    companyC6:
+      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Switch.",
+    companyC7:
+      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Bridge.",
+    companyC8:
+      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Tunnel.",
+    companyC9:
+      "This round, you may draw 2 tracks instead of 3. If you do, 1 of the 2 tracks can be a Shortcut.",
+    companyC10:
+      "This round, any Goals you complete score an additional 5 points.",
+  },
 }
+
+export const companyDeck = []

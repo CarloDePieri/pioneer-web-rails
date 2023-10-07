@@ -61,6 +61,18 @@ export type CardImageType = {
     goal2E: string
     goal2F: string
   }
+  company?: {
+    companyC1: string
+    companyC2: string
+    companyC3: string
+    companyC4: string
+    companyC5: string
+    companyC6: string
+    companyC7: string
+    companyC8: string
+    companyC9: string
+    companyC10: string
+  }
 }
 
 const cardsImages: CardImageType = licensed
