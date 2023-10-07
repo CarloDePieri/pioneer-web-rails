@@ -1,12 +1,14 @@
 import { Draft } from "@reduxjs/toolkit"
-import { RootState } from "../../../app/store";
+import { RootState } from "../../../app/store"
+import { images } from "../../../res/images"
+import { strings } from "../../../res/strings"
 
 import { GameState } from "../gameSlice"
 import { pickRandom } from "../helpers"
 
 export interface Goal {
   id: string
-  img: string
+  img: string | undefined
   description: string
 }
 
@@ -73,124 +75,121 @@ export const goalDeck: {
   desert: {
     sheriff: [
       {
-        id: "1A",
-        img: "goal1A.png",
-        description: "Deliver 5 Gold Nuggets to Banks.",
+        id: "goal1A",
+        img: images.goals?.goal1A,
+        description: strings.goals.goal1A,
       },
       {
-        id: "1B",
-        img: "goal1B.png",
-        description: "Dig up 8 Gold Nuggets.",
+        id: "goal1B",
+        img: images.goals?.goal1B,
+        description: strings.goals.goal1B,
       },
       {
-        id: "1C",
-        img: "goal1C.png",
-        description: "Complete 2 Banks.",
+        id: "goal1C",
+        img: images.goals?.goal1C,
+        description: strings.goals.goal1C,
       },
       {
-        id: "1D",
-        img: "goal1D.png",
-        description: "Complete 3 Saloons.",
+        id: "goal1D",
+        img: images.goals?.goal1D,
+        description: strings.goals.goal1D,
       },
       {
-        id: "1E",
-        img: "goal1E.png",
-        description: "Complete 1 Fort.",
+        id: "goal1E",
+        img: images.goals?.goal1E,
+        description: strings.goals.goal1E,
       },
     ],
     ranch: [
       {
-        id: "1F",
-        img: "goal1F.png",
-        description: "Connect 3 Stations to the edges of the map.",
+        id: "goal1F",
+        img: images.goals?.goal1F,
+        description: strings.goals.goal1F,
       },
       {
-        id: "1G",
-        img: "goal1G.png",
-        description: "Build a track along 4 different Mountain ranges.",
+        id: "goal1G",
+        img: images.goals?.goal1G,
+        description: strings.goals.goal1G,
       },
       {
-        id: "1H",
-        img: "goal1H.png",
-        description: "Complete 5 ranches.",
+        id: "goal1H",
+        img: images.goals?.goal1H,
+        description: strings.goals.goal1H,
       },
       {
-        id: "1I",
-        img: "goal1I.png",
-        description: "Build 2 Tunnels from 2 different Stations.",
+        id: "goal1I",
+        img: images.goals?.goal1I,
+        description: strings.goals.goal1I,
       },
       {
-        id: "1J",
-        img: "goal1J.png",
-        description:
-          "Complete 1 Building with tracks from more than 1 Station.",
+        id: "goal1J",
+        img: images.goals?.goal1J,
+        description: strings.goals.goal1J,
       },
     ],
     train: [
       {
-        id: "1K",
-        img: "goal1K.png",
-        description: "Connect to 6 Towns.",
+        id: "goal1K",
+        img: images.goals?.goal1K,
+        description: strings.goals.goal1K,
       },
       {
-        id: "1L",
-        img: "goal1L.png",
-        description: "Connect 3 Towns to the same Station.",
+        id: "goal1L",
+        img: images.goals?.goal1L,
+        description: strings.goals.goal1L,
       },
       {
-        id: "1M",
-        img: "goal1M.png",
-        description: "Build 2 Bridges from 2 different Stations.",
+        id: "goal1M",
+        img: images.goals?.goal1M,
+        description: strings.goals.goal1M,
       },
       {
-        id: "1N",
-        img: "goal1N.png",
-        description: "Connect 1 Town to 2 different Stations.",
+        id: "goal1N",
+        img: images.goals?.goal1N,
+        description: strings.goals.goal1N,
       },
       {
-        id: "1O",
-        img: "goal1O.png",
-        description: "Complete 2 Rail Yards.",
+        id: "goal1O",
+        img: images.goals?.goal1O,
+        description: strings.goals.goal1O,
       },
     ],
   },
   forestSpecific: {
     sheriff: [
       {
-        id: "2A",
-        img: "goal2A.png",
-        description: "Deliver 6 Bandits in Jails.",
+        id: "goal2A",
+        img: images.goals?.goal2A,
+        description: strings.goals.goal2A,
       },
       {
-        id: "2B",
-        img: "goal2B.png",
-        description:
-          "Complete 2 Jails (this does not mean fill them with Bandits).",
+        id: "goal2B",
+        img: images.goals?.goal2B,
+        description: strings.goals.goal2B,
       },
       {
-        id: "2C",
-        img: "goal2C.png",
-        description: "Build 2 tracks along 3 different Forts.",
+        id: "goal2C",
+        img: images.goals?.goal2C,
+        description: strings.goals.goal2C,
       },
     ],
     ranch: [
       {
-        id: "2D",
-        img: "goal2D.png",
-        description:
-          "Build tracks extending from 4 different Stations, connecting to Mountain ranges.",
+        id: "goal2D",
+        img: images.goals?.goal2D,
+        description: strings.goals.goal2D,
       },
     ],
     train: [
       {
-        id: "2E",
-        img: "goal2E.png",
-        description: "Connect to 3 Towns by Mountains.",
+        id: "goal2E",
+        img: images.goals?.goal2E,
+        description: strings.goals.goal2E,
       },
       {
-        id: "2F",
-        img: "goal2F.png",
-        description: "Connect to 3 Towns by the River.",
+        id: "goal2F",
+        img: images.goals?.goal2F,
+        description: strings.goals.goal2F,
       },
     ],
   },
