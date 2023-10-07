@@ -20,6 +20,7 @@ export function Goals() {
       direction={{ xs: "row", sm: "column" }}
       spacing={3}
       justifyContent="center"
+      alignItems={"center"}
     >
       {goalsList.map((goal) => (
         <GoalCard key={goal.id} goal={goal} />

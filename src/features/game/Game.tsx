@@ -37,7 +37,7 @@ export function Game() {
     if (largeScreen) {
       return (
         <Grid container spacing={2} mb={8} height={"100%"}>
-          <Grid item xs={2}>
+          <Grid item xs={2} mt={8}>
             <Goals />
           </Grid>
           <Grid item xs={8}>

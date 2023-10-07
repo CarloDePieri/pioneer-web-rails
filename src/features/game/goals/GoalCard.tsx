@@ -1,7 +1,11 @@
 import { Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import ZoomInIcon from "@mui/icons-material/ZoomIn"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
+import { useAppSelector } from "../../../app/hooks"
+import { selectCompanyCard, selectConfigCompany } from "../gameSlice"
 import { Goal } from "./gameGoals"
 
 interface Props extends PropsWithChildren<any> {
@@ -9,15 +13,30 @@ interface Props extends PropsWithChildren<any> {
 }
 
 export function GoalCard({ goal }: Props) {
+  let company = useAppSelector(selectConfigCompany)
+  const theme = useTheme()
+  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+
+  const goalCardSize = () => {
+    if (company) {
+      return {}
+    } else {
+      if (largeScreen) {
+        return {
+          width: "9vw",
+        }
+      } else {
+        return {}
+      }
+    }
+  }
+
   if (goal.img) {
     return (
       <Card
         elevation={0}
         sx={{
-          width: {
-            xs: "15vw",
-            sm: "7vw",
-          },
+          ...goalCardSize(),
         }}
       >
         <CardMedia
