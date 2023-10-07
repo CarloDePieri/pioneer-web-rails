@@ -1,5 +1,6 @@
 import { Button, Grid } from "@mui/material"
 import React from "react"
+import { ActionCreators } from "redux-undo"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
   deal,
@@ -16,15 +17,15 @@ export function NewGameStartButton() {
   const advanced = useAppSelector(selectConfigAdvanced)
 
   function startGame() {
+    dispatch(init())
+    dispatch(newRound())
     if (!advanced) {
-      dispatch(init())
-      dispatch(newRound())
       dispatch(deal())
     } else {
-      dispatch(init())
-      dispatch(newRound())
       dispatch(dealSecrets())
     }
+    // Make sure to start from a clean undo/redo history
+    dispatch(ActionCreators.clearHistory())
   }
 
   return (
