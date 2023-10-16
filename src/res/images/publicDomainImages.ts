@@ -7,6 +7,7 @@ export function publicDomainCards(): CardImageType {
 
   return {
     deck: {
+      back: url("deck/back.svg"),
       spades: {
         ace: url("deck/spades_ace.svg"),
         king: url("deck/spades_king.svg"),

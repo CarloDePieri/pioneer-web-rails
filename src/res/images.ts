@@ -5,6 +5,7 @@ export const licensed: boolean = import.meta.env.VITE_LICENSED_IMAGES === "true"
 
 export type CardImageType = {
   deck: {
+    back: string
     spades: {
       ace: string
       king: string

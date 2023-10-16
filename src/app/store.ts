@@ -7,6 +7,7 @@ import {
 import gameStateReducer from "../features/game/gameSlice"
 import themeReducer from "../features/theme/themeSlice"
 import galleryReducer from "../features/gallery/gallerySlice"
+import advancedGalleryReducer from "../features/game/advanced/advancedSlice"
 import undoable from "redux-undo"
 
 import storage from "redux-persist/lib/storage"
@@ -34,6 +35,7 @@ const persistedReducer = persistReducer(
     interface: combineReducers({
       theme: themeReducer,
       gallery: galleryReducer,
+      advancedGallery: advancedGalleryReducer,
     }),
   }),
 )

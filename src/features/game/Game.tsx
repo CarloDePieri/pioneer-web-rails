@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard"
+import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
 import { Gallery } from "../gallery/Gallery"
@@ -40,6 +41,7 @@ export function Game() {
       return (
         <React.Fragment>
           <Gallery />
+          <AdvancedGallery />
           <Grid container spacing={2} mt={4} mb={8} height={"100%"}>
             <Grid item xs={2}>
               <CompanyCardHolder />

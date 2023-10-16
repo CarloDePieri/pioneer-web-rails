@@ -5,6 +5,7 @@ export function licensedCards(): CardImageType {
   const url = (path: string): string => `${root}/${path}.png`
   return {
     deck: {
+      back: url("deck/back"),
       spades: {
         ace: url("deck/spades_ace"),
         king: url("deck/spades_king"),

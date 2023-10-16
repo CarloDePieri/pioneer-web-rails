@@ -47,7 +47,7 @@ export const deckSelector = {
     (players: Player[], secretRoundCards: SecretCard[]) => {
       return new Map<string, Card | undefined>(
         players.map((player) => [
-          player.name,
+          player.id,
           secretRoundCards.filter((card) => card.playerId === player.id)[0]
             ?.card,
         ]),

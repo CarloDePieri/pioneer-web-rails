@@ -1,26 +1,19 @@
 import { Stack } from "@mui/material"
 import React from "react"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { images } from "../../../res/images"
-import { pick, selectDisplay, selectPickedCard, unpick } from "../gameSlice"
+import { useAppSelector } from "../../../app/hooks"
+import { selectConfigAdvanced, selectDisplay, selectTurn } from "../gameSlice"
+import { DisplayAdvanced } from "./DisplayAdvanced"
 import { PlayingCard } from "./PlayingCard"
 
 export function Display() {
-  const dispatch = useAppDispatch()
   const display = useAppSelector(selectDisplay)
-  const selectedCard = useAppSelector(selectPickedCard)
-  const getColor = (id: string) => (id === selectedCard?.id ? "red" : "black")
+  const advanced = useAppSelector(selectConfigAdvanced)
+  const turn = useAppSelector(selectTurn)
 
-  const togglePick = (id: string) => {
-    if (id === selectedCard?.id) {
-      dispatch(unpick())
-    } else {
-      dispatch(pick(id))
-    }
-  }
-
-  return (
-    <div>
+  if (advanced && (turn === 0 || turn === 5)) {
+    return <DisplayAdvanced />
+  } else {
+    return (
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={4}
@@ -31,6 +24,6 @@ export function Display() {
           <PlayingCard key={card.id} card={card} />
         ))}
       </Stack>
-    </div>
-  )
+    )
+  }
 }

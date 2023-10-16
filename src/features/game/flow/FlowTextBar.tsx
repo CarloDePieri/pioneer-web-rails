@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
@@ -9,14 +10,22 @@ import {
   Typography,
 } from "@mui/material"
 import React from "react"
-import { useAppSelector } from "../../../app/hooks"
-import { selectDealer, selectRound, selectTurn } from "../gameSlice"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { openAdvancedGallery } from "../advanced/advancedSlice"
+import {
+  selectConfigAdvanced,
+  selectDealer,
+  selectRound,
+  selectTurn,
+} from "../gameSlice"
 import PersonIcon from "@mui/icons-material/Person"
 
 export function FlowTextBar() {
+  const dispatch = useAppDispatch()
   const dealer = useAppSelector(selectDealer)
   const round = useAppSelector(selectRound)
   const turn = useAppSelector(selectTurn)
+  const advanced = useAppSelector(selectConfigAdvanced)
 
   return (
     <React.Fragment>
@@ -34,6 +43,16 @@ export function FlowTextBar() {
           variant="filled"
           color={"success"}
         />
+        {advanced ? (
+          <Button
+            variant={"contained"}
+            onClick={() => dispatch(openAdvancedGallery())}
+          >
+            Secret Cards
+          </Button>
+        ) : (
+          <></>
+        )}
       </Stack>
       <Box mt={4} mb={8}>
         <Divider variant="fullWidth" />
