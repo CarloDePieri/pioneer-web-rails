@@ -1,14 +1,4 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material"
+import { Badge, Box, Button, Chip, Divider, Stack } from "@mui/material"
 import React from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { openAdvancedGallery } from "../advanced/advancedSlice"
@@ -29,6 +19,37 @@ export function FlowTextBar() {
   const advanced = useAppSelector(selectConfigAdvanced)
   const players = useAppSelector(selectPlayers)
 
+  const getDealersChip = () => {
+    if (players.length >= 5) {
+      return (
+        <Chip
+          label={"Ignore the picked card!"}
+          variant="filled"
+          color={"info"}
+        />
+      )
+    } else if (advanced && turn === 5) {
+      return (
+        <Chip
+          label={"End round secret cards"}
+          variant="filled"
+          color={"success"}
+        />
+      )
+    } else if (advanced && turn === 0) {
+      return <Chip label={"Dealing..."} variant="filled" color={"success"} />
+    } else {
+      return (
+        <Chip
+          icon={<PersonIcon />}
+          label={dealer.name}
+          variant="filled"
+          color={"success"}
+        />
+      )
+    }
+  }
+
   return (
     <React.Fragment>
       {" "}
@@ -39,20 +60,7 @@ export function FlowTextBar() {
         <Badge badgeContent={turn} color="secondary">
           <Chip label="Turn" />
         </Badge>
-        {players.length >= 5 ? (
-          <Chip
-            label={"Ignore the picked card!"}
-            variant="filled"
-            color={"info"}
-          />
-        ) : (
-          <Chip
-            icon={<PersonIcon />}
-            label={dealer.name}
-            variant="filled"
-            color={"success"}
-          />
-        )}
+        {getDealersChip()}
         {advanced ? (
           <Button
             variant={"contained"}
