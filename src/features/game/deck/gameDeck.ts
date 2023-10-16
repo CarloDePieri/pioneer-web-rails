@@ -64,9 +64,10 @@ export function deck(state: Draft<GameState>) {
     if (deck.length === 0) {
       // reshuffle the discard pile into the deck
       state.table.deck = shuffle(state.table.discard)
+      state.table.discard = []
     }
     // draw - since this function is handled by Immer this should be safe from race conditions
-    return deck.pop() as Draft<Card>
+    return state.table.deck.pop() as Draft<Card>
   }
   function fromDeckToDisplay(): Draft<Card> {
     let card = drawFromDeck()
@@ -106,7 +107,10 @@ export function deck(state: Draft<GameState>) {
     newRound() {
       // recreate the deck and shuffle it
       table.deck = shuffle(
-        table.deck.concat(table.display).concat(table.discard),
+        table.deck
+          .concat(table.display)
+          .concat(table.discard)
+          .concat(table.secretRoundCards.map((secretCard) => secretCard.card)),
       )
       // reset the rest of the deck state
       table.display = []

@@ -61,7 +61,7 @@ export function CompanyCard({ card }: Props) {
           sx={{ height: "100%" }}
         >
           <Typography variant={"h6"} fontWeight={"bold"} gutterBottom>
-            {card.id.replace("goal", "")}
+            {card.id.replace("company", "")}
           </Typography>
           <ZoomInIcon />
         </Stack>
