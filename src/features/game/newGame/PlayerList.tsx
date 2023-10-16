@@ -100,12 +100,13 @@ export function PlayerList() {
       <Grid item xs={2} />
       <Grid item xs={8}>
         <Button
+          disabled={players.length >= 8}
           variant={"text"}
           style={{ width: "100%" }}
           onClick={addPlayer}
           startIcon={<PersonAddAlt1Icon />}
         >
-          Add Player
+          {players.length >= 8 ? "Maximum player count reached!" : "Add Player"}
         </Button>
       </Grid>
       <Grid item xs={2} />
