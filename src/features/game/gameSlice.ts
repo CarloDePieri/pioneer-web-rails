@@ -75,6 +75,15 @@ export const gameSlice = createSlice({
 
       // advance the game flow with a deal action
       gameFlow(state).deal()
+
+      // If more than 5 players, also pick the first card
+      if (state.players.length >= 5) {
+        // advance the game flow with a pick action
+        gameFlow(state).pick()
+
+        // pick the card
+        deck(state).pick(state.table.display[0].id)
+      }
     },
     dealSecrets: (state) => {
       // deal the secret cards

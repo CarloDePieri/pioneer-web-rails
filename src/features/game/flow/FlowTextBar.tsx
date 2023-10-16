@@ -15,6 +15,7 @@ import { openAdvancedGallery } from "../advanced/advancedSlice"
 import {
   selectConfigAdvanced,
   selectDealer,
+  selectPlayers,
   selectRound,
   selectTurn,
 } from "../gameSlice"
@@ -26,6 +27,7 @@ export function FlowTextBar() {
   const round = useAppSelector(selectRound)
   const turn = useAppSelector(selectTurn)
   const advanced = useAppSelector(selectConfigAdvanced)
+  const players = useAppSelector(selectPlayers)
 
   return (
     <React.Fragment>
@@ -37,12 +39,20 @@ export function FlowTextBar() {
         <Badge badgeContent={turn} color="secondary">
           <Chip label="Turn" />
         </Badge>
-        <Chip
-          icon={<PersonIcon />}
-          label={dealer.name}
-          variant="filled"
-          color={"success"}
-        />
+        {players.length >= 5 ? (
+          <Chip
+            label={"Ignore the picked card!"}
+            variant="filled"
+            color={"info"}
+          />
+        ) : (
+          <Chip
+            icon={<PersonIcon />}
+            label={dealer.name}
+            variant="filled"
+            color={"success"}
+          />
+        )}
         {advanced ? (
           <Button
             variant={"contained"}

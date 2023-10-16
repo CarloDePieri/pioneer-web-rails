@@ -1,8 +1,6 @@
 import { Badge, Fab, Stack } from "@mui/material"
-import NavigationIcon from "@mui/icons-material/Navigation"
 
 // pick
-import TouchAppIcon from "@mui/icons-material/TouchApp"
 import UndoIcon from "@mui/icons-material/Undo"
 import RedoIcon from "@mui/icons-material/Redo"
 import { ActionCreators } from "redux-undo"
