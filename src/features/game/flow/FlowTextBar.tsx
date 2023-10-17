@@ -23,7 +23,7 @@ export function FlowTextBar() {
     if (players.length >= 5) {
       return (
         <Chip
-          label={"Ignore the picked card!"}
+          label={"Picked card is unavailable"}
           variant="filled"
           color={"info"}
         />

@@ -1,16 +1,9 @@
 import {
-  configureStore,
-  ThunkAction,
   Action,
   combineReducers,
+  configureStore,
+  ThunkAction,
 } from "@reduxjs/toolkit"
-import gameStateReducer from "../features/game/gameSlice"
-import themeReducer from "../features/theme/themeSlice"
-import galleryReducer from "../features/gallery/gallerySlice"
-import advancedGalleryReducer from "../features/game/advanced/advancedSlice"
-import undoable from "redux-undo"
-
-import storage from "redux-persist/lib/storage"
 import { persistReducer, persistStore } from "redux-persist"
 import {
   FLUSH,
@@ -20,6 +13,14 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist/es/constants"
+
+import storage from "redux-persist/lib/storage"
+import undoable, { excludeAction } from "redux-undo"
+import galleryReducer from "../features/gallery/gallerySlice"
+import advancedGalleryReducer from "../features/game/advanced/advancedSlice"
+import gameStateReducer from "../features/game/gameSlice"
+import themeReducer from "../features/theme/themeSlice"
+import { isInNewRoundGroup } from "./groupActions"
 
 const persistConfig = {
   key: "root",
@@ -31,6 +32,14 @@ const persistedReducer = persistReducer(
   combineReducers({
     gameState: undoable(gameStateReducer, {
       limit: 10, // set a limit for the size of the history
+      groupBy: (action, currentState, _) => {
+        // group together consecutive NEW_ROUND, DEAL|DEAL_SECRETS state
+        if (isInNewRoundGroup(action, currentState)) {
+          return "NEW_ROUND_GROUP"
+        }
+        return null
+      },
+      filter: excludeAction(["gameState/pick", "gameState/unpick"]),
     }),
     interface: combineReducers({
       theme: themeReducer,
@@ -51,6 +60,7 @@ export const store = configureStore({
     }),
 })
 
+// noinspection SpellCheckingInspection
 export const persistor = persistStore(store)
 export type AppDispatch = typeof store.dispatch
 export type RootState = ReturnType<typeof store.getState>
