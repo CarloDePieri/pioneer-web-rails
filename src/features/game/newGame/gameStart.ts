@@ -1,6 +1,6 @@
-import { Draft } from "@reduxjs/toolkit";
-import { RootState } from "../../../app/store";
-import { GameState } from "../gameSlice";
+import { Draft } from "@reduxjs/toolkit"
+import { RootState } from "../../../app/store"
+import { GameState } from "../gameSlice"
 
 export interface GameConfig {
   forestMap: boolean
@@ -29,8 +29,10 @@ export interface NewGame {
 export const configSelector = {
   forest: (state: RootState) => state.gameState.present.config.forestMap,
   jokers: (state: RootState) => state.gameState.present.config.jokerExpansion,
-  company: (state: RootState) => state.gameState.present.config.companyOwnersExpansion,
-  advanced: (state: RootState) => state.gameState.present.config.advancedHandCardRule,
+  company: (state: RootState) =>
+    state.gameState.present.config.companyOwnersExpansion,
+  advanced: (state: RootState) =>
+    state.gameState.present.config.advancedHandCardRule,
 }
 
 export function toggleConfig(state: Draft<GameState>) {

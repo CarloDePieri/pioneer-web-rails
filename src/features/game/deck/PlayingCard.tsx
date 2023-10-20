@@ -41,6 +41,7 @@ export function PlayingCard({ card }: Props) {
       elevation={5}
       sx={{
         boxShadow: isSelected ? getShadow() : "",
+        transform: isSelected ? "translateY(2%)" : "",
         width: {
           xs: "50vw",
           sm: "20vw",

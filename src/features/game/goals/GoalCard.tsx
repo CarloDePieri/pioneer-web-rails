@@ -42,7 +42,7 @@ export function GoalCard({ goal }: Props) {
   if (goal.img) {
     return (
       <Card
-        elevation={0}
+        elevation={5}
         sx={{
           ...goalCardSize(),
         }}

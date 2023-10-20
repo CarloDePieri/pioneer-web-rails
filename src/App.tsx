@@ -1,3 +1,4 @@
+import { Box, Container } from "@mui/material"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import * as React from "react"
@@ -13,7 +14,12 @@ function App() {
       <ThemeProvider theme={getTheme(useAppSelector(selectTheme))}>
         <CssBaseline />
         <Header />
-        <Game />
+        <Container>
+          {/* The box is used to counter the header dimension*/}
+          <Box pt={24}>
+            <Game />
+          </Box>
+        </Container>
       </ThemeProvider>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material"
+import { Box, Container, Grid } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
 import { AdvancedCard } from "./advanced/AdvancedCard"
 import { AdvancedGallery } from "./advanced/AdvancedGallery"
@@ -48,11 +48,19 @@ export function Game() {
               <Goals />
             </Grid>
             <Grid item xs={8}>
-              <FlowTextBar />
-              <Display />
+              <Box position={"fixed"} sx={{ width: "66vw", zIndex: 10 }}>
+                <FlowTextBar />
+              </Box>
+              <Container>
+                <Box mt={36}>
+                  <Display />
+                </Box>
+              </Container>
             </Grid>
             <Grid item xs={2}>
-              <FlowButtons />
+              <Box position={"fixed"} pl={16}>
+                <FlowButtons />
+              </Box>
             </Grid>
           </Grid>
         </React.Fragment>
