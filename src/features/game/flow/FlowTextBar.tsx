@@ -44,14 +44,22 @@ export function FlowTextBar() {
   return (
     <Card elevation={7} sx={{ padding: 4, paddingTop: 8 }}>
       {" "}
-      <Stack spacing={8} direction={"row"}>
-        <Badge badgeContent={round} color="primary">
-          <Chip label="Round" />
-        </Badge>
-        <Badge badgeContent={turn} color="secondary">
-          <Chip label="Turn" />
-        </Badge>
-        {getDealersChip()}
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Stack direction={"row"} spacing={4} sx={{ flexGrow: 1 }}>
+          <Badge badgeContent={round} color="primary">
+            <Chip label="Round" />
+          </Badge>
+          <Badge badgeContent={turn} color="secondary">
+            <Chip label="Turn" />
+          </Badge>
+          {getDealersChip()}
+        </Stack>
         {advanced ? (
           <Box style={{ marginTop: -6 }}>
             <Button
@@ -65,7 +73,8 @@ export function FlowTextBar() {
         ) : (
           <></>
         )}
-      </Stack>
+      </Box>
+      <Stack spacing={8} direction={"row"}></Stack>
     </Card>
   )
 }

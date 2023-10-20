@@ -17,6 +17,16 @@ import { GridHeading } from "./GridHeading"
 // noinspection SpellCheckingInspection
 import { v4 as uuidv4 } from "uuid"
 
+function isNameTooShort(name: string): boolean {
+  return name.length === 0
+}
+function isNameTooLong(name: string): boolean {
+  return name.length > 16
+}
+export function validName(name: string): boolean {
+  return !(isNameTooShort(name) || isNameTooLong(name))
+}
+
 export function PlayerList() {
   const players = useAppSelector(selectPlayers)
   const dispatch = useAppDispatch()
@@ -44,6 +54,18 @@ export function PlayerList() {
     dispatch(updatePlayers(players.filter((player) => player.id !== id)))
   }
 
+  const labelMessage = (name: string, index: number) => {
+    let error
+    if (isNameTooLong(name)) {
+      error = " - Name too long!"
+    } else if (isNameTooShort(name)) {
+      error = " - Insert the player name!"
+    } else {
+      error = ""
+    }
+    return "Player " + (index + 1) + error
+  }
+
   return (
     <React.Fragment>
       <GridHeading size={"h6"}>Players</GridHeading>
@@ -54,10 +76,14 @@ export function PlayerList() {
               <Grid item xs={1} />
               <Grid item xs={10}>
                 <FormControl variant="standard" style={{ width: "100%" }}>
-                  <InputLabel htmlFor={"player-input-" + player.id}>
-                    Player {index + 1}
+                  <InputLabel
+                    error={isNameTooLong(player.name)}
+                    htmlFor={"player-input-" + player.id}
+                  >
+                    {labelMessage(player.name, index)}
                   </InputLabel>
                   <Input
+                    error={isNameTooLong(player.name)}
                     id={"player-input-" + player.id}
                     type="text"
                     value={player.name}

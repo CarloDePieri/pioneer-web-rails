@@ -11,7 +11,7 @@ export default function Header() {
       <Toolbar variant="dense">
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="button" ml={8}>
-            Pioneer Rails
+            Pioneer Web Rails
           </Typography>
         </Box>
         <NewGameButton />

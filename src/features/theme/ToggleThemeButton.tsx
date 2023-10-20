@@ -12,7 +12,7 @@ export function ToggleThemeButton() {
 
   return (
     <IconButton
-      sx={{ ml: 1 }}
+      sx={{ ml: 1, mr: 8 }}
       onClick={() => dispatch(toggleTheme())}
       color="inherit"
     >

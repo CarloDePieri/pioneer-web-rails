@@ -10,6 +10,7 @@ import {
   selectConfigAdvanced,
   selectPlayers,
 } from "../gameSlice"
+import { validName } from "./PlayerList"
 
 export function NewGameStartButton() {
   const dispatch = useAppDispatch()
@@ -36,7 +37,13 @@ export function NewGameStartButton() {
           variant="contained"
           color="success"
           style={{ width: "100%", minHeight: "50px" }}
-          disabled={players.length === 0}
+          disabled={
+            players.length === 0 ||
+            players.reduce(
+              (invalid, player) => invalid || !validName(player.name),
+              false,
+            )
+          }
           onClick={startGame}
         >
           Start a new game!
