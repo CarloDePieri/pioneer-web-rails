@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, Typography } from "@mui/material"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../../app/hooks"
 import { selectSecretCards, selectTurn } from "../gameSlice"
 import { AdvancedPlayingCard } from "./AdvancedPlayingCard"
@@ -9,23 +10,23 @@ export function DisplayAdvanced() {
   const turn = useAppSelector(selectTurn)
   const secretCards = useAppSelector(selectSecretCards)
   const secretCardsArray = Array.from(secretCards.entries())
+  const { t } = useTranslation()
 
   if (turn === 0) {
     return (
       <Card>
         <CardContent>
           <Typography variant={"h5"} gutterBottom>
-            Advanced Hand Card Rule
+            {t("advanced.display.title")}
           </Typography>
           <Typography variant={"body1"}>
-            The card for the fifth and final turn of this round has been dealt
-            to all players.
+            {t("advanced.display.body1")}
           </Typography>
           <Typography variant={"body1"} gutterBottom>
-            Check out your secret card using the button above.
+            {t("advanced.display.body2")}
           </Typography>
           <Typography variant={"body1"} fontWeight={"bold"}>
-            Don't peek other players' card!
+            {t("advanced.display.body3")}
           </Typography>
         </CardContent>
       </Card>

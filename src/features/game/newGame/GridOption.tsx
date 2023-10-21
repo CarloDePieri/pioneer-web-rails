@@ -3,26 +3,19 @@ import ClearIcon from "@mui/icons-material/Clear"
 import LightModeIcon from "@mui/icons-material/LightMode"
 import ForestIcon from "@mui/icons-material/Forest"
 
-import { Button, Grid } from "@mui/material"
+import { Button, ButtonProps, Grid } from "@mui/material"
 import React, { PropsWithChildren } from "react"
 
-type colorType =
-  | "primary"
-  | "inherit"
-  | "error"
-  | "secondary"
-  | "success"
-  | "info"
-  | "warning"
-type buttonVariantType = "contained" | "text" | "outlined"
+type variantType = ButtonProps["variant"]
+type colorType = ButtonProps["color"]
 type iconType = "desert" | "forest" | "on" | "off"
 
 interface Props extends PropsWithChildren<any> {
   on: boolean
   handleClick: () => void
   children: string
-  variantOn?: buttonVariantType
-  variantOff?: buttonVariantType
+  variantOn?: variantType
+  variantOff?: variantType
   colorOn?: colorType
   colorOff?: colorType
   iconOn?: iconType

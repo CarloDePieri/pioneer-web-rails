@@ -4,6 +4,7 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
+import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { openGoalsGallery } from "../../gallery/gallerySlice"
 import { selectConfigCompany } from "../gameSlice"
@@ -18,6 +19,7 @@ export function GoalCard({ goal }: Props) {
   let company = useAppSelector(selectConfigCompany)
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const { t } = useTranslation()
 
   const goalCardSize = () => {
     if (company) {
@@ -50,7 +52,7 @@ export function GoalCard({ goal }: Props) {
         <CardMedia
           component="img"
           image={goal.img}
-          alt={goal.description}
+          alt={t("goals." + goal.id)}
           onClick={() => {
             dispatch(openGoalsGallery())
           }}

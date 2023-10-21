@@ -1,9 +1,10 @@
 import * as React from "react"
 
-import { AppBar, Box, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Stack, Toolbar, Typography } from "@mui/material"
 import { NewGameButton } from "../game/newGame/NewGameButton"
 
 import { ToggleThemeButton } from "../theme/ToggleThemeButton"
+import { LanguageSwitcher } from "./LanguageSwitcher"
 
 export default function Header() {
   return (
@@ -14,8 +15,11 @@ export default function Header() {
             Pioneer Web Rails
           </Typography>
         </Box>
-        <NewGameButton />
-        <ToggleThemeButton />
+        <Stack direction={"row"} spacing={8} mr={8}>
+          <NewGameButton />
+          <LanguageSwitcher />
+          <ToggleThemeButton />
+        </Stack>
       </Toolbar>
     </AppBar>
   )

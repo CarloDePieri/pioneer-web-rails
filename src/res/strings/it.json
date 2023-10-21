@@ -1,0 +1,111 @@
+{
+  "translation": {
+    "goals": {
+      "goal1A": "Consegna 5 Pepite d'Oro alle Banche.",
+      "goal1B": "Estrai 8 Pepite d'Oro.",
+      "goal1C": "Completa 2 Banche.",
+      "goal1D": "Completa 3 Saloon.",
+      "goal1E": "Completa 1 Forte.",
+      "goal1F": "Collega 3 Stazioni ai bordi della mappa.",
+      "goal1G": "Costruisci una ferrovia lungo i bordi di 4 diverse Montagne.",
+      "goal1H": "Completa 5 Ranch.",
+      "goal1I": "Costruisci 2 Gallerie da due diverse Stazioni.",
+      "goal1J": "Completa una Struttura con ferrovie provenienti da più di una Stazione.",
+      "goal1K": "Collegati a 6 Città.",
+      "goal1L": "Collega 3 Città alla stessa Stazione.",
+      "goal1M": "Costruisci 2 Ponti da due diverse Stazioni.",
+      "goal1N": "Collega 1 Città a 2 diverse Stazioni.",
+      "goal1O": "Completa 2 Stazioni di Smistamento.",
+      "goal2A": "Porta 6 Banditi in Prigione.",
+      "goal2B": "Completa 2 Prigioni (non è necessario riempirle di Banditi).",
+      "goal2C": "Costruisci 2 ferrovie lungo i bordi di 3 diversi Forti.",
+      "goal2D": "Costruisci ferrovie che arrivino a delle Montagne, partendo da 4 diverse Stazioni.",
+      "goal2E": "Collegati a 3 Città di Montagna.",
+      "goal2F": "Collegati a 3 Città sul Fiume."
+    },
+    "company": {
+      "companyC1": "In questo round, le Banche possono essere completate con 2 ferrovie invece che 3 (solo nella mappa del deserto).",
+      "companyC2": "In questo round, quando disegni una ferrovia accanto ad un Forte, disegnane una aggiuntiva.",
+      "companyC3": "In questo round, i Saloon sono completati con 1 ferrovia invece che 2.",
+      "companyC4": "In questo round, le mani di carte fanno il doppio di punti (se hai già questo bonus grazie ad un Saloon, la tua mano fa il triplo di punti).",
+      "companyC5": "In questo round, puoi rinunciare a 1 delle tue 3 ferrovie per partire da una Stazione qualsiasi.",
+      "companyC6": "In questo round, puoi disegnare 2 ferrovie invece che 3. Se lo fai, 1 delle 2 ferrovie può essere uno Scambio.",
+      "companyC7": "In questo round, puoi disegnare 2 ferrovie invece che 3. Se lo fai, 1 delle 2 ferrovie può essere un Ponte.",
+      "companyC8": "In questo round, puoi disegnare 2 ferrovie invece che 3. Se lo fai, 1 delle 2 ferrovie può essere una Galleria.",
+      "companyC9": "In questo round, puoi disegnare 2 ferrovie invece che 3. Se lo fai, 1 delle 2 ferrovie può essere una Scorciatoia.",
+      "companyC10": "In questo round, qualsiasi Obiettivo che completi vale 5 punti addizionali."
+    },
+    "gallery": {
+      "company": "Compagnia",
+      "goals": "Obiettivi"
+    },
+    "advanced": {
+      "secretsGallery": {
+        "playerLabel": "Giocatore",
+        "selectPlayerHint": "Seleziona un Giocatore",
+        "showHint": "Tieni premuto per mostrare",
+        "hideHint": "Premi per nascondere"
+      },
+      "display": {
+        "title": "Regole avanzate per la mano di carte",
+        "body1": "La carta per l'ultimo, quinto turno di questo round è stata assegnata in segreto a tutti i Giocatori.",
+        "body2": "Controlla la tua carta segreta usando il bottone qui sopra.",
+        "body3": "Non spiare le carte degli altri!"
+      },
+      "flow": {
+        "secretsButton": "Segreti",
+        "firstTurnChip": "Distribuisco le carte...",
+        "lastTurnChip": "Carte dell'ultimo turno"
+      }
+    },
+    "flow": {
+      "bar": {
+        "noDealerChip": "No Dealer",
+        "roundChip": "Round",
+        "turnChip": "Turno"
+      },
+      "actions": {
+        "pick": "Scegli",
+        "deal": "Pesca",
+        "shuffle": "Mescola",
+        "secrets": "Segreti",
+        "done": "Fine"
+      }
+    },
+    "newGame": {
+      "popup": {
+        "title": "Iniziare una nuova partita?",
+        "body": "La partita corrente verrà scartata!",
+        "cancel": "Annulla",
+        "confirm": "Nuova Partita"
+      },
+      "setup": {
+        "startButton": "Inizia una nuova partita!",
+        "title": "Menu Nuova Partita",
+        "map": {
+          "heading": "Tipo di Mappa",
+          "desert": "Deserto",
+          "forest": "Foresta"
+        },
+        "variants": {
+          "heading": "Varianti",
+          "jokers": "Jolly",
+          "company": "Proprietari d'azienda",
+          "advanced": "Regole per la mano avanzate"
+        },
+        "players": {
+          "heading": "Giocatori",
+          "noPlayerHint": "Devi aggiungere almeno un giocatore per iniziare!",
+          "addPlayerButton": "Aggiungi Giocatore",
+          "player": "Giocatore",
+          "playerNameHint": "Inserisci il nome del giocatore!",
+          "playerNameTooLong": "Nome troppo lungo!",
+          "maximumPlayerCountReached": "Numero massimo di giocatori raggiunto!"
+        }
+      }
+    },
+    "settings": {
+      "languageChanged": "Lingua: Italiano"
+    }
+  }
+}

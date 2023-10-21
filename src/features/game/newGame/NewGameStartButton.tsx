@@ -1,5 +1,6 @@
 import { Button, Grid } from "@mui/material"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { ActionCreators } from "redux-undo"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
@@ -13,6 +14,7 @@ import {
 import { validName } from "./PlayerList"
 
 export function NewGameStartButton() {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const players = useAppSelector(selectPlayers)
   const advanced = useAppSelector(selectConfigAdvanced)
@@ -46,7 +48,7 @@ export function NewGameStartButton() {
           }
           onClick={startGame}
         >
-          Start a new game!
+          {t("newGame.setup.startButton")}
         </Button>
       </Grid>
       <Grid item xs={1} mt={16} />

@@ -9,6 +9,7 @@ import {
 } from "@mui/material"
 import IconButton from "@mui/material/IconButton"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectPlayers, updatePlayers } from "../gameSlice"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -28,6 +29,7 @@ export function validName(name: string): boolean {
 }
 
 export function PlayerList() {
+  const { t } = useTranslation()
   const players = useAppSelector(selectPlayers)
   const dispatch = useAppDispatch()
 
@@ -57,18 +59,20 @@ export function PlayerList() {
   const labelMessage = (name: string, index: number) => {
     let error
     if (isNameTooLong(name)) {
-      error = " - Name too long!"
+      error = " - " + t("newGame.setup.players.playerNameTooLong")
     } else if (isNameTooShort(name)) {
-      error = " - Insert the player name!"
+      error = " - " + t("newGame.setup.players.playerNameHint")
     } else {
       error = ""
     }
-    return "Player " + (index + 1) + error
+    return t("newGame.setup.players.player") + " " + (index + 1) + error
   }
 
   return (
     <React.Fragment>
-      <GridHeading size={"h6"}>Players</GridHeading>
+      <GridHeading size={"h6"}>
+        {t("newGame.setup.players.heading")}
+      </GridHeading>
       {players.length > 0 ? (
         players.map((player, index) => {
           return (
@@ -116,7 +120,7 @@ export function PlayerList() {
               color={"error"}
               gutterBottom
             >
-              You need at least a player to start!
+              {t("newGame.setup.players.noPlayerHint")}
             </Typography>
           </Grid>
           <Grid item xs={1} />
@@ -132,7 +136,9 @@ export function PlayerList() {
           onClick={addPlayer}
           startIcon={<PersonAddAlt1Icon />}
         >
-          {players.length >= 8 ? "Maximum player count reached!" : "Add Player"}
+          {players.length >= 8
+            ? t("newGame.setup.players.maximumPlayerCountReached")
+            : t("newGame.setup.players.addPlayerButton")}
         </Button>
       </Grid>
       <Grid item xs={2} />

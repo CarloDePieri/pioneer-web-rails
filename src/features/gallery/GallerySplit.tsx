@@ -2,6 +2,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft"
 import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { Button, Grid, Stack } from "@mui/material"
 import React from "react"
+import { Trans, useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { CompanyGallery } from "./CompanyGallery"
 import {
@@ -14,6 +15,8 @@ import { GoalsGallery } from "./GoalsGallery"
 export function GallerySplit() {
   const dispatch = useAppDispatch()
   const window = useAppSelector(selectGalleryWindow)
+  const { t } = useTranslation()
+
   if (window === "goals") {
     return (
       <Grid container spacing={2} style={{ width: "100%" }}>
@@ -31,7 +34,7 @@ export function GallerySplit() {
                 dispatch(openCompanyGallery())
               }}
             >
-              Company
+              {t("gallery.company")}
             </Button>
           </Stack>
         </Grid>
@@ -60,7 +63,7 @@ export function GallerySplit() {
                 dispatch(openGoalsGallery())
               }}
             >
-              Goals
+              {t("gallery.goals")}
             </Button>
           </Stack>
         </Grid>

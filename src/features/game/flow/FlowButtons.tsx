@@ -3,6 +3,7 @@ import { Badge, Fab, Stack } from "@mui/material"
 // pick
 import UndoIcon from "@mui/icons-material/Undo"
 import RedoIcon from "@mui/icons-material/Redo"
+import { useTranslation } from "react-i18next"
 import { ActionCreators } from "redux-undo"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { openGoalsGallery } from "../../gallery/gallerySlice"
@@ -21,6 +22,7 @@ import {
 import { GameFlowState } from "./gameFlows"
 
 export function FlowButtons() {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const next = useAppSelector(selectNextOp)
   const advanced = useAppSelector(selectAdvancedHandCardRule)
@@ -60,11 +62,11 @@ export function FlowButtons() {
 
   const nextButtonText = () => {
     let text = new Map<GameFlowState, string>([
-      ["PICK", "Pick"],
-      ["DEAL", "Deal"],
-      ["NEW_ROUND", "Shuffle"],
-      ["SHOW_SECRETS", "Secrets"],
-      ["END_GAME", "Done"],
+      ["PICK", t("flow.actions.pick")],
+      ["DEAL", t("flow.actions.deal")],
+      ["NEW_ROUND", t("flow.actions.shuffle")],
+      ["SHOW_SECRETS", t("flow.actions.secrets")],
+      ["END_GAME", t("flow.actions.done")],
     ]).get(next)
     return text ?? ""
   }

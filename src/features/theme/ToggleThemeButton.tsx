@@ -11,11 +11,7 @@ export function ToggleThemeButton() {
   const dispatch = useAppDispatch()
 
   return (
-    <IconButton
-      sx={{ ml: 1, mr: 8 }}
-      onClick={() => dispatch(toggleTheme())}
-      color="inherit"
-    >
+    <IconButton onClick={() => dispatch(toggleTheme())} color="inherit">
       {theme.palette.mode === "dark" ? (
         <Brightness7Icon />
       ) : (

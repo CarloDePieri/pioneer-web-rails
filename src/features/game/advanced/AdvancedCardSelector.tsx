@@ -12,6 +12,7 @@ import {
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectPlayers } from "../gameSlice"
 import {
@@ -25,6 +26,7 @@ import {
 import useLongPress from "./useLongPress"
 
 export function AdvancedCardSelector() {
+  const { t } = useTranslation()
   const theme = useTheme()
   const dispatch = useAppDispatch()
 
@@ -61,13 +63,15 @@ export function AdvancedCardSelector() {
           alignItems="center"
         >
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Player</InputLabel>
+            <InputLabel id="select-player-label">
+              {t("advanced.secretsGallery.playerLabel")}
+            </InputLabel>
             <Select
               disabled={isCardShown}
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="select-player-label"
+              id="select-player"
               value={playerId ?? ""}
-              label="Player"
+              label={t("advanced.secretsGallery.playerLabel")}
               onChange={(event) =>
                 dispatch(pickAdvancedGalleryPlayer(event.target.value))
               }
@@ -84,7 +88,7 @@ export function AdvancedCardSelector() {
               hidden={playerId !== undefined}
               sx={{ color: theme.palette.primary.main }}
             >
-              Select a player
+              {t("advanced.secretsGallery.selectPlayerHint")}
             </FormHelperText>
             <Button
               fullWidth
@@ -100,7 +104,9 @@ export function AdvancedCardSelector() {
               hidden={playerId === undefined}
               sx={{ color: theme.palette.primary.main }}
             >
-              {isCardShown ? "Press again to hide" : "Hold to show"}
+              {isCardShown
+                ? t("advanced.secretsGallery.hideHint")
+                : t("advanced.secretsGallery.showHint")}
             </FormHelperText>
           </FormControl>
         </Stack>

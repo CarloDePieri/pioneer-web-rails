@@ -1,5 +1,6 @@
-import { Box, Grid } from "@mui/material"
+import { Box, Container, Grid, Typography } from "@mui/material"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import {
   selectConfigAdvanced,
@@ -17,16 +18,15 @@ import { NewGameStartButton } from "./NewGameStartButton"
 import { PlayerList } from "./PlayerList"
 
 export function NewGame() {
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   return (
     <Box pb={24}>
       <Grid container spacing={2}>
-        <GridHeading size={"h4"} side={1}>
-          New Game Setup
-        </GridHeading>
+        <GridHeading size={"h4"}>{t("newGame.setup.title")}</GridHeading>
 
-        <GridHeading size={"h6"}>Map type</GridHeading>
+        <GridHeading size={"h6"}>{t("newGame.setup.map.heading")}</GridHeading>
         <GridOption
           on={useAppSelector(selectConfigForest)}
           handleClick={() => dispatch(toggleConfigForest())}
@@ -35,29 +35,31 @@ export function NewGame() {
           colorOn={"success"}
           iconOff={"desert"}
           iconOn={"forest"}
-          textOff={"Desert"}
+          textOff={t("newGame.setup.map.desert")}
         >
-          Forest
+          {t("newGame.setup.map.forest")}
         </GridOption>
 
-        <GridHeading size={"h6"}>Variants</GridHeading>
+        <GridHeading size={"h6"}>
+          {t("newGame.setup.variants.heading")}
+        </GridHeading>
         <GridOption
           on={useAppSelector(selectConfigJokers)}
           handleClick={() => dispatch(toggleConfigJokers())}
         >
-          Jokers
+          {t("newGame.setup.variants.jokers")}
         </GridOption>
         <GridOption
           on={useAppSelector(selectConfigCompany)}
           handleClick={() => dispatch(toggleConfigCompany())}
         >
-          Company Owners
+          {t("newGame.setup.variants.company")}
         </GridOption>
         <GridOption
           on={useAppSelector(selectConfigAdvanced)}
           handleClick={() => dispatch(toggleConfigAdvanced())}
         >
-          Advanced Hand
+          {t("newGame.setup.variants.advanced")}
         </GridOption>
 
         <PlayerList />

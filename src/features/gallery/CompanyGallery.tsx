@@ -1,11 +1,15 @@
 import { Box, Card, CardContent, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
+import { ParseKeys } from "i18next"
+import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../app/hooks"
 import { CompanyCard } from "../game/company/gameCompany"
 import { selectCompanyCard } from "../game/gameSlice"
 
 export function CompanyGallery() {
   const card = useAppSelector(selectCompanyCard) as CompanyCard
+  const { t } = useTranslation()
+  const description = t(`company.${card.id}` as ParseKeys)
 
   if (card.img !== undefined) {
     return (
@@ -19,7 +23,7 @@ export function CompanyGallery() {
             sx={{ width: "30vw" }}
             component="img"
             image={card.img}
-            alt={card.description}
+            alt={description}
           />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CardContent sx={{ flex: "1 0 auto" }}>
@@ -29,7 +33,7 @@ export function CompanyGallery() {
                 align={"center"}
                 fontWeight={"bold"}
               >
-                {card.description}
+                {description}
               </Typography>
             </CardContent>
           </Box>
@@ -66,7 +70,7 @@ export function CompanyGallery() {
                 align={"center"}
                 fontWeight={"bold"}
               >
-                {card.description}
+                {description}
               </Typography>
             </CardContent>
           </Box>

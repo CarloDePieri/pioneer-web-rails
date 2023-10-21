@@ -8,7 +8,7 @@ import { Card as GameCard } from "./gameDeck"
 interface Props extends PropsWithChildren<any> {
   playerId: string
   card: GameCard
-  sx: SxProps
+  sx?: SxProps
 }
 
 export function AdvancedPlayingCard({ playerId, card, sx }: Props) {
