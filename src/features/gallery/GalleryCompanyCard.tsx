@@ -2,17 +2,17 @@ import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { ParseKeys } from "i18next"
 import React from "react"
-import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../app/hooks"
 import { CompanyCard } from "../game/company/gameCompany"
 import { selectCompanyCard } from "../game/gameSlice"
 
 export function GalleryCompanyCard() {
+  // get the card - I'm sure it's there by now
   const card = useAppSelector(selectCompanyCard) as CompanyCard
-  const { t } = useTranslation()
-  const description = t(`company.${card.id}` as ParseKeys)
+  const description = card.description
+  const image = card.img
+
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
 
@@ -27,7 +27,7 @@ export function GalleryCompanyCard() {
           <CardMedia
             sx={{ width: "50vw" }}
             component="img"
-            image={card.img}
+            image={image}
             alt={description}
           />
           <Box
@@ -69,7 +69,7 @@ export function GalleryCompanyCard() {
               {description}
             </Typography>
           </Box>
-          <CardMedia component="img" image={card.img} alt={description} />
+          <CardMedia component="img" image={image} alt={description} />
         </Stack>
       </Card>
     )

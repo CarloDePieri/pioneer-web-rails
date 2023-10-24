@@ -1,18 +1,29 @@
-import { Draft } from "@reduxjs/toolkit"
+import { createSelector, Draft } from "@reduxjs/toolkit"
+import { ParseKeys } from "i18next"
 import { RootState } from "../../../app/store"
-import { images } from "../../../res/images"
+import i18n from "../../../i18n"
+import { getImageById } from "../../settings/DeckTheme"
 
 import { GameState } from "../gameSlice"
 import { shuffle } from "../helpers"
 
-export interface CompanyCard {
-  id: string
-  img: string | undefined
-}
+const companyIds = [
+  "companyC1",
+  "companyC2",
+  "companyC3",
+  "companyC4",
+  "companyC5",
+  "companyC6",
+  "companyC7",
+  "companyC8",
+  "companyC9",
+  "companyC10",
+] as const
+export type CompanyId = (typeof companyIds)[number]
 
 export interface CompanyOwners {
-  companyCard: CompanyCard | undefined
-  companyDeck: CompanyCard[]
+  companyCard: CompanyId | undefined
+  companyDeck: CompanyId[]
 }
 
 export const initialCompanyOwners: CompanyOwners = {
@@ -20,17 +31,34 @@ export const initialCompanyOwners: CompanyOwners = {
   companyDeck: [],
 }
 
+export interface CompanyCard {
+  id: CompanyId
+  img: string
+  description: string
+}
+
 export const companySelector = {
-  roundCard: (state: RootState) =>
-    company(state.gameState.present).getCompanyCard(),
+  roundCard: createSelector(
+    [
+      (state: RootState) => state.gameState.present.companyOwners.companyCard,
+      // this dependency is needed to rebuild the component on language change
+      (state: RootState) => state.settings.lang,
+    ],
+    (card: CompanyId | undefined, _: string): CompanyCard | undefined => {
+      if (card) {
+        return {
+          id: card,
+          img: getImageById.company(card),
+          description: i18n.t(`company.${card}` as ParseKeys),
+        }
+      }
+    },
+  ),
 }
 
 export const company = (state: Draft<GameState>) => {
   let company = state.companyOwners
   return {
-    getCompanyCard() {
-      return company.companyCard
-    },
     draw() {
       let card = company.companyDeck.pop()
       if (card) {
@@ -38,57 +66,14 @@ export const company = (state: Draft<GameState>) => {
       }
     },
     init() {
-      let deck
+      let deck: CompanyId[]
       if (!state.config.forestMap) {
         // C1 company card does not work on desert maps!
-        deck = companyDeck.filter((card) => card.id !== "companyC1")
+        deck = companyIds.slice(1, companyIds.length)
       } else {
-        deck = companyDeck
+        deck = [...companyIds]
       }
       company.companyDeck = shuffle(deck).slice(0, 4)
     },
   }
 }
-
-export const companyDeck: CompanyCard[] = [
-  {
-    id: "companyC1",
-    img: images.company?.companyC1,
-  },
-  {
-    id: "companyC2",
-    img: images.company?.companyC2,
-  },
-  {
-    id: "companyC3",
-    img: images.company?.companyC3,
-  },
-  {
-    id: "companyC4",
-    img: images.company?.companyC4,
-  },
-  {
-    id: "companyC5",
-    img: images.company?.companyC5,
-  },
-  {
-    id: "companyC6",
-    img: images.company?.companyC6,
-  },
-  {
-    id: "companyC7",
-    img: images.company?.companyC7,
-  },
-  {
-    id: "companyC8",
-    img: images.company?.companyC8,
-  },
-  {
-    id: "companyC9",
-    img: images.company?.companyC9,
-  },
-  {
-    id: "companyC10",
-    img: images.company?.companyC10,
-  },
-]
