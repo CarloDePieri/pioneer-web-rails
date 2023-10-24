@@ -1,4 +1,4 @@
-import { Box, Container, Grid } from "@mui/material"
+import { Box, Container, Grid, Stack } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
 import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
@@ -48,5 +48,23 @@ export function Game() {
         </Grid>
       </React.Fragment>
     )
-  } else return <div>rotate</div>
+  } else
+    return (
+      <Stack>
+        <Gallery />
+        <AdvancedGallery />
+        <Container>
+          <Stack
+            mt={8}
+            justifyContent={"center"}
+            alignItems={"center"}
+            direction={"row"}
+            spacing={8}
+          >
+            <CompanyCardHolder />
+            <Goals />
+          </Stack>
+        </Container>
+      </Stack>
+    )
 }

@@ -23,7 +23,7 @@ export function CompanyCard({ card }: Props) {
         elevation={5}
         sx={{
           width: {
-            xs: "12vw",
+            xs: "20vw",
             sm: "12vw",
           },
         }}

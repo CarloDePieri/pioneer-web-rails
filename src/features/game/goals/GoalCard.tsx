@@ -1,8 +1,8 @@
-import { Card, Stack, Typography } from "@mui/material"
+import { Card } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
-import ZoomInIcon from "@mui/icons-material/ZoomIn"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import { ParseKeys } from "i18next"
 import React, { PropsWithChildren } from "react"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -21,6 +21,7 @@ export function GoalCard({ goal }: Props) {
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
   const { t } = useTranslation()
 
+  // TODO refactor this when the company cards are ready
   const goalCardSize = () => {
     if (company) {
       if (largeScreen) {
@@ -41,56 +42,21 @@ export function GoalCard({ goal }: Props) {
     }
   }
 
-  if (goal.img) {
-    return (
-      <Card
-        elevation={5}
-        sx={{
-          ...goalCardSize(),
-        }}
-      >
-        <CardMedia
-          component="img"
-          image={goal.img}
-          alt={t("goals." + goal.id)}
-          onClick={() => {
-            dispatch(openGoalsGallery())
-          }}
-        />
-      </Card>
-    )
-  } else {
-    return (
-      <Card
-        elevation={5}
-        sx={{
-          width: {
-            xs: "15vw",
-            sm: "7vw",
-          },
-          height: {
-            xs: "20vw",
-            sm: "9vw",
-          },
-          textAlign: "center",
-        }}
+  return (
+    <Card
+      elevation={5}
+      sx={{
+        ...goalCardSize(),
+      }}
+    >
+      <CardMedia
+        component="img"
+        image={goal.img}
+        alt={t(("goals." + goal.id) as ParseKeys)}
         onClick={() => {
           dispatch(openGoalsGallery())
         }}
-      >
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          sx={{ height: "100%" }}
-        >
-          <Typography variant={"h6"} fontWeight={"bold"} gutterBottom>
-            {goal.id.replace("goal", "")}
-          </Typography>
-          <ZoomInIcon />
-        </Stack>
-      </Card>
-    )
-  }
+      />
+    </Card>
+  )
 }

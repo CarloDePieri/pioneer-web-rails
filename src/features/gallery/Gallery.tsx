@@ -1,27 +1,33 @@
-import { Backdrop, Grid } from "@mui/material"
 import React from "react"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { selectConfigCompany } from "../game/gameSlice"
-import { GallerySingle } from "./GallerySingle"
-import { closeGallery, selectGalleryOpen } from "./gallerySlice"
-import { GallerySplit } from "./GallerySplit"
+import { useAppSelector } from "../../app/hooks"
+import { selectConfigCompany, selectGoals } from "../game/gameSlice"
+import { Goal } from "../game/goals/gameGoals"
+import { GalleryBackdrop } from "./GalleryBackdrop"
+import { GalleryCompanyCard } from "./GalleryCompanyCard"
+import { GalleryGoalCard } from "./GalleryGoalCard"
+import { GalleryGrid } from "./GalleryGrid"
+import { selectGalleryWindow } from "./gallerySlice"
+
 export function Gallery() {
-  const open = useAppSelector(selectGalleryOpen)
-  const dispatch = useAppDispatch()
+  const goals = useAppSelector(selectGoals)
+  const window = useAppSelector(selectGalleryWindow)
   const company = useAppSelector(selectConfigCompany)
 
+  // note: when this is called goals are already defined and won't change
+  const goalsList = [
+    goals.sheriff as Goal,
+    goals.ranch as Goal,
+    goals.train as Goal,
+  ]
+
+  const companyCard = company ? <GalleryCompanyCard /> : <></>
+  const goalCards = goalsList.map((goal) => {
+    return <GalleryGoalCard key={goal.id} goal={goal} />
+  })
+
   return (
-    <Backdrop
-      sx={{
-        backgroundColor: "rgba(0,0,0,0.7)",
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-      }}
-      open={open}
-      onClick={() => {
-        dispatch(closeGallery())
-      }}
-    >
-      {!company ? <GallerySingle /> : <GallerySplit />}
-    </Backdrop>
+    <GalleryBackdrop>
+      <GalleryGrid>{window === "goals" ? goalCards : companyCard}</GalleryGrid>
+    </GalleryBackdrop>
   )
 }
