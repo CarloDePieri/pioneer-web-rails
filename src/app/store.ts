@@ -20,6 +20,7 @@ import galleryReducer from "../features/gallery/gallerySlice"
 import advancedGalleryReducer from "../features/game/advanced/advancedSlice"
 import gameStateReducer from "../features/game/gameSlice"
 import themeReducer from "../features/theme/themeSlice"
+import settingsReducer from "../features/settings/settingsSlice"
 import { isInNewRoundGroup } from "./groupActions"
 
 const persistConfig = {
@@ -46,6 +47,7 @@ const persistedReducer = persistReducer(
       gallery: galleryReducer,
       advancedGallery: advancedGalleryReducer,
     }),
+    settings: settingsReducer,
   }),
 )
 
