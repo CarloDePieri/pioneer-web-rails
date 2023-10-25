@@ -14,6 +14,10 @@ class OriginalThemeBuilder extends DefaultDeckThemeBuilder {
   goalUrl(name: string): string {
     return `${this._rootPath}/goals/${name}.png`
   }
+
+  deckUrl(name: string): string {
+    return `${this._rootPath}/deck/${name}.png`
+  }
 }
 
 export const originalThemeBuilder: DeckTheme = new OriginalThemeBuilder().init()

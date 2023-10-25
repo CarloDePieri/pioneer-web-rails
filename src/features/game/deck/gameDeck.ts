@@ -1,55 +1,79 @@
 import { createSelector, Draft } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
-import { images } from "../../../res/images"
+import { selectedDeckTheme } from "../../settings/deckThemes"
 
 import { GameState } from "../gameSlice"
 import { pickRandom, repeat, shuffle } from "../helpers"
 import { Player } from "../newGame/gameStart"
-
-export interface Card {
-  id: string
-  symbol: string
-  img: string
-}
+import { CardId, cardIds } from "./CardId"
 
 export interface SecretCard {
   playerId: string
-  card: Card
+  cardId: CardId
 }
 
 export interface Table {
-  deck: Card[]
-  display: Card[]
-  selectedCard: Card | undefined
-  discard: Card[]
+  deck: CardId[]
+  display: CardId[]
+  selectedCardId: CardId | undefined
+  discard: CardId[]
   secretRoundCards: SecretCard[]
 }
 
 export const initialTable: Table = {
   deck: [],
   display: [],
-  selectedCard: undefined,
+  selectedCardId: undefined,
   discard: [],
   secretRoundCards: [],
 }
 
+export class GameCard {
+  readonly id: CardId
+  readonly img: string
+
+  constructor(id: CardId) {
+    this.id = id
+    this.img = selectedDeckTheme.getImageById.deck(id)
+  }
+}
+
 export const deckSelector = {
-  deck: (state: RootState) => state.gameState.present.table.deck,
-  discard: (state: RootState) => state.gameState.present.table.discard,
-  display: (state: RootState) => state.gameState.present.table.display,
-  selectedCard: (state: RootState) =>
-    state.gameState.present.table.selectedCard,
+  deck: createSelector(
+    [(state: RootState) => state.gameState.present.table.deck],
+    (deck: CardId[]): GameCard[] => deck.map((cardId) => new GameCard(cardId)),
+  ),
+  discard: createSelector(
+    [(state: RootState) => state.gameState.present.table.discard],
+    (discard: CardId[]): GameCard[] =>
+      discard.map((cardId) => new GameCard(cardId)),
+  ),
+  display: createSelector(
+    [(state: RootState) => state.gameState.present.table.display],
+    (display: CardId[]): GameCard[] =>
+      display.map((cardId) => new GameCard(cardId)),
+  ),
+  selectedCard: createSelector(
+    [(state: RootState) => state.gameState.present.table.selectedCardId],
+    (cardId: CardId | undefined): GameCard | undefined =>
+      cardId ? new GameCard(cardId) : undefined,
+  ),
   secretCards: createSelector(
     [
       (state: RootState) => state.gameState.present.players,
       (state: RootState) => state.gameState.present.table.secretRoundCards,
     ],
     (players: Player[], secretRoundCards: SecretCard[]) => {
-      return new Map<string, Card | undefined>(
+      return new Map<string, GameCard | undefined>(
         players.map((player) => [
           player.id,
-          secretRoundCards.filter((card) => card.playerId === player.id)[0]
-            ?.card,
+          secretRoundCards.length > 0
+            ? new GameCard(
+                secretRoundCards.filter(
+                  (card) => card.playerId === player.id,
+                )[0].cardId,
+              )
+            : undefined,
         ]),
       )
     },
@@ -58,8 +82,9 @@ export const deckSelector = {
 
 export function deck(state: Draft<GameState>) {
   let table = state.table
+  let jokers: CardId[] = [cardIds[0], cardIds[1]]
 
-  function drawFromDeck(): Draft<Card> {
+  function drawFromDeck(): Draft<CardId> {
     let deck = state.table.deck
     if (deck.length === 0) {
       // reshuffle the discard pile into the deck
@@ -67,28 +92,29 @@ export function deck(state: Draft<GameState>) {
       state.table.discard = []
     }
     // draw - since this function is handled by Immer this should be safe from race conditions
-    return state.table.deck.pop() as Draft<Card>
+    // It's safe to say the deck will never be emptied
+    return state.table.deck.pop() as Draft<CardId>
   }
-  function fromDeckToDisplay(): Draft<Card> {
-    let card = drawFromDeck()
-    state.table.display.push(card)
-    return card
+  function fromDeckToDisplay(): Draft<CardId> {
+    let cardId = drawFromDeck()
+    state.table.display.push(cardId)
+    return cardId
   }
-  function fromDisplayToDiscard(): Draft<Card> | undefined {
-    let card = state.table.display.pop()
-    if (card) state.table.discard.push(card)
-    return card
+  function fromDisplayToDiscard(): Draft<CardId> | undefined {
+    let cardId = state.table.display.pop()
+    if (cardId) state.table.discard.push(cardId)
+    return cardId
   }
-  function isJoker(card: Draft<Card>): boolean {
-    return card.id === jokers[0].id || card.id === jokers[1].id
+  function isJoker(cardId: Draft<CardId>): boolean {
+    return cardId === jokers[0] || cardId === jokers[1]
   }
   function discardRandomJoker() {
-    let randomJoker = pickRandom(jokers)
-    table.display = table.display.filter((card) => card.id !== randomJoker.id)
-    table.discard.push(randomJoker)
+    let randomJokerId = pickRandom(jokers)
+    table.display = table.display.filter((cardId) => cardId !== randomJokerId)
+    table.discard.push(randomJokerId)
   }
   function resetPickedCard() {
-    table.selectedCard = undefined
+    table.selectedCardId = undefined
   }
   function clearDisplay() {
     // discard the current display, if present
@@ -99,9 +125,11 @@ export function deck(state: Draft<GameState>) {
     init() {
       if (state.config.jokerExpansion) {
         // Using Joker Cards mini expansion
-        table.deck = cardsDeck.concat(jokers)
+        table.deck = [...cardIds]
       } else {
-        table.deck = cardsDeck
+        table.deck = cardIds.filter((cardId) => {
+          return !jokers.includes(cardId)
+        })
       }
     },
     newRound() {
@@ -110,7 +138,9 @@ export function deck(state: Draft<GameState>) {
         table.deck
           .concat(table.display)
           .concat(table.discard)
-          .concat(table.secretRoundCards.map((secretCard) => secretCard.card)),
+          .concat(
+            table.secretRoundCards.map((secretCard) => secretCard.cardId),
+          ),
       )
       // reset the rest of the deck state
       table.display = []
@@ -147,7 +177,7 @@ export function deck(state: Draft<GameState>) {
       state.table.secretRoundCards = state.players.map((player): SecretCard => {
         return {
           playerId: player.id,
-          card: drawFromDeck(),
+          cardId: drawFromDeck(),
         }
       })
     },
@@ -155,38 +185,10 @@ export function deck(state: Draft<GameState>) {
       clearDisplay()
     },
     pick(cardId: string) {
-      table.selectedCard = table.display.filter((card) => card.id === cardId)[0]
+      table.selectedCardId = table.display.filter((id) => id === cardId)[0]
     },
     unpick() {
       resetPickedCard()
     },
   }
 }
-
-export const cardsDeck: Card[] = [
-  { id: "AS", symbol: "🂡", img: images.deck.spades.ace },
-  { id: "KS", symbol: "🂮", img: images.deck.spades.king },
-  { id: "QS", symbol: "🂭", img: images.deck.spades.queen },
-  { id: "JS", symbol: "🂫", img: images.deck.spades.jack },
-  { id: "10S", symbol: "🂪", img: images.deck.spades.ten },
-  { id: "AH", symbol: "🂱", img: images.deck.hearts.ace },
-  { id: "KH", symbol: "🂾", img: images.deck.hearts.king },
-  { id: "QH", symbol: "🂽", img: images.deck.hearts.queen },
-  { id: "JH", symbol: "🂻", img: images.deck.hearts.jack },
-  { id: "10H", symbol: "🂺", img: images.deck.hearts.ten },
-  { id: "AD", symbol: "🃁", img: images.deck.diamonds.ace },
-  { id: "KD", symbol: "🃎", img: images.deck.diamonds.king },
-  { id: "QD", symbol: "🃍", img: images.deck.diamonds.queen },
-  { id: "JD", symbol: "🃋", img: images.deck.diamonds.jack },
-  { id: "10D", symbol: "🃊", img: images.deck.diamonds.ten },
-  { id: "AC", symbol: "🃑", img: images.deck.clubs.ace },
-  { id: "KC", symbol: "🃞", img: images.deck.clubs.king },
-  { id: "QC", symbol: "🃝", img: images.deck.clubs.queen },
-  { id: "JC", symbol: "🃛", img: images.deck.clubs.jack },
-  { id: "10C", symbol: "🃚", img: images.deck.clubs.ten },
-]
-
-export const jokers: Card[] = [
-  { id: "J1", symbol: "🃏", img: images.jokers.black },
-  { id: "J2", symbol: "🂿", img: images.jokers.red },
-]

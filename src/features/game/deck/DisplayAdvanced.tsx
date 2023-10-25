@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../../app/hooks"
 import { selectSecretCards, selectTurn } from "../gameSlice"
 import { AdvancedPlayingCard } from "./AdvancedPlayingCard"
-import { Card as GameCard } from "./gameDeck"
+import { GameCard } from "./gameDeck"
 
 export function DisplayAdvanced() {
   const turn = useAppSelector(selectTurn)

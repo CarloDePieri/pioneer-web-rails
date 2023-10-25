@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles"
 import React, { PropsWithChildren } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { pick, selectPickedCard, unpick } from "../gameSlice"
-import { Card as GameCard } from "./gameDeck"
+import { GameCard } from "./gameDeck"
 import CardMedia from "@mui/material/CardMedia"
 
 interface Props extends PropsWithChildren<any> {

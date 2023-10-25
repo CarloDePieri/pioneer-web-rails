@@ -14,6 +14,10 @@ class OpenThemeBuilder extends DefaultDeckThemeBuilder {
   goalUrl(name: string): string {
     return `${this._rootPath}/goals/${name}.png`
   }
+
+  deckUrl(name: string): string {
+    return `${this._rootPath}/deck/${name}.svg`
+  }
 }
 
 export const openThemeBuilder: DeckTheme = new OpenThemeBuilder().init()

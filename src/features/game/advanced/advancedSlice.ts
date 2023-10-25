@@ -1,8 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
 import { images } from "../../../res/images"
-import { Card, deckSelector, SecretCard } from "../deck/gameDeck"
-import { Player } from "../newGame/gameStart"
+import { selectedDeckTheme } from "../../settings/deckThemes"
+import { GameCard, deckSelector } from "../deck/gameDeck"
 
 interface AdvancedGalleryState {
   open: boolean
@@ -54,15 +54,16 @@ export const selectSecretCardUrl = createSelector(
     (state: RootState) => state.interface.advancedGallery.isCardShown,
   ],
   (
-    secrets: Map<string, Card | undefined>,
+    secrets: Map<string, GameCard | undefined>,
     playerId: string | undefined,
     isCardShown: boolean,
   ) => {
+    const back = selectedDeckTheme.back
     if (isCardShown && playerId) {
       const card = secrets.get(playerId)
-      return card?.img ?? images.deck.back
+      return card?.img ?? back
     } else {
-      return images.deck.back
+      return back
     }
   },
 )
