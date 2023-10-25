@@ -2,18 +2,11 @@ import { Stack } from "@mui/material"
 import React from "react"
 import { useAppSelector } from "../../../app/hooks"
 import { selectGoals } from "../gameSlice"
-import { Goal } from "./gameGoals"
 import { GoalCard } from "./GoalCard"
 
 export function Goals() {
   const goals = useAppSelector(selectGoals)
-
-  // note: when this is called goals are already defined and won't change
-  const goalsList = [
-    goals.sheriff as Goal,
-    goals.ranch as Goal,
-    goals.train as Goal,
-  ]
+  const goalsList = [goals.sheriff, goals.ranch, goals.train]
 
   return (
     <Stack

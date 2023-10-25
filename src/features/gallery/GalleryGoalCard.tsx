@@ -2,19 +2,18 @@ import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { ParseKeys } from "i18next"
 import React, { PropsWithChildren } from "react"
-import { useTranslation } from "react-i18next"
 import { Goal } from "../game/goals/gameGoals"
 
 interface Props extends PropsWithChildren<any> {
   goal: Goal
 }
 export function GalleryGoalCard({ goal }: Props) {
-  const { t } = useTranslation()
-  const description = t(`goals.${goal.id}` as ParseKeys)
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+
+  const image = goal.img
+  const description = goal.description
 
   if (largeScreen) {
     return (
@@ -39,7 +38,7 @@ export function GalleryGoalCard({ goal }: Props) {
               {description}
             </Typography>
           </Box>
-          <CardMedia component="img" image={goal.img} alt={description} />
+          <CardMedia component="img" image={image} alt={description} />
         </Stack>
       </Card>
     )
@@ -53,7 +52,7 @@ export function GalleryGoalCard({ goal }: Props) {
       >
         <CardMedia
           component="img"
-          image={goal.img}
+          image={image}
           alt={description}
           sx={{ width: "60%" }}
         />

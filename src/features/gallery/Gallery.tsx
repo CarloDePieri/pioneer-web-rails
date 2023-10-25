@@ -1,7 +1,6 @@
 import React from "react"
 import { useAppSelector } from "../../app/hooks"
 import { selectConfigCompany, selectGoals } from "../game/gameSlice"
-import { Goal } from "../game/goals/gameGoals"
 import { GalleryBackdrop } from "./GalleryBackdrop"
 import { GalleryCompanyCard } from "./GalleryCompanyCard"
 import { GalleryGoalCard } from "./GalleryGoalCard"
@@ -14,11 +13,7 @@ export function Gallery() {
   const company = useAppSelector(selectConfigCompany)
 
   // note: when this is called goals are already defined and won't change
-  const goalsList = [
-    goals.sheriff as Goal,
-    goals.ranch as Goal,
-    goals.train as Goal,
-  ]
+  const goalsList = [goals.sheriff, goals.ranch, goals.train]
 
   const companyCard = company ? <GalleryCompanyCard /> : <></>
   const goalCards = goalsList.map((goal) => {

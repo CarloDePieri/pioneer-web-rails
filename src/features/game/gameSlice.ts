@@ -16,7 +16,12 @@ import {
   initialGameFlow,
 } from "./flow/gameFlows"
 import { undoHelperSelector } from "./flow/gameUndo"
-import { Goals, goals, goalsSelector, initialGoals } from "./goals/gameGoals"
+import {
+  ActiveGoalIds,
+  goals,
+  goalsSelector,
+  initialGoals,
+} from "./goals/gameGoals"
 import {
   GameConfig,
   configSelector,
@@ -28,7 +33,7 @@ import {
 export interface GameState {
   players: Player[]
   config: GameConfig
-  goals: Goals
+  goals: ActiveGoalIds
   table: Table
   companyOwners: CompanyOwners
   gameFlow: GameFlow

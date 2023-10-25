@@ -1,29 +1,84 @@
-import { Draft } from "@reduxjs/toolkit"
+import { createSelector, Draft } from "@reduxjs/toolkit"
+import { ParseKeys } from "i18next"
 import { RootState } from "../../../app/store"
-import { images } from "../../../res/images"
+import i18n from "../../../i18n"
+import { getImageById } from "../../settings/DeckTheme"
 
 import { GameState } from "../gameSlice"
 import { pickRandom } from "../helpers"
 
-export interface Goal {
-  id: string
-  img: string | undefined
+const goalIds = [
+  "goal1A",
+  "goal1B",
+  "goal1C",
+  "goal1D",
+  "goal1E",
+  "goal1F",
+  "goal1G",
+  "goal1H",
+  "goal1I",
+  "goal1J",
+  "goal1K",
+  "goal1L",
+  "goal1M",
+  "goal1N",
+  "goal1O",
+  "goal2A",
+  "goal2B",
+  "goal2C",
+  "goal2D",
+  "goal2E",
+  "goal2F",
+] as const
+export type GoalId = (typeof goalIds)[number]
+
+// Goal and ActiveGoals are returned by selectors and used in components
+export class Goal {
+  readonly id: GoalId
+  readonly img: string
+  readonly description: string
+
+  constructor(id: GoalId) {
+    this.id = id
+    this.img = getImageById.goal(id)
+    this.description = i18n.t(`goals.${id}` as ParseKeys)
+  }
 }
 
-export interface Goals {
-  sheriff: Goal | undefined
-  train: Goal | undefined
-  ranch: Goal | undefined
-}
-
-export const initialGoals: Goals = {
-  sheriff: undefined,
-  train: undefined,
-  ranch: undefined,
+export interface ActiveGoals {
+  sheriff: Goal
+  train: Goal
+  ranch: Goal
 }
 
 export const goalsSelector = {
-  activeGoals: (state: RootState) => state.gameState.present.goals,
+  activeGoals: createSelector(
+    [
+      (state: RootState) => state.gameState.present.goals,
+      // this dependency is needed to rebuild the component on language change
+      (state: RootState) => state.settings.lang,
+    ],
+    (goals: ActiveGoalIds, _: string): ActiveGoals => {
+      return {
+        sheriff: new Goal(goals.sheriff),
+        train: new Goal(goals.train),
+        ranch: new Goal(goals.ranch),
+      }
+    },
+  ),
+}
+
+// ActiveGoalsIds are used in the state reducer actions
+export interface ActiveGoalIds {
+  sheriff: GoalId
+  train: GoalId
+  ranch: GoalId
+}
+
+export const initialGoals: ActiveGoalIds = {
+  sheriff: goalIds[0],
+  train: goalIds[0],
+  ranch: goalIds[0],
 }
 
 export const goals = (state: Draft<GameState>) => {
@@ -37,7 +92,7 @@ export const goals = (state: Draft<GameState>) => {
         sheriffGoal = pickRandom(
           goalDeck.desert.sheriff
             // remove the desert goals specified in the rules
-            .filter((goal) => !["1A", "1B", "1C", "1E"].includes(goal.id))
+            .filter((goalId) => !["1A", "1B", "1C", "1E"].includes(goalId))
             .concat(goalDeck.forestSpecific.sheriff),
         )
         ranchGoal = pickRandom(
@@ -58,116 +113,27 @@ export const goals = (state: Draft<GameState>) => {
   }
 }
 
+// organize goals by biomes and types
 export const goalDeck: {
   desert: {
-    sheriff: Goal[]
-    ranch: Goal[]
-    train: Goal[]
+    sheriff: GoalId[]
+    ranch: GoalId[]
+    train: GoalId[]
   }
   forestSpecific: {
-    sheriff: Goal[]
-    ranch: Goal[]
-    train: Goal[]
+    sheriff: GoalId[]
+    ranch: GoalId[]
+    train: GoalId[]
   }
 } = {
   desert: {
-    sheriff: [
-      {
-        id: "goal1A",
-        img: images.goals?.goal1A,
-      },
-      {
-        id: "goal1B",
-        img: images.goals?.goal1B,
-      },
-      {
-        id: "goal1C",
-        img: images.goals?.goal1C,
-      },
-      {
-        id: "goal1D",
-        img: images.goals?.goal1D,
-      },
-      {
-        id: "goal1E",
-        img: images.goals?.goal1E,
-      },
-    ],
-    ranch: [
-      {
-        id: "goal1F",
-        img: images.goals?.goal1F,
-      },
-      {
-        id: "goal1G",
-        img: images.goals?.goal1G,
-      },
-      {
-        id: "goal1H",
-        img: images.goals?.goal1H,
-      },
-      {
-        id: "goal1I",
-        img: images.goals?.goal1I,
-      },
-      {
-        id: "goal1J",
-        img: images.goals?.goal1J,
-      },
-    ],
-    train: [
-      {
-        id: "goal1K",
-        img: images.goals?.goal1K,
-      },
-      {
-        id: "goal1L",
-        img: images.goals?.goal1L,
-      },
-      {
-        id: "goal1M",
-        img: images.goals?.goal1M,
-      },
-      {
-        id: "goal1N",
-        img: images.goals?.goal1N,
-      },
-      {
-        id: "goal1O",
-        img: images.goals?.goal1O,
-      },
-    ],
+    sheriff: ["goal1A", "goal1B", "goal1C", "goal1D", "goal1E"],
+    ranch: ["goal1F", "goal1G", "goal1H", "goal1I", "goal1J"],
+    train: ["goal1K", "goal1L", "goal1M", "goal1N", "goal1O"],
   },
   forestSpecific: {
-    sheriff: [
-      {
-        id: "goal2A",
-        img: images.goals?.goal2A,
-      },
-      {
-        id: "goal2B",
-        img: images.goals?.goal2B,
-      },
-      {
-        id: "goal2C",
-        img: images.goals?.goal2C,
-      },
-    ],
-    ranch: [
-      {
-        id: "goal2D",
-        img: images.goals?.goal2D,
-      },
-    ],
-    train: [
-      {
-        id: "goal2E",
-        img: images.goals?.goal2E,
-      },
-      {
-        id: "goal2F",
-        img: images.goals?.goal2F,
-      },
-    ],
+    sheriff: ["goal2A", "goal2B", "goal2C"],
+    ranch: ["goal2D"],
+    train: ["goal2E", "goal2F"],
   },
 }
