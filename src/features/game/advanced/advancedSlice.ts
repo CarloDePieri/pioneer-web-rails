@@ -1,6 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../../app/store"
-import { images } from "../../../res/images"
 import { selectedDeckTheme } from "../../settings/deckThemes"
 import { GameCard, deckSelector } from "../deck/gameDeck"
 
