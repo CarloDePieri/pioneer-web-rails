@@ -3,7 +3,7 @@ import CardMedia from "@mui/material/CardMedia"
 import { PropsWithChildren } from "react"
 import { useAppDispatch } from "../../../app/hooks"
 import { openCompanyGallery } from "../../gallery/gallerySlice"
-import { CompanyCard as GameCompanyCard } from "./gameCompany"
+import { CompanyCard as GameCompanyCard } from "./Company"
 
 interface Props extends PropsWithChildren<any> {
   card: GameCompanyCard

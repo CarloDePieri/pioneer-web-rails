@@ -1,29 +1,59 @@
-import { openThemeBuilder } from "../../res/deckThemes/themeOpen"
-import { originalThemeBuilder } from "../../res/deckThemes/themeOriginal"
-import { CompanyId } from "../game/company/gameCompany"
-import { GoalId } from "../game/goals/gameGoals"
+import { CompanyId, companyIds } from "../game/company/Company"
+import { GoalId, goalIds } from "../game/goals/Goal"
 
-export interface DeckTheme {
-  company: Record<CompanyId, string>
-  goals: Record<GoalId, string>
+export class DeckTheme {
+  readonly company: Record<CompanyId, string>
+  readonly goals: Record<GoalId, string>
+  readonly back: string
+
+  constructor(
+    company: Record<CompanyId, string>,
+    goals: Record<GoalId, string>,
+    back: string,
+  ) {
+    this.company = company
+    this.goals = goals
+    this.back = back
+  }
+
+  getImageById = {
+    back: () => this.back,
+    company: (id: CompanyId) => {
+      return this.company[id]
+    },
+    goal: (id: GoalId) => {
+      return this.goals[id]
+    },
+  }
 }
 
-type availableDeckNames = "open" | "original"
-const availableDeckThemes: Record<availableDeckNames, DeckTheme> = {
-  open: openThemeBuilder(),
-  original: originalThemeBuilder(),
-}
-export const licensed: boolean =
-  import.meta.env.VITE_LICENSED_IMAGES === "true" || false
-const selectedDeckTheme = licensed
-  ? availableDeckThemes.original
-  : availableDeckThemes.open
+export abstract class DefaultDeckThemeBuilder {
+  abstract name: string
+  abstract back: string
+  abstract companyUrl(name: string): string
+  abstract goalUrl(name: string): string
 
-export const getImageById = {
-  company: (id: CompanyId): string => {
-    return selectedDeckTheme.company[id]
-  },
-  goal: (id: GoalId): string => {
-    return selectedDeckTheme.goals[id]
-  },
+  _buildSection<T extends string>(
+    idList: T[],
+    urlComposer: (id: T) => string,
+  ): Record<T, string> {
+    return idList
+      .map((id: T) => {
+        return { [id]: urlComposer(id) } as Record<T, string>
+      })
+      .reduce((result, current) => {
+        return Object.assign(result, current)
+      }, {} as Record<T, string>)
+  }
+
+  init(): DeckTheme {
+    return new DeckTheme(
+      // company
+      this._buildSection([...companyIds], this.companyUrl.bind(this)),
+      // goals
+      this._buildSection([...goalIds], this.goalUrl.bind(this)),
+      // back
+      this.back,
+    )
+  }
 }

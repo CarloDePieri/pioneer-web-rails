@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useAppSelector } from "../../app/hooks"
-import { CompanyCard } from "../game/company/gameCompany"
+import { CompanyCard } from "../game/company/Company"
 import { selectCompanyCard } from "../game/gameSlice"
 
 export function GalleryCompanyCard() {

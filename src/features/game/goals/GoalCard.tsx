@@ -6,7 +6,8 @@ import React, { PropsWithChildren } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { openGoalsGallery } from "../../gallery/gallerySlice"
 import { selectConfigCompany } from "../gameSlice"
-import { Goal } from "./gameGoals"
+
+import { Goal } from "./Goal"
 
 interface Props extends PropsWithChildren<any> {
   goal: Goal

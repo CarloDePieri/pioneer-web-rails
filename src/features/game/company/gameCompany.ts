@@ -2,24 +2,11 @@ import { createSelector, Draft } from "@reduxjs/toolkit"
 import { ParseKeys } from "i18next"
 import { RootState } from "../../../app/store"
 import i18n from "../../../i18n"
-import { getImageById } from "../../settings/DeckTheme"
+import { selectedDeckTheme } from "../../settings/deckThemes"
 
 import { GameState } from "../gameSlice"
 import { shuffle } from "../helpers"
-
-const companyIds = [
-  "companyC1",
-  "companyC2",
-  "companyC3",
-  "companyC4",
-  "companyC5",
-  "companyC6",
-  "companyC7",
-  "companyC8",
-  "companyC9",
-  "companyC10",
-] as const
-export type CompanyId = (typeof companyIds)[number]
+import { CompanyCard, CompanyId, companyIds } from "./Company"
 
 export interface CompanyOwners {
   companyCard: CompanyId | undefined
@@ -29,12 +16,6 @@ export interface CompanyOwners {
 export const initialCompanyOwners: CompanyOwners = {
   companyCard: undefined,
   companyDeck: [],
-}
-
-export interface CompanyCard {
-  id: CompanyId
-  img: string
-  description: string
 }
 
 export const companySelector = {
@@ -48,7 +29,7 @@ export const companySelector = {
       if (card) {
         return {
           id: card,
-          img: getImageById.company(card),
+          img: selectedDeckTheme.getImageById.company(card),
           description: i18n.t(`company.${card}` as ParseKeys),
         }
       }

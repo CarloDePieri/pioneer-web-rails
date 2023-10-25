@@ -3,7 +3,8 @@ import CardMedia from "@mui/material/CardMedia"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
-import { Goal } from "../game/goals/gameGoals"
+
+import { Goal } from "../game/goals/Goal"
 
 interface Props extends PropsWithChildren<any> {
   goal: Goal
