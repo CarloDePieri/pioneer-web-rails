@@ -1,40 +1,54 @@
 import { Box, Card, CardContent, Typography } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import { useAppSelector } from "../../../app/hooks"
-import { selectSecretCards, selectTurn } from "../gameSlice"
+import { useAppSelector } from "../../../../app/hooks"
+import { selectSecretCards, selectTurn } from "../../gameSlice"
 import { AdvancedPlayingCard } from "./AdvancedPlayingCard"
-import { GameCard } from "./gameDeck"
+import { GameCard } from "../gameDeck"
 
 export function DisplayAdvanced() {
   const turn = useAppSelector(selectTurn)
   const secretCards = useAppSelector(selectSecretCards)
   const secretCardsArray = Array.from(secretCards.entries())
   const { t } = useTranslation()
+  const theme = useTheme()
+  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
 
   if (turn === 0) {
     return (
-      <Card>
-        <CardContent>
-          <Typography variant={"h5"} gutterBottom>
-            {t("advanced.display.title")}
-          </Typography>
-          <Typography variant={"body1"}>
-            {t("advanced.display.body1")}
-          </Typography>
-          <Typography variant={"body1"} gutterBottom>
-            {t("advanced.display.body2")}
-          </Typography>
-          <Typography variant={"body1"} fontWeight={"bold"}>
-            {t("advanced.display.body3")}
-          </Typography>
-        </CardContent>
-      </Card>
+      <Box
+        sx={{
+          width: {
+            xs: "65%",
+            sm: "100%",
+          },
+        }}
+      >
+        <Card elevation={3}>
+          <CardContent>
+            <Typography variant={"h5"} gutterBottom>
+              {t("advanced.display.title")}
+            </Typography>
+            <Typography variant={"body1"}>
+              {t("advanced.display.body1")}
+            </Typography>
+            <Typography variant={"body1"} gutterBottom>
+              {t("advanced.display.body2")}
+            </Typography>
+            <Typography variant={"body1"} fontWeight={"bold"}>
+              {t("advanced.display.body3")}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
     )
   } else if (turn === 5) {
     return (
       <Box
         sx={{
+          width: largeScreen ? "100%" : "70vw",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",

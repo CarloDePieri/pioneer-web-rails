@@ -87,7 +87,7 @@ export const gameSlice = createSlice({
         gameFlow(state).pick()
 
         // pick the card
-        deck(state).pick(state.table.display[0].id)
+        deck(state).pick(state.table.display[0])
       }
     },
     dealSecrets: (state) => {
@@ -114,7 +114,7 @@ export const gameSlice = createSlice({
       gameFlow(state).newRound()
     },
     pick: (state, action: PayloadAction<string>) => {
-      if (state.table.selectedCard === undefined) {
+      if (state.table.selectedCardId === undefined) {
         // advance the game flow only if there was no card selected
         gameFlow(state).pick()
       }

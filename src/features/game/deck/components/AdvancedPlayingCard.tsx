@@ -1,9 +1,9 @@
 import { Card, Stack, SxProps, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import React, { PropsWithChildren } from "react"
-import { useAppSelector } from "../../../app/hooks"
-import { selectPlayers } from "../gameSlice"
-import { GameCard } from "./gameDeck"
+import { useAppSelector } from "../../../../app/hooks"
+import { selectPlayers } from "../../gameSlice"
+import { GameCard } from "../gameDeck"
 
 interface Props extends PropsWithChildren<any> {
   playerId: string

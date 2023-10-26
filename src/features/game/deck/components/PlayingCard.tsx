@@ -1,16 +1,17 @@
-import { Card } from "@mui/material"
+import { Card, SxProps } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import React, { PropsWithChildren } from "react"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { pick, selectPickedCard, unpick } from "../gameSlice"
-import { GameCard } from "./gameDeck"
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
+import { pick, selectPickedCard, unpick } from "../../gameSlice"
+import { GameCard } from "../gameDeck"
 import CardMedia from "@mui/material/CardMedia"
 
 interface Props extends PropsWithChildren<any> {
   card: GameCard
+  sx?: SxProps
 }
 
-export function PlayingCard({ card }: Props) {
+export function PlayingCard({ card, sx }: Props) {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const selectedCard = useAppSelector(selectPickedCard)
@@ -41,11 +42,24 @@ export function PlayingCard({ card }: Props) {
       elevation={5}
       sx={{
         boxShadow: isSelected ? getShadow() : "",
-        transform: isSelected ? "translateY(2%)" : "",
+        transform: isSelected ? "translateY(4%)" : "",
         width: {
-          xs: "50vw",
+          xs: "40vw",
           sm: "20vw",
         },
+        marginBottom: {
+          xs: 8,
+          sm: 0,
+        },
+        marginRight: {
+          xs: 4,
+          sm: 0,
+        },
+        marginLeft: {
+          xs: 4,
+          sm: 0,
+        },
+        ...sx,
       }}
     >
       <CardMedia
