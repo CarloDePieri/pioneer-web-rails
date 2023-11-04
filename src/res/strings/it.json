@@ -105,7 +105,13 @@
       }
     },
     "settings": {
-      "languageChanged": "Lingua: Italiano"
+      "languageChanged": "Lingua: Italiano",
+      "layoutWarning": {
+        "title": "Layout troppo stretto?",
+        "body": "Prova a ruotare il device!",
+        "close": "Chiudi",
+        "closeAndHide": "Non mostrare più!"
+      }
     }
   }
 }

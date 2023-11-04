@@ -1,5 +1,6 @@
 import { Box, Card, Container, Grid, Stack } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
+import { LayoutWarning } from "../settings/LayoutWarning"
 import useIsLargeScreen from "../theme/useIsLargeScreen"
 import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
@@ -62,6 +63,7 @@ export function Game() {
   } else
     return (
       <Stack>
+        <LayoutWarning />
         <Gallery />
         <AdvancedGallery />
         <Container>

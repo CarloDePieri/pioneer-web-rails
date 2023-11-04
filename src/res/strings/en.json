@@ -109,7 +109,13 @@
       }
     },
     "settings": {
-      "languageChanged": "Language: English"
+      "languageChanged": "Language: English",
+      "layoutWarning": {
+        "title": "Layout too cramped?",
+        "body": "Try rotating the device!",
+        "close": "Close",
+        "closeAndHide": "Don't show again!"
+      }
     }
   }
 }
