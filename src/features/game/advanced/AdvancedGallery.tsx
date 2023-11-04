@@ -1,36 +1,46 @@
-import { Backdrop, Grid, Stack } from "@mui/material"
+import { Card, CardContent, Stack } from "@mui/material"
 import React from "react"
-import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { AdvancedCardSelector } from "./AdvancedCardSelector"
-import {
-  closeAdvancedGallery,
-  selectAdvancedGalleryOpen,
-} from "./advancedSlice"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
+import { AdvancedGalleryBackdrop } from "./AdvancedGalleryBackdrop"
+import { AdvancedGalleryGrid } from "./AdvancedGalleryGrid"
+import { AdvancedGalleryHiddenCard } from "./AdvancedGalleryHiddenCard"
+import { AdvancedGalleryPlayerSelector } from "./AdvancedGalleryPlayerSelector"
 
 export function AdvancedGallery() {
-  const dispatch = useAppDispatch()
-  const open = useAppSelector(selectAdvancedGalleryOpen)
+  const isLargeScreen = useIsLargeScreen()
 
   return (
-    <Backdrop
-      sx={{
-        backgroundColor: "rgba(0,0,0,0.7)",
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-      }}
-      open={open}
-      onClick={() => {
-        dispatch(closeAdvancedGallery())
-      }}
-    >
-      <Grid container>
-        <Grid item xs={2} />
-        <Grid item xs={8}>
-          <Stack direction="row" justifyContent="center" alignItems="center">
-            <AdvancedCardSelector />
-          </Stack>
-        </Grid>
-        <Grid item xs={2} />
-      </Grid>
-    </Backdrop>
+    <AdvancedGalleryBackdrop>
+      <AdvancedGalleryGrid>
+        {isLargeScreen ? (
+          <Card
+            style={{ width: "63vw", height: "80vh", display: "flex" }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <AdvancedGalleryHiddenCard />
+            <CardContent sx={{ width: "50vw" }}>
+              <AdvancedGalleryPlayerSelector />
+            </CardContent>
+          </Card>
+        ) : (
+          <Card
+            sx={{ paddingBottom: 8 }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <Stack
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={8}
+            >
+              <AdvancedGalleryHiddenCard style={{ width: "100%" }} />
+              <CardContent sx={{ width: "100%" }}>
+                <AdvancedGalleryPlayerSelector />
+              </CardContent>
+            </Stack>
+          </Card>
+        )}
+      </AdvancedGalleryGrid>
+    </AdvancedGalleryBackdrop>
   )
 }
