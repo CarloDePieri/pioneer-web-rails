@@ -9,14 +9,21 @@ import { FlowRoundChip } from "./components/FlowRoundChip"
 import { FlowSecretsButton } from "./components/FlowSecretsButton"
 import { FlowTurnChip } from "./components/FlowTurnChip"
 
-export function FlowTextBar() {
+export function FlowBar() {
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
   const advanced = useAppSelector(selectConfigAdvanced)
 
   if (largeScreen || !advanced)
     return (
-      <Card elevation={7} sx={{ padding: 4, paddingTop: 8 }}>
+      <Card
+        elevation={7}
+        sx={{
+          padding: 4,
+          paddingTop: 8,
+          maxWidth: { lg: "57vw", xl: "50vw" },
+        }}
+      >
         <Box
           sx={{
             display: "flex",

@@ -4,7 +4,7 @@ import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
 import { Gallery } from "../gallery/Gallery"
-import { FlowTextBar } from "./flow/FlowTextBar"
+import { FlowBar } from "./flow/FlowBar"
 import { selectConfigAdvanced, selectGameStatus } from "./gameSlice"
 import { NewGame } from "./newGame/NewGame"
 import { Display } from "./deck/Display"
@@ -35,7 +35,7 @@ export function Game() {
           </Grid>
           <Grid item xs={8}>
             <Box position={"fixed"} sx={{ width: "66vw", zIndex: 10 }}>
-              <FlowTextBar />
+              <FlowBar />
             </Box>
             <Container>
               <Box mt={36}>
@@ -72,7 +72,7 @@ export function Game() {
                 <Goals />
               </Stack>
             </Card>
-            <FlowTextBar />
+            <FlowBar />
           </Box>
           <Box sx={{ mt: displayPadding, paddingBottom: 16 }}>
             <Container>
