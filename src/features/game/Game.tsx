@@ -5,7 +5,11 @@ import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
 import { Gallery } from "../gallery/Gallery"
 import { FlowBar } from "./flow/FlowBar"
-import { selectConfigAdvanced, selectGameStatus } from "./gameSlice"
+import {
+  selectConfigAdvanced,
+  selectConfigCompany,
+  selectGameStatus,
+} from "./gameSlice"
 import { NewGame } from "./newGame/NewGame"
 import { Display } from "./deck/Display"
 import { Goals } from "./goals/Goals"
@@ -19,7 +23,13 @@ export function Game() {
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
 
   const advanced = useAppSelector(selectConfigAdvanced)
-  const displayPadding = advanced ? 132 : 112
+  const company = useAppSelector(selectConfigCompany)
+  const displayPadding = () => {
+    let p = 112
+    if (advanced) p += 20
+    if (!company) p += 20
+    return p
+  }
 
   if (status === "pre") {
     return <NewGame />
@@ -74,7 +84,7 @@ export function Game() {
             </Card>
             <FlowBar />
           </Box>
-          <Box sx={{ mt: displayPadding, paddingBottom: 16 }}>
+          <Box sx={{ mt: displayPadding(), paddingBottom: 16 }}>
             <Container>
               <Display />
             </Container>

@@ -19,24 +19,20 @@ export function GoalCard({ goal }: Props) {
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
 
-  // TODO refactor this when the company cards are ready
   const goalCardSize = () => {
-    if (company) {
-      if (largeScreen) {
+    if (largeScreen) {
+      if (company) {
         return {
           width: "7vw",
         }
       } else {
-        return {}
-      }
-    } else {
-      if (largeScreen) {
         return {
           width: "9vw",
         }
-      } else {
-        return {}
       }
+    } else {
+      // with small screen, the flex handle the card dimensions
+      return {}
     }
   }
 
