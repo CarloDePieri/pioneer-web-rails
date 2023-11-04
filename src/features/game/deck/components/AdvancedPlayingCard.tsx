@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren<any> {
   sx?: SxProps
 }
 
-export function AdvancedPlayingCard({ playerId, card, sx }: Props) {
+export function AdvancedPlayingCard({ playerId, card, sx }: Readonly<Props>) {
   const players = useAppSelector(selectPlayers)
   const getPlayerName = (playerId: string): string => {
     return players.filter((player) => player.id === playerId).pop()?.name ?? ""

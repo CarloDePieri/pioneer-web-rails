@@ -7,7 +7,7 @@ interface Props extends PropsWithChildren<any> {
   children: string | React.JSX.Element
 }
 
-export function GalleryBackdrop({ children }: Props) {
+export function GalleryBackdrop({ children }: Readonly<Props>) {
   const open = useAppSelector(selectGalleryOpen)
   const dispatch = useAppDispatch()
 

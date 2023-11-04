@@ -1,4 +1,4 @@
-import { Box, Container, Stack } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
@@ -16,44 +16,42 @@ export function Display() {
 
   if (advanced && (turn === 0 || turn === 5)) {
     return <DisplayAdvanced />
+  } else if (largeScreen) {
+    return (
+      <Stack
+        direction={{ xs: "row", sm: "row" }}
+        spacing={4}
+        justifyContent="center"
+      >
+        {display.map((card) => (
+          <PlayingCard key={card.id} card={card} />
+        ))}
+      </Stack>
+    )
   } else {
-    if (largeScreen) {
-      return (
-        <Stack
-          direction={{ xs: "row", sm: "row" }}
-          spacing={4}
-          justifyContent="center"
+    return (
+      <React.Fragment>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
         >
-          {display.map((card) => (
+          {display.slice(0, 2).map((card) => (
             <PlayingCard key={card.id} card={card} />
           ))}
-        </Stack>
-      )
-    } else {
-      return (
-        <React.Fragment>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            {display.slice(0, 2).map((card) => (
-              <PlayingCard key={card.id} card={card} />
-            ))}
-          </Box>
-          <Box
-            sx={{
-              paddingLeft: 7,
-            }}
-          >
-            {display.slice(2, 3).map((card) => (
-              <PlayingCard key={card.id} card={card} />
-            ))}
-          </Box>
-        </React.Fragment>
-      )
-    }
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: 7,
+          }}
+        >
+          {display.slice(2, 3).map((card) => (
+            <PlayingCard key={card.id} card={card} />
+          ))}
+        </Box>
+      </React.Fragment>
+    )
   }
 }

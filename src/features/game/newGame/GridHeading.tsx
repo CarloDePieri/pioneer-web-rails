@@ -7,7 +7,7 @@ interface Props extends PropsWithChildren<any> {
   children: string | React.JSX.Element
 }
 
-export function GridHeading({ size, children }: Props) {
+export function GridHeading({ size, children }: Readonly<Props>) {
   return (
     <Container>
       <Box mt={8}>

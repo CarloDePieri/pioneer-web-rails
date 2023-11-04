@@ -1,6 +1,5 @@
 import FlagIcon from "@mui/icons-material/Flag"
-import { Alert } from "@mui/material"
-import { Snackbar } from "@mui/material"
+import { Alert, Snackbar } from "@mui/material"
 import IconButton from "@mui/material/IconButton"
 import i18next from "i18next"
 import * as React from "react"

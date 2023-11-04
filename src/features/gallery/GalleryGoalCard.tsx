@@ -9,7 +9,7 @@ import { Goal } from "../game/goals/Goal"
 interface Props extends PropsWithChildren<any> {
   goal: Goal
 }
-export function GalleryGoalCard({ goal }: Props) {
+export function GalleryGoalCard({ goal }: Readonly<Props>) {
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
 

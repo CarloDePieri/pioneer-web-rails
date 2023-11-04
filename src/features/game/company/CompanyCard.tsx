@@ -9,7 +9,7 @@ interface Props extends PropsWithChildren<any> {
   card: GameCompanyCard
 }
 
-export function CompanyCard({ card }: Props) {
+export function CompanyCard({ card }: Readonly<Props>) {
   const dispatch = useAppDispatch()
 
   return (

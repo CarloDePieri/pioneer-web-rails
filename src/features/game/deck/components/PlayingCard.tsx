@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren<any> {
   sx?: SxProps
 }
 
-export function PlayingCard({ card, sx }: Props) {
+export function PlayingCard({ card, sx }: Readonly<Props>) {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const selectedCard = useAppSelector(selectPickedCard)

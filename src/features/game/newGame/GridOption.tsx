@@ -34,7 +34,7 @@ export function GridOption({
   iconOn = "on",
   iconOff = "off",
   textOff = undefined,
-}: Props) {
+}: Readonly<Props>) {
   const buttonTextOn = children
   let buttonTextOff
   if (textOff === undefined) buttonTextOff = children

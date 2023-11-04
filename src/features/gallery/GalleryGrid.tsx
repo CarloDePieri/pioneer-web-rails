@@ -17,7 +17,7 @@ interface Props extends PropsWithChildren<any> {
   children: string | React.JSX.Element | React.JSX.Element[]
 }
 
-export function GalleryGrid({ children }: Props) {
+export function GalleryGrid({ children }: Readonly<Props>) {
   const theme = useTheme()
   const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
   const dispatch = useAppDispatch()

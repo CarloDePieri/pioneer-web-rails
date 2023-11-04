@@ -13,7 +13,7 @@ interface Props extends PropsWithChildren<any> {
   goal: Goal
 }
 
-export function GoalCard({ goal }: Props) {
+export function GoalCard({ goal }: Readonly<Props>) {
   const dispatch = useAppDispatch()
   let company = useAppSelector(selectConfigCompany)
   const theme = useTheme()
