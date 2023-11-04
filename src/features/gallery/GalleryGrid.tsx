@@ -1,12 +1,11 @@
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft"
 import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { Box, Button, Container, Stack } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { selectConfigCompany } from "../game/gameSlice"
+import useIsLargeScreen from "../theme/useIsLargeScreen"
 import {
   openCompanyGallery,
   openGoalsGallery,
@@ -18,8 +17,7 @@ interface Props extends PropsWithChildren<any> {
 }
 
 export function GalleryGrid({ children }: Readonly<Props>) {
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const window = useAppSelector(selectGalleryWindow)
@@ -45,7 +43,7 @@ export function GalleryGrid({ children }: Readonly<Props>) {
   const showButtonRight = company && !isGoalsWindow
   const showButtonLeft = company && isGoalsWindow
 
-  if (largeScreen) {
+  if (isLargeScreen) {
     return (
       <Container style={{ width: company ? "90vw" : "80vw" }}>
         <Stack direction={"row"} spacing={8} sx={{ height: "85vh" }}>

@@ -1,9 +1,8 @@
 import { Box, Card, CardContent, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useTranslation } from "react-i18next"
 import { useAppSelector } from "../../../../app/hooks"
+import useIsLargeScreen from "../../../theme/useIsLargeScreen"
 import { selectSecretCards, selectTurn } from "../../gameSlice"
 import { AdvancedPlayingCard } from "./AdvancedPlayingCard"
 import { GameCard } from "../gameDeck"
@@ -13,8 +12,7 @@ export function DisplayAdvanced() {
   const secretCards = useAppSelector(selectSecretCards)
   const secretCardsArray = Array.from(secretCards.entries())
   const { t } = useTranslation()
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
   if (turn === 0) {
     return (
@@ -48,7 +46,7 @@ export function DisplayAdvanced() {
     return (
       <Box
         sx={{
-          width: largeScreen ? "100%" : "70vw",
+          width: isLargeScreen ? "100%" : "70vw",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",

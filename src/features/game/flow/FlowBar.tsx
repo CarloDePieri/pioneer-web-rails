@@ -1,8 +1,7 @@
 import { Box, Card, Stack } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useAppSelector } from "../../../app/hooks"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 import { selectConfigAdvanced } from "../gameSlice"
 import { FlowDealerChip } from "./components/FlowDealerChip"
 import { FlowRoundChip } from "./components/FlowRoundChip"
@@ -10,11 +9,10 @@ import { FlowSecretsButton } from "./components/FlowSecretsButton"
 import { FlowTurnChip } from "./components/FlowTurnChip"
 
 export function FlowBar() {
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
   const advanced = useAppSelector(selectConfigAdvanced)
 
-  if (largeScreen || !advanced)
+  if (isLargeScreen || !advanced)
     return (
       <Card
         elevation={7}

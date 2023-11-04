@@ -1,22 +1,20 @@
 import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
 
 import { Goal } from "../game/goals/Goal"
+import useIsLargeScreen from "../theme/useIsLargeScreen"
 
 interface Props extends PropsWithChildren<any> {
   goal: Goal
 }
 export function GalleryGoalCard({ goal }: Readonly<Props>) {
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
   const image = goal.img
   const description = goal.description
 
-  if (largeScreen) {
+  if (isLargeScreen) {
     return (
       <Card elevation={5} onClick={(event) => event.stopPropagation()}>
         <Stack

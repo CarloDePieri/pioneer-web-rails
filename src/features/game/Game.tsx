@@ -1,5 +1,6 @@
 import { Box, Card, Container, Grid, Stack } from "@mui/material"
 import { useAppSelector } from "../../app/hooks"
+import useIsLargeScreen from "../theme/useIsLargeScreen"
 import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
@@ -13,14 +14,11 @@ import {
 import { NewGame } from "./newGame/NewGame"
 import { Display } from "./deck/Display"
 import { Goals } from "./goals/Goals"
-import useMediaQuery from "@mui/material/useMediaQuery"
-import { useTheme } from "@mui/material/styles"
 import React from "react"
 
 export function Game() {
   const status = useAppSelector(selectGameStatus)
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
   const advanced = useAppSelector(selectConfigAdvanced)
   const company = useAppSelector(selectConfigCompany)
@@ -33,7 +31,7 @@ export function Game() {
 
   if (status === "pre") {
     return <NewGame />
-  } else if (largeScreen) {
+  } else if (isLargeScreen) {
     return (
       <React.Fragment>
         <Gallery />

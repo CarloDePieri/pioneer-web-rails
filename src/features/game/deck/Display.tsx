@@ -1,8 +1,7 @@
 import { Box, Stack } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useAppSelector } from "../../../app/hooks"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 import { selectConfigAdvanced, selectDisplay, selectTurn } from "../gameSlice"
 import { DisplayAdvanced } from "./components/DisplayAdvanced"
 import { PlayingCard } from "./components/PlayingCard"
@@ -11,12 +10,11 @@ export function Display() {
   const display = useAppSelector(selectDisplay)
   const advanced = useAppSelector(selectConfigAdvanced)
   const turn = useAppSelector(selectTurn)
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
   if (advanced && (turn === 0 || turn === 5)) {
     return <DisplayAdvanced />
-  } else if (largeScreen) {
+  } else if (isLargeScreen) {
     return (
       <Stack
         direction={{ xs: "row", sm: "row" }}

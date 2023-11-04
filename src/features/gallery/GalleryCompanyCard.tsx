@@ -1,11 +1,10 @@
 import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React from "react"
 import { useAppSelector } from "../../app/hooks"
 import { CompanyCard } from "../game/company/Company"
 import { selectCompanyCard } from "../game/gameSlice"
+import useIsLargeScreen from "../theme/useIsLargeScreen"
 
 export function GalleryCompanyCard() {
   // get the card - I'm sure it's there by now
@@ -13,10 +12,9 @@ export function GalleryCompanyCard() {
   const description = card.description
   const image = card.img
 
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
-  if (largeScreen) {
+  if (isLargeScreen) {
     return (
       <Stack justifyContent="center" alignItems="center">
         <Card

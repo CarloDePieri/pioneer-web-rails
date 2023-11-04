@@ -1,10 +1,9 @@
 import { Card } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
-import { useTheme } from "@mui/material/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { PropsWithChildren } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { openGoalsGallery } from "../../gallery/gallerySlice"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 import { selectConfigCompany } from "../gameSlice"
 
 import { Goal } from "./Goal"
@@ -16,11 +15,10 @@ interface Props extends PropsWithChildren<any> {
 export function GoalCard({ goal }: Readonly<Props>) {
   const dispatch = useAppDispatch()
   let company = useAppSelector(selectConfigCompany)
-  const theme = useTheme()
-  const largeScreen = useMediaQuery(theme.breakpoints.up("sm"))
+  const isLargeScreen = useIsLargeScreen()
 
   const goalCardSize = () => {
-    if (largeScreen) {
+    if (isLargeScreen) {
       if (company) {
         return {
           width: "7vw",
