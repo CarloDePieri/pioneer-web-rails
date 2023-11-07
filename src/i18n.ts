@@ -9,15 +9,15 @@ import * as it from "./res/strings/it.json"
 declare module "i18next" {
   interface CustomTypeOptions {
     defaultNS: typeof defaultNS
-    resources: (typeof resources)["en"]
+    resources: (typeof resources)["en-US"]
   }
 }
 
 export const defaultNS = "translation"
 
 export const resources = {
-  en,
-  it,
+  "en-US": en,
+  "it-IT": it,
 }
 
 i18n

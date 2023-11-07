@@ -109,7 +109,12 @@
       }
     },
     "settings": {
+      "languageNativeName": "English",
+      "languageLabel": "Language",
       "languageChanged": "Language: English",
+      "copyrightNotice": "All game assets are © Dranda Games LTD",
+      "issueReport": "Got suggestions? Found an issue?",
+      "issueLinkText": "Get in touch!",
       "layoutWarning": {
         "title": "Layout too cramped?",
         "body": "Try rotating the device!",

@@ -4,8 +4,6 @@ import { AppBar, Box, Stack, Toolbar, Typography } from "@mui/material"
 import { NewGameButton } from "../game/newGame/NewGameButton"
 import { SettingsButton } from "../settings/SettingsButton"
 
-import { LanguageSwitcher } from "./LanguageSwitcher"
-
 export default function Header() {
   return (
     <AppBar position="fixed">
@@ -17,7 +15,6 @@ export default function Header() {
         </Box>
         <Stack direction={"row"} spacing={8} mr={8}>
           <NewGameButton />
-          <LanguageSwitcher />
           <SettingsButton />
         </Stack>
       </Toolbar>

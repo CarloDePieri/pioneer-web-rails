@@ -105,7 +105,12 @@
       }
     },
     "settings": {
+      "languageNativeName": "Italiano",
+      "languageLabel": "Lingua",
       "languageChanged": "Lingua: Italiano",
+      "copyrightNotice": "Le risorse del gioco sono © Dranda Games LTD",
+      "issueReport": "Hai suggerimenti o trovato un problema?",
+      "issueLinkText": "Contattaci!",
       "layoutWarning": {
         "title": "Layout troppo stretto?",
         "body": "Prova a ruotare il device!",
