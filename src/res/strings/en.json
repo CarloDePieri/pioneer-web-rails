@@ -115,7 +115,10 @@
         "body": "Try rotating the device!",
         "close": "Close",
         "closeAndHide": "Don't show again!"
-      }
+      },
+      "title": "Settings",
+      "themeDark": "Dark Theme",
+      "themeLight": "Light Theme"
     }
   }
 }

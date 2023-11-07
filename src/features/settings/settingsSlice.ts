@@ -6,6 +6,7 @@ export const settingsSlice = createSlice({
   initialState: {
     lang: "en-US",
     hideLayoutWarning: false,
+    modalIsOpen: false,
   },
   reducers: {
     setLanguage: (state, action) => {
@@ -14,13 +15,26 @@ export const settingsSlice = createSlice({
     disableHideLayoutWarning: (state) => {
       state.hideLayoutWarning = true
     },
+    openSettings: (state) => {
+      state.modalIsOpen = true
+    },
+    closeSettings: (state) => {
+      state.modalIsOpen = false
+    },
   },
 })
 
+export const selectSettingsModalIsOpen = (state: RootState) =>
+  state.settings.modalIsOpen
 export const selectLanguage = (state: RootState) => state.settings.lang
 export const selectHideLayoutWarning = (state: RootState) =>
   state.settings.hideLayoutWarning
 
-export const { setLanguage, disableHideLayoutWarning } = settingsSlice.actions
+export const {
+  setLanguage,
+  disableHideLayoutWarning,
+  openSettings,
+  closeSettings,
+} = settingsSlice.actions
 
 export default settingsSlice.reducer

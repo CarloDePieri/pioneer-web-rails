@@ -6,6 +6,7 @@ import "./App.css"
 import { useAppSelector } from "./app/hooks"
 import { Game } from "./features/game/Game"
 import Header from "./features/header/Header"
+import { Settings } from "./features/settings/Settings"
 import { getTheme, selectTheme } from "./features/theme/themeSlice"
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
       <ThemeProvider theme={getTheme(useAppSelector(selectTheme))}>
         <CssBaseline />
         <Header />
+        {/* Inject the settings page here */}
+        <Settings />
         <Container>
           {/* The empty toolbar is used to take into account the header dimensions */}
           <Toolbar variant="dense" />
