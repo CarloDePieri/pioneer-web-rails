@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material"
+import { Toolbar, Box, Container } from "@mui/material"
 import CssBaseline from "@mui/material/CssBaseline"
 import { ThemeProvider } from "@mui/material/styles"
 import * as React from "react"
@@ -15,10 +15,9 @@ function App() {
         <CssBaseline />
         <Header />
         <Container>
-          {/* The box is used to counter the header dimension*/}
-          <Box pt={24}>
-            <Game />
-          </Box>
+          {/* The empty toolbar is used to take into account the header dimensions */}
+          <Toolbar variant="dense" />
+          <Game />
         </Container>
       </ThemeProvider>
     </div>
