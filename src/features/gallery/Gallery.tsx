@@ -1,11 +1,15 @@
 import React from "react"
 import { useAppSelector } from "../../app/hooks"
 import { selectConfigCompany, selectGoals } from "../game/gameSlice"
-import { GalleryBackdrop } from "./GalleryBackdrop"
+import { AppBackdrop } from "../shared/AppBackdrop"
 import { GalleryCompanyCard } from "./GalleryCompanyCard"
 import { GalleryGoalCard } from "./GalleryGoalCard"
 import { GalleryGrid } from "./GalleryGrid"
-import { selectGalleryWindow } from "./gallerySlice"
+import {
+  closeGallery,
+  selectGalleryOpen,
+  selectGalleryWindow,
+} from "./gallerySlice"
 
 export function Gallery() {
   const goals = useAppSelector(selectGoals)
@@ -21,8 +25,8 @@ export function Gallery() {
   })
 
   return (
-    <GalleryBackdrop>
+    <AppBackdrop openSelector={selectGalleryOpen} closeAction={closeGallery}>
       <GalleryGrid>{window === "goals" ? goalCards : companyCard}</GalleryGrid>
-    </GalleryBackdrop>
+    </AppBackdrop>
   )
 }

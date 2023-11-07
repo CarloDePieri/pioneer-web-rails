@@ -1,15 +1,22 @@
 import { Backdrop } from "@mui/material"
+import { ActionCreator } from "@reduxjs/toolkit"
 import React, { PropsWithChildren } from "react"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { closeGallery, selectGalleryOpen } from "./gallerySlice"
+import { RootState } from "../../app/store"
 
 interface Props extends PropsWithChildren<any> {
+  openSelector: (state: RootState) => boolean
+  closeAction: ActionCreator<any>
   children: string | React.JSX.Element
 }
 
-export function GalleryBackdrop({ children }: Readonly<Props>) {
-  const open = useAppSelector(selectGalleryOpen)
+export function AppBackdrop({
+  children,
+  openSelector,
+  closeAction,
+}: Readonly<Props>) {
   const dispatch = useAppDispatch()
+  const open = useAppSelector(openSelector)
 
   return (
     <Backdrop
@@ -19,7 +26,7 @@ export function GalleryBackdrop({ children }: Readonly<Props>) {
       }}
       open={open}
       onClick={() => {
-        dispatch(closeGallery())
+        dispatch(closeAction())
       }}
     >
       {children}

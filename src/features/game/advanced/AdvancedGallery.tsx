@@ -1,16 +1,23 @@
 import { Card, CardContent, Stack } from "@mui/material"
 import React from "react"
+import { AppBackdrop } from "../../shared/AppBackdrop"
 import useIsLargeScreen from "../../theme/useIsLargeScreen"
-import { AdvancedGalleryBackdrop } from "./AdvancedGalleryBackdrop"
 import { AdvancedGalleryGrid } from "./AdvancedGalleryGrid"
 import { AdvancedGalleryHiddenCard } from "./AdvancedGalleryHiddenCard"
 import { AdvancedGalleryPlayerSelector } from "./AdvancedGalleryPlayerSelector"
+import {
+  closeAdvancedGallery,
+  selectAdvancedGalleryOpen,
+} from "./advancedSlice"
 
 export function AdvancedGallery() {
   const isLargeScreen = useIsLargeScreen()
 
   return (
-    <AdvancedGalleryBackdrop>
+    <AppBackdrop
+      openSelector={selectAdvancedGalleryOpen}
+      closeAction={closeAdvancedGallery}
+    >
       <AdvancedGalleryGrid>
         {isLargeScreen ? (
           <Card
@@ -41,6 +48,6 @@ export function AdvancedGallery() {
           </Card>
         )}
       </AdvancedGalleryGrid>
-    </AdvancedGalleryBackdrop>
+    </AppBackdrop>
   )
 }
