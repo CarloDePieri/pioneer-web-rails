@@ -2,7 +2,7 @@ import { Card } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import React, { PropsWithChildren } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { openGoalsGallery } from "../../gallery/gallerySlice"
+import { openGoalsGallery } from "../gallery/gallerySlice"
 import useIsLargeScreen from "../../theme/useIsLargeScreen"
 import { selectConfigCompany } from "../gameSlice"
 

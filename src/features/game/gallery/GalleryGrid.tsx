@@ -3,9 +3,9 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight"
 import { Box, Button, Container, Stack } from "@mui/material"
 import React, { PropsWithChildren } from "react"
 import { useTranslation } from "react-i18next"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { selectConfigCompany } from "../game/gameSlice"
-import useIsLargeScreen from "../theme/useIsLargeScreen"
+import { useAppDispatch, useAppSelector } from "../../../app/hooks"
+import { selectConfigCompany } from "../gameSlice"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 import {
   openCompanyGallery,
   openGoalsGallery,

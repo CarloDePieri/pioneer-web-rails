@@ -52,7 +52,6 @@ export function Settings() {
                   {t("settings.issueLinkText")}
                 </a>
               </Box>
-              <Box>pioneer-web-rails-v1.0</Box>
             </Box>
           </Box>
         </Card>

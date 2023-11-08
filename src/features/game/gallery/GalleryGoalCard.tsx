@@ -2,8 +2,8 @@ import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import React, { PropsWithChildren } from "react"
 
-import { Goal } from "../game/goals/Goal"
-import useIsLargeScreen from "../theme/useIsLargeScreen"
+import { Goal } from "../goals/Goal"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 
 interface Props extends PropsWithChildren<any> {
   goal: Goal

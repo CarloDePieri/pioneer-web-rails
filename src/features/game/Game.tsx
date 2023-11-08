@@ -5,7 +5,7 @@ import useIsLargeScreen from "../theme/useIsLargeScreen"
 import { AdvancedGallery } from "./advanced/AdvancedGallery"
 import { CompanyCardHolder } from "./company/CompanyCardHolder"
 import { FlowButtons } from "./flow/FlowButtons"
-import { Gallery } from "../gallery/Gallery"
+import { Gallery } from "./gallery/Gallery"
 import { FlowBar } from "./flow/FlowBar"
 import {
   selectConfigAdvanced,

@@ -16,7 +16,7 @@ import {
 
 import storage from "redux-persist/lib/storage"
 import undoable, { excludeAction } from "redux-undo"
-import galleryReducer from "../features/gallery/gallerySlice"
+import galleryReducer from "../features/game/gallery/gallerySlice"
 import advancedGalleryReducer from "../features/game/advanced/advancedSlice"
 import gameStateReducer from "../features/game/gameSlice"
 import themeReducer from "../features/theme/themeSlice"

@@ -1,7 +1,7 @@
 import { Fab } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks"
-import { openGoalsGallery } from "../../../gallery/gallerySlice"
+import { openGoalsGallery } from "../../gallery/gallerySlice"
 import {
   deal,
   dealSecrets,

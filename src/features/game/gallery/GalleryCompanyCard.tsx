@@ -1,10 +1,10 @@
 import { Box, Card, Stack, Typography } from "@mui/material"
 import CardMedia from "@mui/material/CardMedia"
 import React from "react"
-import { useAppSelector } from "../../app/hooks"
-import { CompanyCard } from "../game/company/Company"
-import { selectCompanyCard } from "../game/gameSlice"
-import useIsLargeScreen from "../theme/useIsLargeScreen"
+import { useAppSelector } from "../../../app/hooks"
+import { CompanyCard } from "../company/Company"
+import { selectCompanyCard } from "../gameSlice"
+import useIsLargeScreen from "../../theme/useIsLargeScreen"
 
 export function GalleryCompanyCard() {
   // get the card - I'm sure it's there by now
