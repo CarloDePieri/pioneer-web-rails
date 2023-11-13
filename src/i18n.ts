@@ -20,6 +20,22 @@ export const resources = {
   "it-IT": it,
 }
 
+i18n.on("languageChanged", (newLocale: string) => {
+  try {
+    // inform the store that the language has changed, so that dependant components can be re-rendered
+    store.dispatch(setLanguage(newLocale))
+  } catch (error) {
+    if (error instanceof ReferenceError) {
+      // the languageDetector set the language before the store was ready... try again in 1 second
+      setTimeout(() => {
+        store.dispatch(setLanguage(newLocale))
+      }, 1000)
+    } else {
+      throw error
+    }
+  }
+})
+
 i18n
   // detect user language
   .use(LanguageDetector)
@@ -28,18 +44,13 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    debug: true,
-    fallbackLng: "en",
+    debug: false,
+    fallbackLng: "en-US",
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
     resources,
     defaultNS,
   })
-
-i18n.on("languageChanged", (newLocale: string) => {
-  // inform the store that the language has changed, so that dependant components can be re-rendered
-  store.dispatch(setLanguage(newLocale))
-})
 
 export default i18n
