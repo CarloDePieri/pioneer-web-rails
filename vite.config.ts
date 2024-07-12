@@ -21,6 +21,22 @@ export default defineConfig({
         display: "fullscreen",
         theme_color: "#bdbdbd",
         background_color: "#bdbdbd",
+        screenshots: [
+          {
+            src: "/images/screenshot-wide.png",
+            sizes: "1280x610",
+            type: "image/png",
+            form_factor: "wide",
+            label: "Homescreen of Pioneer Web Rail",
+          },
+          {
+            src: "/images/screenshot-narrow.png",
+            sizes: "610x1280",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "Homescreen of Pioneer Web Rail",
+          },
+        ],
         icons: [
           {
             src: "/images/icon192.png",
