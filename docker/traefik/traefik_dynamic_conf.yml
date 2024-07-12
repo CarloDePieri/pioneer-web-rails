@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://json.schemastore.org/traefik-v2-file-provider.json
+
+http:
+  routers:
+    toLocal:
+      rule: 'Host(`{{ env "DOMAIN_NAME" }}`)'
+      service: toLocal
+      entryPoints:
+        - web
+      middlewares:
+        - forceHttps
+    toLocalSecure:
+      entryPoints:
+        - webSecure
+      rule: 'Host(`{{ env "DOMAIN_NAME" }}`)'
+      service: toLocal
+      tls: {}
+
+  services:
+    toLocal:
+      loadBalancer:
+        servers:
+          - url: 'http://127.0.0.1:{{ env "WEBSITE_PORT" }}'
+
+  middlewares:
+    forceHttps:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+tls:
+  certificates:
+    - certFile: /ca.pem
+      keyFile: /ca.key

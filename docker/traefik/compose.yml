@@ -7,5 +7,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - "./traefik.yml:/traefik.yml:ro"
+      - "./traefik_dynamic_conf.yml:/traefik_dynamic_conf.yml:ro"
       - "../certs/ca.pem:/ca.pem:ro"
       - "../certs/ca.key:/ca.key:ro"
