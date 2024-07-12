@@ -1,0 +1,13 @@
+---
+services:
+
+  pwr:
+    build:
+      context: ../..
+      dockerfile: docker/nginx/Dockerfile
+    container_name: pwr
+    ports:
+        - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    restart: unless-stopped

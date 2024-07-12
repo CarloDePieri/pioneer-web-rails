@@ -1,0 +1,11 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.0
+    env_file:
+      - .env
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "./traefik.yml:/traefik.yml:ro"
+      - "../certs/ca.pem:/ca.pem:ro"
+      - "../certs/ca.key:/ca.key:ro"
