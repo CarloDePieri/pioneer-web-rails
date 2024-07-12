@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["testing-library__jest-dom"]
+    "types": ["node", "vite-plugin-pwa/client", "vite-plugin-pwa/react"]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

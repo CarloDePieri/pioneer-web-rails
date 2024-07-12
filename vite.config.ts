@@ -1,4 +1,4 @@
-import { defineConfig } from "vitest/config"
+import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import { VitePWA } from "vite-plugin-pwa"
 
@@ -7,6 +7,13 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      },
+      devOptions: {
+        enabled: true,
+      },
       manifest: {
         name: "Pioneer Web Rails",
         short_name: "Pioneer Web Rails",
@@ -39,13 +46,6 @@ export default defineConfig({
           },
         ],
       },
-      registerType: "autoUpdate",
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-      },
-      devOptions: {
-        enabled: true,
-      },
     }),
   ],
   server: {
@@ -54,11 +54,16 @@ export default defineConfig({
   build: {
     outDir: "build",
     sourcemap: true,
-  },
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "src/setupTests",
-    mockReset: true,
+    chunkSizeWarningLimit: 550,
+    // https://github.com/vitejs/vite/issues/15012#issuecomment-2180948798
+    rollupOptions: {
+      onwarn(warning, defaultHandler) {
+        if (warning.code === "SOURCEMAP_ERROR") {
+          return
+        }
+
+        defaultHandler(warning)
+      },
+    },
   },
 })

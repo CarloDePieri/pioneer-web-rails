@@ -10,6 +10,11 @@ import {
   selectTurn,
 } from "../../gameSlice"
 
+/**
+ * Chip that displays the dealer's name or a message if there is no dealer.
+ *
+ * @returns {JSX.Element} The JSX code for the component
+ */
 export function FlowDealerChip() {
   const { t } = useTranslation()
   const turn = useAppSelector(selectTurn)
