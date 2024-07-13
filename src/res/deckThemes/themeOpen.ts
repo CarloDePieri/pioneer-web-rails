@@ -5,7 +5,7 @@ import {
 
 class OpenThemeBuilder extends DefaultDeckThemeBuilder {
   name: string = "original"
-  _rootPath: string = "/images/publicDomain"
+  _rootPath: string = `${import.meta.env.BASE_URL}images/publicDomain`
   back: string = `${this._rootPath}/deck/back.svg`
 
   companyUrl(name: string): string {

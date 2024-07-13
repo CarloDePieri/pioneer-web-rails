@@ -5,7 +5,7 @@ import {
 
 class OriginalThemeBuilder extends DefaultDeckThemeBuilder {
   name: string = "original"
-  _rootPath: string = "/images/licensed"
+  _rootPath: string = `${import.meta.env.BASE_URL}images/licensed`
   back: string = `${this._rootPath}/deck/back.png`
 
   companyUrl(name: string): string {
