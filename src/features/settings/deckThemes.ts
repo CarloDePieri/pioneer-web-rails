@@ -9,7 +9,7 @@ const availableDeckThemes: Record<availableDeckNames, DeckTheme> = {
 }
 
 const licensed: boolean =
-  import.meta.env.VITE_LICENSED_IMAGES === "true" || true
+  import.meta.env.VITE_LICENSED_IMAGES === "true" || false
 export const selectedDeckTheme = licensed
   ? availableDeckThemes.original
   : availableDeckThemes.open
