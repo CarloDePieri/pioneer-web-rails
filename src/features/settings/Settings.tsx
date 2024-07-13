@@ -3,6 +3,7 @@ import React from "react"
 import { useTranslation } from "react-i18next"
 import { AppBackdrop } from "../shared/AppBackdrop"
 import { SettingsLanguageSelector } from "./components/SettingsLanguageSelector"
+import { licensed } from "./deckThemes"
 import { closeSettings, selectSettingsModalIsOpen } from "./settingsSlice"
 import { SettingsThemeSelector } from "./components/SettingsThemeSelector"
 import { SettingsHeader } from "./components/SettingsHeader"
@@ -37,15 +38,19 @@ export function Settings() {
                 width: "100%",
               }}
             >
-              <Box
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                {t("settings.copyrightNotice")}
-              </Box>
+              {licensed ? (
+                <Box
+                  sx={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  {t("settings.copyrightNotice")}
+                </Box>
+              ) : (
+                <></>
+              )}
               <Box>
                 {t("settings.issueReport")}{" "}
                 <a href="https://github.com/CarloDePieri/pioneer-web-rails/issues">
