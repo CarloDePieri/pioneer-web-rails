@@ -33,6 +33,10 @@ build
 # Miscellaneous
 *.local
 
-# traefik
+# act
+act-build
+.secrets
+
+# docker containers
 docker/certs/*
 docker/traefik/.env

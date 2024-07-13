@@ -1,0 +1,29 @@
+name: Prod
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Archive the build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build

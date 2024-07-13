@@ -11,7 +11,12 @@
     "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "clean": "rm -rf build; rm -rf act-build",
+    "act": "act -W .github/workflows/prod.yml",
+    "act:build": "rm -rf build && mkdir -p act-build && act -W .github/workflows/prod.yml --artifact-server-path act-build && cd act-build && cd `ls -lrt | grep ^d | head -1 | awk '{print $NF}'`/build && pwd && unzip build.zip -d ../../../build",
+    "act:shell": "docker exec --env-file .secrets -it `docker ps | grep \"act-Prod-ci\" | cut -d \" \" -f1` bash",
+    "act:clean": "docker rm -f `docker ps | grep \"act-Prod-ci\" | cut -d \" \" -f1`"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
